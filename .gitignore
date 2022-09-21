@@ -28,6 +28,5 @@ key.*
 *.dat
 unseal*.*
 mysig
-tpm2-*
 autoconf*
-Python_TPM20_GUI/bin
+Python_TrustM_GUI/bin
