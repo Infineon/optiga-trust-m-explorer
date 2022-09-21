@@ -1,0 +1,11 @@
+{
+  "CN": "AWS_IoT_TRUSTM_Certificate",
+  "O": "Infineon_Technologies",
+  "C": "SG",
+  "ST": "Singapore",
+  "AmazonIoT": {
+		"ThingName": "TrustM_IOT_DEVICE",
+       		"PolicyName": "IoT_Publish_Subscribe",
+        	"Endpoint": "a1o8ed7vsgd4h5-ats.iot.us-west-2.amazonaws.com"
+   }
+}
