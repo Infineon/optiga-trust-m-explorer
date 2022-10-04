@@ -14,93 +14,50 @@ This document is intended for the users who wish to explore the functionalities 
 
 #### Table of contents
 
-[1. Overview](#overview)
-
-[1.1 Installation and Setup](#installation-and-setup)
-
-[2. General Features](#general-features)
-
-[2.1 General Tab](#general-tab)
-
-[2.2 Private Key and Cert OID](#private-key-and-cert-oid)
-
-[2.3 Application Data OID](#application-data-oid)
-
-[3. Cryptographic Functions](#cryptographic-functions)
-
-[3.1 ECC Cryptographic Functions](#ecc-cryptographic-function)
-
-[3.1.1 ECC Key Generation](#ecc-key-generation)
-
-[3.1.2 ECC Sign](#ecc-sign)
-
-[3.1.3 ECC Verify](#ecc-verify)
-
-[3.1.4 ECC Errors](#ecc-errors)
-
-[3.2 RSA Cryptographic Functions](#rsa-cryptographic-functions)
-
-[3.2.1 RSA Key Generation](#rsa-key-generation)
-
-[3.2.2 RSA Encryption](#rsa-encryption)
-
-[3.2.3 RSA Decryption](#rsa-decryption)
-
-[3.3 AES Cryptographic Function](#aes-cryptographic-function)
-
-[3.3.1 AES Key Generation](#aes-key-generation)
-
-[3.3.2 AES Encryption](#aes-encryption)
-
-[3.3.3 AES Decryption](#aes-decryption)
-
-[4. OpenSSL Engine](#openssl-engine)
-
-[4.1 ECC (Client/Server)](#ecc-clientserver)
-
-[4.1.1 ECC (Client/Server) Function Description](#ecc-clientserver-function-description)
-
-[4.1.2 Create Server Certificate](#create-server-certificate)
-
-[4.1.3 Create Client Certificate](#create-client-certificate)
-
-[4.1.4 Start an OpenSSL Server](#start-an-openssl-server)
-
-[4.1.5 Start an OpenSSL Client](#start-an-openssl-client)
-
-[4.1.6 Secure data exchange between Server and Client](#secure-data-exchange-between-server-and-client)
-
-[4.2 Random Number Generator](#random-number-generator)
-
-[5. Protected Update](#protected-update)
-
-[5.1 Protected Update Functions](#protected-update-functions)
-
-[5.1.1 Step 1 (Provisioning for All OIDs)](#step-1-provisioning-for-all-oids)
-
-[5.1.2 Step 2 (Generate Manifest)](#step-2-generate-manifest)
-
-[5.1.3 Step 3 (Update Target Object OID)](#step-3-update-the-metadata-for-target-oid)
-
-[5.1.4 Read Objects Metadata](#read-objects-metadata)
-
-[6. Secure Storage](#secure-storage)
-
-[6.1 Secure Storage Functions](#secure-storage-functions)
-
-[6.1.1 Provision HMAC Authentication](#provision-for-hmac-authentication)
-
-[6.1.2 HMAC Verify and Write](#hmac-verify-and-write)
-
-[6.1.3 HMAC Verify and Read](#hmac-verify-and-read)
-
-[7. Secured connection to AWS IoT core](#secured-connection-to-aws-iot-core)
-
-[7.1 Get started with AWS IoT Core](#get-started-with-aws-iot-core)
-
-[7.2 Create device certificate and assign it to Thing with policy](#create-device-certificate-and-assign-it-to-thing-with-policy)
-
-[7.3 Publish messages to AWS IoT core from the Raspberry Pi](#publish-messages-to-aws-iot-core-from-the-raspberry-pi)
+* [Overview](#overview)
+  * [Installation and Setup](#installation-and-setup)
+* [General Features](#general-features)
+  * [General Tab](#general-tab)
+  * [Private Key and Cert OID](#private-key-and-cert-oid)
+  * [Application Data OID](#application-data-oid)
+* [Cryptographic Functions](#cryptographic-functions)
+  * [ECC Cryptographic Functions](#ecc-cryptographic-function)
+    * [ECC Key Generation](#ecc-key-generation)
+    * [ECC Sign](#ecc-sign)
+    * [ECC Verify](#ecc-verify)
+    * [ECC Errors](#ecc-errors)
+  * [RSA Cryptographic Functions](#rsa-cryptographic-functions)
+    * [RSA Key Generation](#rsa-key-generation)
+    * [RSA Encryption](#rsa-encryption)
+    * [RSA Decryption](#rsa-decryption)
+  * [AES Cryptographic Function](#aes-cryptographic-function)
+    * [AES Key Generation](#aes-key-generation)
+    * [AES Encryption](#aes-encryption)
+    * [AES Decryption](#aes-decryption)
+* [OpenSSL Engine](#openssl-engine)
+  * [ECC (Client/Server)](#ecc-clientserver)
+    * [ECC (Client/Server) Function Description](#ecc-clientserver-function-description)
+    * [Create Server Certificate](#create-server-certificate)
+    * [Create Client Certificate](#create-client-certificate)
+    * [Start an OpenSSL Server](#start-an-openssl-server)
+    * [Start an OpenSSL Client](#start-an-openssl-client)
+    * [Secure data exchange between Server and Client](#secure-data-exchange-between-server-and-client)
+  * [Random Number Generator](#random-number-generator)
+* [Protected Update](#protected-update)
+  * [Protected Update Functions](#protected-update-functions)
+    * [Step 1 (Provisioning for All OIDs)](#step-1-provisioning-for-all-oids)
+    * [Step 2 (Generate Manifest)](#step-2-generate-manifest)
+    * [Step 3 (Update Target Object OID)](#step-3-update-the-metadata-for-target-oid)
+    * [Read Objects Metadata](#read-objects-metadata)
+* [Secure Storage](#secure-storage)
+  * [Secure Storage Functions](#secure-storage-functions)
+    * [Provision HMAC Authentication](#provision-for-hmac-authentication)
+    * [HMAC Verify and Write](#hmac-verify-and-write)
+    * [HMAC Verify and Read](#hmac-verify-and-read)
+* [Secured connection to AWS IoT core](#secured-connection-to-aws-iot-core)
+  * [Get started with AWS IoT Core](#get-started-with-aws-iot-core)
+  * [Create device certificate and assign it to Thing with policy](#create-device-certificate-and-assign-it-to-thing-with-policy)
+  * [Publish messages to AWS IoT core from the Raspberry Pi](#publish-messages-to-aws-iot-core-from-the-raspberry-pi)
 
 
 
@@ -136,7 +93,12 @@ Function Descriptions of the General Tab
 
 ![](images/General_Features/general/functions.png)
 
-[^Figure 1]:OPTIGA™ Trust M General functions described
+Function Descriptions of the General Tab.
+
+![](images/General_Features/general/functions.png)
+
+[^Figure 1]:
+    OPTIGA™ Trust M General functions described
 
 ### Chip info
 
