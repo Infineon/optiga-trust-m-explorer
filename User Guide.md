@@ -14,50 +14,93 @@ This document is intended for the users who wish to explore the functionalities 
 
 #### Table of contents
 
-* [Overview](#overview)
-  * [Installation and Setup](#installation-and-setup)
-* [General Features](#general-features)
-  * [General Tab](#general-tab)
-  * [Private Key and Cert OID](#private-key-and-cert-oid)
-  * [Application Data OID](#application-data-oid)
-* [Cryptographic Functions](#cryptographic-functions)
-  * [ECC Cryptographic Functions](#ecc-cryptographic-function)
-    * [ECC Key Generation](#ecc-key-generation)
-    * [ECC Sign](#ecc-sign)
-    * [ECC Verify](#ecc-verify)
-    * [ECC Errors](#ecc-errors)
-  * [RSA Cryptographic Functions](#rsa-cryptographic-functions)
-    * [RSA Key Generation](#rsa-key-generation)
-    * [RSA Encryption](#rsa-encryption)
-    * [RSA Decryption](#rsa-decryption)
-  * [AES Cryptographic Function](#aes-cryptographic-function)
-    * [AES Key Generation](#aes-key-generation)
-    * [AES Encryption](#aes-encryption)
-    * [AES Decryption](#aes-decryption)
-* [OpenSSL Engine](#openssl-engine)
-  * [ECC (Client/Server)](#ecc-clientserver)
-    * [ECC (Client/Server) Function Description](#ecc-clientserver-function-description)
-    * [Create Server Certificate](#create-server-certificate)
-    * [Create Client Certificate](#create-client-certificate)
-    * [Start an OpenSSL Server](#start-an-openssl-server)
-    * [Start an OpenSSL Client](#start-an-openssl-client)
-    * [Secure data exchange between Server and Client](#secure-data-exchange-between-server-and-client)
-  * [Random Number Generator](#random-number-generator)
-* [Protected Update](#protected-update)
-  * [Protected Update Functions](#protected-update-functions)
-    * [Step 1 (Provisioning for All OIDs)](#step-1-provisioning-for-all-oids)
-    * [Step 2 (Generate Manifest)](#step-2-generate-manifest)
-    * [Step 3 (Update Target Object OID)](#step-3-update-the-metadata-for-target-oid)
-    * [Read Objects Metadata](#read-objects-metadata)
-* [Secure Storage](#secure-storage)
-  * [Secure Storage Functions](#secure-storage-functions)
-    * [Provision HMAC Authentication](#provision-for-hmac-authentication)
-    * [HMAC Verify and Write](#hmac-verify-and-write)
-    * [HMAC Verify and Read](#hmac-verify-and-read)
-* [Secured connection to AWS IoT core](#secured-connection-to-aws-iot-core)
-  * [Get started with AWS IoT Core](#get-started-with-aws-iot-core)
-  * [Create device certificate and assign it to Thing with policy](#create-device-certificate-and-assign-it-to-thing-with-policy)
-  * [Publish messages to AWS IoT core from the Raspberry Pi](#publish-messages-to-aws-iot-core-from-the-raspberry-pi)
+[1. Overview](#overview)
+
+[1.1 Installation and Setup](#installation-and-setup)
+
+[2. General Features](#general-features)
+
+[2.1 General Tab](#general-tab)
+
+[2.2 Private Key and Cert OID](#private-key-and-cert-oid)
+
+[2.3 Application Data OID](#application-data-oid)
+
+[3. Cryptographic Functions](#cryptographic-functions)
+
+[3.1 ECC Cryptographic Functions](#ecc-cryptographic-function)
+
+[3.1.1 ECC Key Generation](#ecc-key-generation)
+
+[3.1.2 ECC Sign](#ecc-sign)
+
+[3.1.3 ECC Verify](#ecc-verify)
+
+[3.1.4 ECC Errors](#ecc-errors)
+
+[3.2 RSA Cryptographic Functions](#rsa-cryptographic-functions)
+
+[3.2.1 RSA Key Generation](#rsa-key-generation)
+
+[3.2.2 RSA Encryption](#rsa-encryption)
+
+[3.2.3 RSA Decryption](#rsa-decryption)
+
+[3.3 AES Cryptographic Function](#aes-cryptographic-function)
+
+[3.3.1 AES Key Generation](#aes-key-generation)
+
+[3.3.2 AES Encryption](#aes-encryption)
+
+[3.3.3 AES Decryption](#aes-decryption)
+
+[4. OpenSSL Engine](#openssl-engine)
+
+[4.1 ECC (Client/Server)](#ecc-clientserver)
+
+[4.1.1 ECC (Client/Server) Function Description](#ecc-clientserver-function-description)
+
+[4.1.2 Create Server Certificate](#create-server-certificate)
+
+[4.1.3 Create Client Certificate](#create-client-certificate)
+
+[4.1.4 Start an OpenSSL Server](#start-an-openssl-server)
+
+[4.1.5 Start an OpenSSL Client](#start-an-openssl-client)
+
+[4.1.6 Secure data exchange between Server and Client](#secure-data-exchange-between-server-and-client)
+
+[4.2 Random Number Generator](#random-number-generator)
+
+[5. Protected Update](#protected-update)
+
+[5.1 Protected Update Functions](#protected-update-functions)
+
+[5.1.1 Step 1 (Provisioning for All OIDs)](#step-1-provisioning-for-all-oids)
+
+[5.1.2 Step 2 (Generate Manifest)](#step-2-generate-manifest)
+
+[5.1.3 Step 3 (Update Target Object OID)](#step-3-update-the-metadata-for-target-oid)
+
+[5.1.4 Read Objects Metadata](#read-objects-metadata)
+
+[6. Secure Storage](#secure-storage)
+
+[6.1 Secure Storage Functions](#secure-storage-functions)
+
+[6.1.1 Provision HMAC Authentication](#provision-for-hmac-authentication)
+
+[6.1.2 HMAC Verify and Write](#hmac-verify-and-write)
+
+[6.1.3 HMAC Verify and Read](#hmac-verify-and-read)
+
+[7. Secured connection to AWS IoT core](#secured-connection-to-aws-iot-core)
+
+[7.1 Get started with AWS IoT Core](#get-started-with-aws-iot-core)
+
+[7.2 Create device certificate and assign it to Thing with policy](#create-device-certificate-and-assign-it-to-thing-with-policy)
+
+[7.3 Publish messages to AWS IoT core from the Raspberry Pi](#publish-messages-to-aws-iot-core-from-the-raspberry-pi)
 
 
 
@@ -93,12 +136,7 @@ Function Descriptions of the General Tab
 
 ![](images/General_Features/general/functions.png)
 
-Function Descriptions of the General Tab.
-
-![](images/General_Features/general/functions.png)
-
-[^Figure 1]:
-    OPTIGA™ Trust M General functions described
+[^Figure 1]:OPTIGA™ Trust M General functions described
 
 ### Chip info
 
@@ -751,9 +789,7 @@ Go back to the main screen and select "AWS:IOT Core".
 
 ## Get started with AWS IoT Core
 
-To generate "Access Key ID" , "Secret Access Key" and "Session Token"  log in to AWS IOT at:
-
- "https://infineonap.signin.aws.amazon.com/console".
+To generate "Access Key ID" , "Secret Access Key" and "Session Token"  log in to AWS IOT.
 
 ![](images/AWSIOT/AWS_Signin.png)
 
@@ -767,75 +803,81 @@ Next, go to your credentials.
 
 Download and retrieve your security credentials.
 
+![](images/AWSIOT/download.png)
 
+[^Figure 65 ]: AWS IOT Download Security Credentials
 
-or Go to Your own login Page through SSO. For example,
+![](images/AWSIOT/Credentials.png)
+
+[^Figure 66]: Security_Credentials.CSV
+
+For AWS SSO user, Go to Your own login Page through SSO. For example,
 
 ![](images/AWSIOT/AWS_Account.png)
 
-[^Figure 65]: IFXCloudUserAdministratorAccess Page 
+[^Figure 67]: IFXCloudUserAdministratorAccess Page 
 
 Click *Command line or programmatic access* button to copy out the AWS_access_key_id,AWS_secret_access_key and AWS_session_token.
 
 
 
-![](images/AWSIOT/Credentials.png)
+![](images/AWSIOT/Credentials1.png)
 
-[^Figure 66]:AWS Access credentials
+[^Figure 68]:AWS Access credentials
 
 To retrieve Endpoint, go to "Services" and select "IOT Core".
 
 ![](images/AWSIOT/Services_iotcore.jpg)
 
-[^Figure 67]: AWS IOT Core
+[^Figure 69]: AWS IOT Core
 
 Select "Settings" at the left side of the webbrowser.
 
 ![](images/AWSIOT/IOT_core_settings.jpg)
 
-[^Figure 68]: AWS IOT Core Settings
+[^Figure 70]: AWS IOT Core Settings
 
 At "Custom Endpoint", copy the endpoint.
 
 ![](images/AWSIOT/endpoint_aws.png)
 
-[^Figure 69]: AWS IOT Core Settings Endpoint
+[^Figure 71]: AWS IOT Core Settings Endpoint
 
 Input the "Access Key ID" , "Secret Access Key" and "Session Token" and choose the correct server location
 
 ![](images/AWSIOT/Credentials_entered.png)
 
-[^Figure  70]: AWS IOT Configuration
+[^Figure  72]: AWS IOT Configuration
 
 Select "Set AWS credentials".
 
 ![](images/AWSIOT/Credentials_entered2.png)
 
-[^Figure 71]: AWS IOT Set AWS Credentials Selection
+[^Figure 73]: AWS IOT Set AWS Credentials Selection
 
 Next, set Endpoint by selecting "Open config file".
 
 ![](images/AWSIOT/AWS_Main2.png)
 
-[^Figure 72]: AWS IOT Open Config File Selection
+[^Figure 74]: AWS IOT Open Config File Selection
 
 Paste the endpoint  from your AWS account and save.
 
 ![](images/AWSIOT/Endpoint_editing.png)
 
-[^Figure 73]: AWS IOT Open Config File
+[^Figure 75]: AWS IOT Open Config File
 
 **Skip this step if a policy file has already been created.** First, select "Open policy file", make no changes and save. This is a one time setting only.
 
 ![](images/AWSIOT/AWS_Create_Policy.png)
 
-[^Figure 74]: AWS IOT Open Policy File Selection
+[^Figure 76]: AWS IOT Open Policy File Selection
 
 Select "Create Policy (from policy file)". Once policy has been created, there will be no need to do this step again.
 
 ![](images/AWSIOT/policyfille.png)
 
-[^Figure 75]: AWS IOT Policy File
+[^Figure 77]: AWS IOT Policy File
 
 ## Create device certificate and assign it to Thing with policy
 
@@ -843,7 +885,7 @@ Once configuration is done, to provision the certificate, select "1-click provis
 
 ![](images/AWSIOT/AWS_Main3.png)
 
-[^Figure 76]:  AWS IOT 1-click provision Selection
+[^Figure 78]:  AWS IOT 1-click provision Selection
 
 The following code will be run for Step 1 to Step 6.
 
@@ -869,17 +911,17 @@ Step 6: The policy is attached to the received certificate
 (/'/>/>/>/', u/'aws iot attach-principal-policy --policy-name $policyname --principal $certificateArn')
 ```
 
-1-click provision is successful if no error message is seen and certificate is successfully attached as shown in the Figure 78 below. Data can now be sent to AWS web-browser.
+1-click provision is successful if no error message is seen and certificate is successfully attached as shown in the Figure 79 below. Data can now be sent to AWS web-browser.
 
 ![](images/AWSIOT/extra.png)
 
-[^Figure 77]: AWS IOT 1-click provision Succeeded
+[^Figure 79]: AWS IOT 1-click provision Succeeded
 
 To view the certificate details, go to AWS IoT / Security / Certificates
 
 ![](images/AWSIOT/aws_cert.png)
 
-[^Figure 78]: Certificate generated and registered to AWS IOT core
+[^Figure 80]: Certificate generated and registered to AWS IOT core
 
 ## Publish messages to AWS IoT core from the Raspberry Pi
 
@@ -887,16 +929,16 @@ After performing all the necessary preparation steps from Step 1 to Step 6, we w
 
 ![](images/AWSIOT/Subscribe.png)
 
-[^Figure 79]: AWS IOT Test
+[^Figure 81]: AWS IOT Test
 
 We can proceed with Step 7. On the OPTIGA™ Trust M Explorer AWS IOT, input the correct Topic and the intended Data. Then, select "Start Publishing". The device can continue publishing even after reboot and no further configuration will be required.
 
 ![](images/AWSIOT/publish.png)
 
-[^Figure 80]: AWS IOT Start Publishing Selection
+[^Figure 82]: AWS IOT Start Publishing Selection
 
-On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 81 . This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
+On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 83 . This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
 
 ![](images/AWSIOT/publiushed.png)
 
-[^Figure 81]: AWS IOT Web-Browser Published
+[^Figure 83]: AWS IOT Web-Browser Published
