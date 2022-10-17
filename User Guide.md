@@ -20,87 +20,88 @@ This document is intended for the users who wish to explore the functionalities 
 
 [2. General Features](#general-features)
 
-[2.1 General Tab](#general-tab)
+- [2.1 General Tab](#general-tab)
+- [2.2 Private Key and Cert OID](#private-key-and-cert-oid)
 
-[2.2 Private Key and Cert OID](#private-key-and-cert-oid)
-
-[2.3 Application Data OID](#application-data-oid)
+- [2.3 Application Data OID](#application-data-oid)
 
 [3. Cryptographic Functions](#cryptographic-functions)
 
-[3.1 ECC Cryptographic Functions](#ecc-cryptographic-function)
+- [3.1 ECC Cryptographic Functions](#ecc-cryptographic-function)
+  - [3.1.1 ECC Key Generation](#ecc-key-generation)
+  - [3.1.2 ECC Sign](#ecc-sign)
 
-[3.1.1 ECC Key Generation](#ecc-key-generation)
+  - [3.1.3 ECC Verify](#ecc-verify)
+  - [3.1.4 ECC Errors](#ecc-errors)
+- [3.2 RSA Cryptographic Functions](#rsa-cryptographic-functions)
+  - [3.2.1 RSA Key Generation](#rsa-key-generation)
+  - [3.2.2 RSA Encryption](#rsa-encryption)
 
-[3.1.2 ECC Sign](#ecc-sign)
+  - [3.2.3 RSA Decryption](#rsa-decryption)
+- [3.3 AES Cryptographic Function](#aes-cryptographic-function)
+  - [3.3.1 AES Key Generation](#aes-key-generation)
+  - [3.3.2 AES Encryption](#aes-encryption)
 
-[3.1.3 ECC Verify](#ecc-verify)
-
-[3.1.4 ECC Errors](#ecc-errors)
-
-[3.2 RSA Cryptographic Functions](#rsa-cryptographic-functions)
-
-[3.2.1 RSA Key Generation](#rsa-key-generation)
-
-[3.2.2 RSA Encryption](#rsa-encryption)
-
-[3.2.3 RSA Decryption](#rsa-decryption)
-
-[3.3 AES Cryptographic Function](#aes-cryptographic-function)
-
-[3.3.1 AES Key Generation](#aes-key-generation)
-
-[3.3.2 AES Encryption](#aes-encryption)
-
-[3.3.3 AES Decryption](#aes-decryption)
+  - [3.3.3 AES Decryption](#aes-decryption)
 
 [4. OpenSSL Engine](#openssl-engine)
 
-[4.1 ECC (Client/Server)](#ecc-clientserver)
+- [4.1 ECC (Client/Server)](#ecc-clientserver)
+  - [4.1.1 ECC (Client/Server) Function Description](#ecc-clientserver-function-description)
+  - [4.1.2 Create Server Certificate](#create-server-certificate)
+  - [4.1.3 Create Client Certificate](#create-client-certificate)
+  - [4.1.4 Start an OpenSSL Server](#start-an-openssl-server)
+  - [4.1.5 Start an OpenSSL Client](#start-an-openssl-client)
 
-[4.1.1 ECC (Client/Server) Function Description](#ecc-clientserver-function-description)
-
-[4.1.2 Create Server Certificate](#create-server-certificate)
-
-[4.1.3 Create Client Certificate](#create-client-certificate)
-
-[4.1.4 Start an OpenSSL Server](#start-an-openssl-server)
-
-[4.1.5 Start an OpenSSL Client](#start-an-openssl-client)
-
-[4.1.6 Secure data exchange between Server and Client](#secure-data-exchange-between-server-and-client)
-
-[4.2 Random Number Generator](#random-number-generator)
+  - [4.1.6 Secure data exchange between Server and Client](#secure-data-exchange-between-server-and-client)
+- [4.2 Random Number Generator](#random-number-generator)
 
 [5. Protected Update](#protected-update)
 
-[5.1 Protected Update Functions](#protected-update-functions)
-
-[5.1.1 Step 1 (Provisioning for All OIDs)](#step-1-provisioning-for-all-oids)
-
-[5.1.2 Step 2 (Generate Manifest)](#step-2-generate-manifest)
-
-[5.1.3 Step 3 (Update Target Object OID)](#step-3-update-the-metadata-for-target-oid)
-
-[5.1.4 Read Objects Metadata](#read-objects-metadata)
+- [5.1 Metadata Protected Update](#metadata-protected-update)
+  - [5.1.1 Metadata Protected Update Functions](#protected-update-functions)
+  - [5.1.2 Step 1 (Provisioning for All OIDs)](#step-1-provisioning-for-all-oids)
+  - [5.1.3 Step 2 (Generate Manifest)](#step-2-generate-manifest)
+  - [5.1.4 Step 3 (Update Target Object OID)](#step-3-update-the-metadata-for-target-oid)
+  - [5.1.5 Read Objects Metadata](#read-objects-metadata)
+  - [5.1.6 Reset Access Condition](#reset-access-condition)
+- [5.2 ECC Key Protected Update](#ecc-key-protected-update)
+  - [5.2.1 ECC Key Protected Update Functions](#ecc-key-protected-update-functions)
+  - [5.2.2 ECC Step 1 (Provisioning for All OIDs)](#ecc-step-1-provisioning-for-all-oids)
+  - [5.2.3 ECC Step 2 (Generate Manifest)](#ecc-step-2-generate-manifest)
+  - [5.2.4 Step 3 Update the ECC Key OID](#step-3-update-the-ecc-key-oid)
+  - [5.2.5 Read ECC Key Objects Metadata](#read-ecc-key-objects-metadata)
+  - [5.2.6 Reset ECC Key Access Condition](#reset-ecc-key-access-condition)
+- [5.3 AES Key Protected Update](#aes-key-protected-update)
+  - [5.3.1 AES Key Protected Update Functions](#aes-key-protected-update-functions)
+  - [5.3.2 AES Step 1 (Provisioning for All OIDs)](#aes-step-1-provisioning-for-all-oids)
+  - [5.3.3 AES Step 2 (Generate Manifest)](#aes-step-2-generate-manifest)
+  - [5.3.4 Step 3 Update the AES Key OID](#step-3-update-the-aes-key-oid)
+  - [5.3.5 Read AES Key Objects Metadata](#read-aes-key-objects-metadata)
+  - [5.3.6 Reset AES Key Access Condition](#reset-aes-key-access-condition)
+- [5.4 RSA Key Protected Update](#rsa-key-protected-update)
+  - [5.4.1 RSA Key Protected Update Functions](#RSA-key-protected-update-functions)
+  - [5.4.2 RSA Step 1 (Provisioning for All OIDs)](#rsa-step-1-provisioning-for-all-oids)
+  - [5.4.3 RSA Step 2 (Generate Manifest)](#rsa-step-2-generate-manifest)
+  - [5.4.4 Step 3 Update the RSA Key OID](#step-3-update-the-rsa-key-oid)
+  - [5.4.5 Read RSA Key Objects Metadata](#read-rsa-key-objects-metadata)
+  - [5.4.6 Reset RSA Key Access Condition](#reset-rsa-key-access-condition)
 
 [6. Secure Storage](#secure-storage)
 
-[6.1 Secure Storage Functions](#secure-storage-functions)
+- [6.1 Secure Storage Functions](#secure-storage-functions)
 
-[6.1.1 Provision HMAC Authentication](#provision-for-hmac-authentication)
+- [6.1.1 Provision HMAC Authentication](#provision-for-hmac-authentication)
+- [6.1.2 HMAC Verify and Write](#hmac-verify-and-write)
 
-[6.1.2 HMAC Verify and Write](#hmac-verify-and-write)
-
-[6.1.3 HMAC Verify and Read](#hmac-verify-and-read)
+- [6.1.3 HMAC Verify and Read](#hmac-verify-and-read)
 
 [7. Secured connection to AWS IoT core](#secured-connection-to-aws-iot-core)
 
-[7.1 Get started with AWS IoT Core](#get-started-with-aws-iot-core)
+- [7.1 Get started with AWS IoT Core](#get-started-with-aws-iot-core)
+- [7.2 Create device certificate and assign it to Thing with policy](#create-device-certificate-and-assign-it-to-thing-with-policy)
 
-[7.2 Create device certificate and assign it to Thing with policy](#create-device-certificate-and-assign-it-to-thing-with-policy)
-
-[7.3 Publish messages to AWS IoT core from the Raspberry Pi](#publish-messages-to-aws-iot-core-from-the-raspberry-pi)
+- [7.3 Publish messages to AWS IoT core from the Raspberry Pi](#publish-messages-to-aws-iot-core-from-the-raspberry-pi)
 
 
 
@@ -632,20 +633,28 @@ In this example, the numbers generated are 1024 bytes in base64 encoding.
 
 [^Figure 50]: RNG generated 
 
+
+
 # Protected Update
+
+This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentially Protected Update for metadata of target OID  and ECC/AES/RSA Key of target key OID by using the Trust Anchor and Secret installed in the OPTIGA™ Trust M
+
+![](images/Protected_Update/protected_update_main.png)
+
+[^ Figure 51 ]: OPTIGA Trust M Explorer Application: Protected Update Selection
+
+# Metadata Protected Update
 
 This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentially Protected Update for metadata of target OID by using the Trust Anchor and Secret installed in the OPTIGA™ Trust M.
 
 1. Select "Protected Update"
 2. Overview of the "Metadata Update" tab.
 
-![](images/Protected_Update/protected_updatetab.png)
+![](images/Protected_Update/metadata/protected_updatetab.png)
 
-[^Figure 51]: Overview of "Metadata Update" Screen
+[^Figure 52]: Overview of "Metadata Update" Screen
 
-
-
-## Protected Update Functions
+## Metadata Protected Update Functions
 
 Description of the Steps to do a successful Protected Update of Trust M objects
 
@@ -655,41 +664,55 @@ For Step 1, There are two options, Wipe target data and Keep Target data.  For W
 
 For both options, the "Trust anchor OID" is used to store the trust anchor and the data object type is set to Trust Anchor. The Protected Update Secret is written to the data object of "Secret OID " and the Data type will be set to UPDATESEC . The metadata of target OID will be set according during Provisioning. 
 
-Trust Anchor OID options: *0xE0E8 - 0XE0E9* , Target OID options: *0xE0E1 - 0xE0E3, 0xF1D5 - 0xF1DB*
+Trust Anchor OID options: *0xE0E8 - 0XE0E9* , Target OID options: *0xE0E1 - 0xE0E3, 0xF1D5 - 0xF1DB,0xE0F1 - 0xE0F3,0xE0FC - 0xE0FD*
 
 Secret OID options: *0xF1D0, 0xF1D4 - 0xF1DB*
 
-In this example we will Provision for all OIDs (Wipe TargetData). Select "Step1 (Wipe TargetData)" then select the "Trust anchor OID", "Target OID" and "Secret OID". 
+In this example we will Provision for all OIDs (Wipe TargetData). Select "Step1: Set Lcso=0x03(Init) ResetType=0x01(Keep TargetData)" and also the OIDs for "Trust anchor OID", "Target OID" and "Secret OID".
+
+Choose the trust_anchor_cert which will be stored inside the "Trust anchor OID"  and also the secret file which will be stored inside the "Secret OID"
 
 To Provision,  Select "Step1: Provisioning for All OIDs". 
 
-![](images/Protected_Update/Run_Step1.png)
+![](images/Protected_Update/metadata/Run_Step1.png)
 
-[^Figure 52]: Provision Data Objects (for Keep TargetData)
+[^Figure 53]: Provision Data Objects (for Keep TargetData)
 
-In this example we will Provision for all OIDs (Keep TargetData). Select "Step1 (Keep TargetData)" then select the "Trust anchor OID", "Target OID" and "Secret OID". To Provision,  Select "Step1: Provisioning for All OIDs". 
+After provisioning,  we can press "Read Objects Metadata" button to read out the the metadata for all the OIDs involved.
+
+![](images/Protected_Update/metadata/readmetadata.png)
+
+[ ^Figure 54  ]: Read objects Metadata after provisioning
+
+In this example, the *MUD* for target OID should be *int-0xE0E8&&Conf-0xF1D4* after provisioning. 
 
 ### Step 2 (Generate Manifest)
 
 Generate the manifest and fragment for the metadata Protected Update.
 
-To generate the Manifest and fragment, Enter the "payload version" and select the "metadata" Select the "Step2 : Generate Manifest" button.  In this example the "payload version" is set to 3 and the payload_type is set to metadata and metadata used is the metadata.txt file. 
+To generate the Manifest and fragment, Enter the "payload version" 
 
-The Manifest and Fragment Generation are based on all the input inside the red box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
+Note: the number for payload version must be larger than the current version number.
 
-![](images/Protected_Update/Step2.png)
+Choose the trust_anchor_privkey (Corresponding to trust_anchor_cert)and also the secret file (same with the secret stored inside  "Secret OID")
 
-[^Figure 53]: Manifest generated 
+Select the "Step2 : Generate Manifest" button.  In this example the "payload version" is set to 1 and metadata used is the metadata.txt file. 
+
+The Manifest and Fragment Generation are based on all the input inside the red box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) .
+
+![](images/Protected_Update/metadata/Step2.png)
+
+[^Figure 55]: Manifest and Fragment generated 
 
 ### Step 3 Update the metadata for Target OID
 
-Updates the metadata for the target OID
+Protected Updates for the metadata of the target OID
 
 To Update the metadata of the target OID, Select "Step3: Update Trust M Objects". 
 
-![](images/Protected_Update/Step3.png) 
+![](images/Protected_Update/metadata/Step3.png) 
 
-[^Figure 54]: Metadata protected update 
+[^Figure 56]: Metadata protected update 
 
 ### Read Objects Metadata
 
@@ -697,9 +720,276 @@ Displays the metadata of the "Trust Anchor OID", "Target OID" and "Secret OID".
 
 To read out metadata , select "Read Objects Metadata".
 
-![](images/Protected_Update/Object_metadata.png)
+![](images/Protected_Update/metadata/Object_metadata.png)
 
-[^Figure 55]: Objects metadata displayed
+[^Figure 57]: Objects metadata displayed
+
+After successful metadata protected update, the Lcs0 will be brought back to 0x01, and version will be increased to 0001 from 0000.
+
+### Reset Access Condition
+
+Reset the Access Condition of the Target OID to *MUD:NEV* so that the Target OID is able to be back to initial MUD state for use in other features after a successful Protected Update and not locked. 
+
+![](images/Protected_Update/metadata/reset_access.png)
+
+[^Figure 58]: Target OID access condition reset successfully
+
+# ECC Key Protected Update
+
+This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentially Protected Update for ECC Key OIDs by using the Trust Anchor and Secret installed in the OPTIGA™ Trust M.
+
+1. Select "ECC Key Update"
+2. Overview of the "ECC Key Update" tab.
+
+![](images/Protected_Update/ecc/eccmainscreen.png)
+
+[^Figure 59]: ECC key Protected Update Screen
+
+## ECC Key Protected Update Functions
+
+Description of the Steps to do a successful Protected Update of OPTIGA™ Trust M ECC Key Data Objects.
+
+### ECC: Step 1 (Provisioning for All OIDs)
+
+For Step 1, the "Trust anchor OID" is used to store the trust anchor and the data object type is set to Trust Anchor. The Protected Update Secret is written to the data object of "Secret OID " and the Data type will be set to UPDATESEC . The metadata of target OID will be set according during Provisioning. 
+
+Trust Anchor OID options: *0xE0E8 - 0XE0E9* , Target OID options: *0xE0F1 - 0xE0F3,*
+
+Secret OID options: *0xF1D0, 0xF1D4 - 0xF1DB*
+
+In this example we will Provision for all OIDs. Select the "Trust anchor OID", "Target OID", "Secret OID". Then select the secret file to be used to store into the Secret OID and the Trust anchor Cert file to be used to store into trust anchor OID by clicking the respective textboxes. 
+
+![](images/Protected_Update/ecc/fileopen.png)
+
+[^Figure 60]:Selection of Trust Anchor Certificate and Input Secret file
+
+To Provision,  Select "Step1: Provisioning for All OIDs". 
+
+![](images/Protected_Update/ecc/provision.png)
+
+[^Figure 61]:Provisioning for ECC key Protected Update
+
+In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
+
+### ECC: Step 2 (Generate Manifest and Fragment)
+
+Generate the manifest and fragment for the ECC key Protected Update.
+
+To generate the Manifest and fragment, Enter the "payload version" and select the "key_data" you want to store into OPTIGA™ Trust M.
+
+Choose the trust_anchor_privkey (Corresponding to trust_anchor_cert)and also the secret file (same with the secret stored inside  "Secret OID")
+
+Select the "Step2 : Generate Manifest" button.  
+
+In this example the "payload version" is set to 1 and the payload_type is  key and key data used is the ecc_secp256r1_test.pem file and the private key used is sample_ec_256_priv.pem file and the secret used is secret.txt file.
+
+The Manifest and Fragment Generation are based on all the input inside the box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
+
+![](images/Protected_Update/ecc/manifest.png)
+
+[^Figure 62]: ECC Key Manifest and Fragment generated 
+
+### ECC: Step 3 Update the ECC Key OID
+
+Protected Updates the ECC key data into the target OID
+
+To Update the ECC key into target OID, Select "Step3: Update Trust M Objects". 
+
+![](images/Protected_Update/ecc/update.png)
+
+[^Figure 63]:ECC Key Protected Update successfully
+
+### Read ECC key Objects Metadata 
+
+Displays the metadata of the "Trust Anchor OID", "Target OID" and "Secret OID".
+
+To read out metadata , select "Read Objects Metadata".
+
+![](images/Protected_Update/ecc/metadata.png)
+
+[^Figure 64]:Read out object metadata
+
+### Reset ECC Key Access Condition
+
+Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that the Target OID will be accessible for use in other features after a successful Protected Update and not locked.
+
+![](images/Protected_Update/ecc/reset.png)
+
+[^Figure 65]:ECC Key OID access condition reset successfully
+
+# AES Key Protected Update
+
+This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentially Protected Update for AES Key OIDs by using the Trust Anchor and Secret installed in the OPTIGA™ Trust M.
+
+1. Select "AES Key Update"
+
+2. Overview of the "AES Key Update" tab. 
+
+
+![](images/Protected_Update/aes/aesscreen.png)
+
+[^Figure 66]:AES Key Protected Update Screen
+
+## AES Key Protected Update Functions
+
+Description of the Steps to do a successful Protected Update of OPTIGA™ Trust M AES Key Objects.
+
+### AES: Step 1 (Provisioning for All OIDs)
+
+For Step 1, the "Trust anchor OID" is used to store the trust anchor and the data object type is set to Trust Anchor. The Protected Update Secret is written to the data object of "Secret OID " and the Data type will be set to UPDATESEC . The metadata of target OID will be set according during Provisioning. 
+
+Trust Anchor OID options: *0xE0E8 - 0XE0E9* , Target OID options: *0xE200*
+
+Secret OID options: *0xF1D0, 0xF1D4 - 0xF1DB*
+
+In this example we will Provision for all OIDs. Select the "Trust anchor OID", "Target OID", "Secret OID". Then select the secret file to be used to store into the Secret OID and the Trust anchor Cert file to be used to store into Trust anchor OID by clicking the respective textboxes. 
+
+![](images/Protected_Update/aes/fileopen.png)
+
+[^Figure 67]:Selection of Trust Anchor Certificate and Input Secret file
+
+To Provision,  Select "Step1: Provisioning for All OIDs".
+
+![](images/Protected_Update/aes/provision.png) 
+
+[^Figure 68]:Provisioning for AES key Protected Update
+
+In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
+
+### AES: Step 2 (Generate Manifest and Fragment)
+
+Generate the manifest and fragment for the AES key Protected Update.
+
+To generate the Manifest and fragment, Enter the "payload version" and select the "key_data" you want to update into AES key slot.
+
+Choose the trust_anchor_privkey (Corresponding to trust_anchor_cert)and also the secret file (same with the secret stored inside  "Secret OID")
+
+Select the "Step2 : Generate Manifest" button.  In this example the "payload version" is set to 1 and the payload_type is  key and key data used is the aes_128_test.txt file and the secret used is secret.txt file.
+
+The Manifest and Fragment Generation are based on all the input inside the red box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
+
+
+
+![](images/Protected_Update/aes/manifest.png)
+
+[^Figure 69]: AES Manifest and Fragment generated 
+
+### AES: Step 3 Update the AES Key OID
+
+Updates the AES key for the AES Key OID
+
+To Update the AES key for the target OID, Select "Step3: Update Trust M Objects". 
+
+![](images/Protected_Update/aes/update.png)
+
+[^Figure 70]:AES Key Protected Update successfully
+
+### Read AES Key Objects Metadata
+
+Displays the metadata of the "Trust Anchor OID", "Target OID" and "Secret OID".
+
+To read out metadata , select "Read Objects Metadata".
+
+![](images/Protected_Update/aes/metadata.png)
+
+[^Figure 71]:Read out objects metadata
+
+### Reset AES Key Access Condition
+
+Resets the Access Condition  *Change* of the Target OID to *LCS <0x07* so that the Target OID will be accessible for use in other features after a successful Protected Update and not locked.
+
+![](images/Protected_Update/aes/reset.png)
+
+[^Figure 72]:AES Target OID access condition reset successfully
+
+# RSA Key Protected Update
+
+This section shows the use of the  OPTIGA™ Trust M Integrity and Confidential Protected Update for RSA Key OIDs by using the Trust Anchor and Secret installed in the OPTIGA™ Trust M.
+
+1. Select "RSA Key Update"
+2. Overview of the "RSA Key Update" tab.
+
+![](images/Protected_Update/rsa/rsascreen.png)
+
+[^Figure 73]:RSA Key Protected Update screen
+
+## RSA Key Protected Update Functions
+
+Description of the Steps to do a successful Protected Update of OPTIGA™ Trust M RSA Key Objects.
+
+### RSA: Step 1 (Provisioning for All OIDs)
+
+For Step 1, the "Trust anchor OID" is used to store the trust anchor and the data object type is set to Trust Anchor. The Protected Update Secret is written to the data object of "Secret OID " and the Data type will be set to UPDATESEC . The metadata of target OID will be set according during Provisioning. 
+
+Trust Anchor OID options: *0xE0E8 - 0XE0E9* , Target OID options: *0xE0FC - 0xE0FD,*
+
+Secret OID options: *0xF1D0, 0xF1D4 - 0xF1DB*
+
+In this example we will Provision for all OIDs. Select the "Trust anchor OID", "Target OID", "Secret OID". Then select the secret file to be used to provision the Secret OID and the Trust anchor Cert file to be used by clicking the respective textboxes. 
+
+![](images/Protected_Update/rsa/fileopen.png)
+
+[^Figure 74]:Selection of Trust Anchor Certificate and Input Secret file
+
+To Provision,  Select "Step1: Provisioning for All OIDs". 
+
+
+
+![](images/Protected_Update/rsa/provision.png)
+
+[^Figure 75]:Provisioning for RSA Key Protected Update 
+
+In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
+
+### RSA: Step 2 (Generate Manifest and Fragment)
+
+Generate the manifest and fragment for the RSA key Protected Update.
+
+To generate the Manifest and fragment, Enter the "payload version" and select the "keydata" you want to import into OPTIGA™ Trust M
+
+Choose the trust_anchor_privkey (Corresponding to trust_anchor_cert)and also the secret file (same with the secret stored inside  "Secret OID")
+
+Select the "Step2 : Generate Manifest" button.  In this example the "payload version" is set to 1 and the payload_type is set to key and key data used is the rsa_1024_test.pem file and the secret used is secret.txt file. 
+
+The Manifest and Fragment Generation are based on all the input inside the red box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
+
+
+
+![](images/Protected_Update/rsa/manifest.png)
+
+[^Figure 76]: RSA Manifest generated 
+
+### RSA: Step 3 Update the RSA Key OID
+
+Updates the RSA key for the target OID
+
+To Update the metadata of the target OID, Select "Step3: Update Trust M Objects". 
+
+![](images/Protected_Update/rsa/update.png)
+
+[^Figure 77]:RSA Key Protected Update successful
+
+### Read RSA Key Objects Metadata
+
+Displays the metadata of the "Trust Anchor OID", "Target OID" and "Secret OID".
+
+To read out metadata , select "Read Objects Metadata".
+
+![](images/Protected_Update/rsa/metadata.png)
+
+[^Figure 78]:Read Out object metadata
+
+### Reset RSA Key Access Condition
+
+Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that the Target OID will be accessible for use in other features after a successful Protected Update and not locked. 
+
+
+
+![](images/Protected_Update/rsa/reset.png)
+
+[^Figure 79]:RSA key Target OID access condition is reset successfully
+
+
 
 # Secure Storage
 
@@ -711,7 +1001,7 @@ Secure Storage Functions Description
 
 ![](images/Secure_Storage/Secure_Storage_Functions.png)
 
-[^Figure 56]: Secure Storage functions described
+[^Figure 80]: Secure Storage functions described
 
 ### Provision For HMAC Authentication
 
@@ -727,7 +1017,7 @@ To Provision , Select the "Target OID" and "Secret OID". Then select "Provision 
 
 ![](images/Secure_Storage/Provision.png)
 
-[^Figure 57]: Provisioning HMAC authentication storage
+[^Figure 81]: Provisioning HMAC authentication storage
 
 ### HMAC Verify and Write
 
@@ -739,7 +1029,7 @@ To write the data into the "Target OID" , Select the "Target OID" and "Secret OI
 
 ![](images/Secure_Storage/Hmac_verify_write.png)
 
-[^Figure 58]: Verify and Write to Target OID 
+[^Figure 82]: Verify and Write to Target OID 
 
 ### HMAC Verify and Read
 
@@ -751,7 +1041,7 @@ To readout the data in the Target OID, Select the "Target OID" and "Secret OID",
 
 ![](images/Secure_Storage/Hmac_verify_datareadout.png)
 
-[^Figure 59]: Verify and read Target OID
+[^Figure 83]: Verify and read Target OID
 
 ### Read Objects Metadata
 
@@ -761,7 +1051,7 @@ To read out metadata , select "Read Object Metadata".
 
 ![](images/Secure_Storage/metadata.png)
 
-[^Figure 60]: Read Objects metadata displayed
+[^Figure 84]: Read Objects metadata displayed
 
 # Secured connection to AWS IoT core
 
@@ -781,11 +1071,11 @@ Go back to the main screen and select "AWS:IOT Core".
 
 ![](images/AWSIOT/MainScreen.png)
 
-[^Figure 61 ]: OPTIGA Trust M Explorer Application: AWS:IOT Core Selection
+[^Figure 85]: OPTIGA Trust M Explorer Application: AWS:IOT Core Selection
 
 ![](images/AWSIOT/AWS_Screen.png)
 
-[^Figure 62]: AWS:IOT Core Main Screen
+[^Figure 86]: AWS:IOT Core Main Screen
 
 ## Get started with AWS IoT Core
 
@@ -793,91 +1083,91 @@ To generate "Access Key ID" , "Secret Access Key" and "Session Token"  log in to
 
 ![](images/AWSIOT/AWS_Signin.png)
 
-[^Figure 63]: AWS IOT Login
+[^Figure 87]: AWS IOT Login
 
 Next, go to your credentials.
 
 ![](images/AWSIOT/security_cred.jpg)
 
-[^Figure 64]: AWS IOT Security Credentials
+[^Figure 88]: AWS IOT Security Credentials
 
 Download and retrieve your security credentials.
 
 ![](images/AWSIOT/download.png)
 
-[^Figure 65 ]: AWS IOT Download Security Credentials
+[^Figure 89]: AWS IOT Download Security Credentials
 
-![](images/AWSIOT/Credentials.png)
+![](images/AWSIOT/Credentials1.png)
 
-[^Figure 66]: Security_Credentials.CSV
+[^Figure 90]: Security_Credentials.CSV
 
 For AWS SSO user, Go to Your own login Page through SSO. For example,
 
 ![](images/AWSIOT/AWS_Account.png)
 
-[^Figure 67]: IFXCloudUserAdministratorAccess Page 
+[^Figure 91]: IFXCloudUserAdministratorAccess Page 
 
 Click *Command line or programmatic access* button to copy out the AWS_access_key_id,AWS_secret_access_key and AWS_session_token.
 
 
 
-![](images/AWSIOT/Credentials1.png)
+![](images/AWSIOT/Credentials.png)
 
-[^Figure 68]:AWS Access credentials
+[^Figure 92]:AWS Access credentials
 
 To retrieve Endpoint, go to "Services" and select "IOT Core".
 
 ![](images/AWSIOT/Services_iotcore.jpg)
 
-[^Figure 69]: AWS IOT Core
+[^Figure 93]: AWS IOT Core
 
 Select "Settings" at the left side of the webbrowser.
 
 ![](images/AWSIOT/IOT_core_settings.jpg)
 
-[^Figure 70]: AWS IOT Core Settings
+[^Figure 94]: AWS IOT Core Settings
 
 At "Custom Endpoint", copy the endpoint.
 
 ![](images/AWSIOT/endpoint_aws.png)
 
-[^Figure 71]: AWS IOT Core Settings Endpoint
+[^Figure 95]: AWS IOT Core Settings Endpoint
 
 Input the "Access Key ID" , "Secret Access Key" and "Session Token" and choose the correct server location
 
 ![](images/AWSIOT/Credentials_entered.png)
 
-[^Figure  72]: AWS IOT Configuration
+[^Figure  96]: AWS IOT Configuration
 
 Select "Set AWS credentials".
 
 ![](images/AWSIOT/Credentials_entered2.png)
 
-[^Figure 73]: AWS IOT Set AWS Credentials Selection
+[^Figure 97]: AWS IOT Set AWS Credentials Selection
 
 Next, set Endpoint by selecting "Open config file".
 
 ![](images/AWSIOT/AWS_Main2.png)
 
-[^Figure 74]: AWS IOT Open Config File Selection
+[^Figure 98]: AWS IOT Open Config File Selection
 
 Paste the endpoint  from your AWS account and save.
 
 ![](images/AWSIOT/Endpoint_editing.png)
 
-[^Figure 75]: AWS IOT Open Config File
+[^Figure 99]: AWS IOT Open Config File
 
 **Skip this step if a policy file has already been created.** First, select "Open policy file", make no changes and save. This is a one time setting only.
 
 ![](images/AWSIOT/AWS_Create_Policy.png)
 
-[^Figure 76]: AWS IOT Open Policy File Selection
+[^Figure 100]: AWS IOT Open Policy File Selection
 
 Select "Create Policy (from policy file)". Once policy has been created, there will be no need to do this step again.
 
 ![](images/AWSIOT/policyfille.png)
 
-[^Figure 77]: AWS IOT Policy File
+[^Figure 101]: AWS IOT Policy File
 
 ## Create device certificate and assign it to Thing with policy
 
@@ -885,7 +1175,7 @@ Once configuration is done, to provision the certificate, select "1-click provis
 
 ![](images/AWSIOT/AWS_Main3.png)
 
-[^Figure 78]:  AWS IOT 1-click provision Selection
+[^Figure 102]:  AWS IOT 1-click provision Selection
 
 The following code will be run for Step 1 to Step 6.
 
@@ -911,17 +1201,17 @@ Step 6: The policy is attached to the received certificate
 (/'/>/>/>/', u/'aws iot attach-principal-policy --policy-name $policyname --principal $certificateArn')
 ```
 
-1-click provision is successful if no error message is seen and certificate is successfully attached as shown in the Figure 79 below. Data can now be sent to AWS web-browser.
+1-click provision is successful if no error message is seen and certificate is successfully attached as shown in the Figure 103 below. Data can now be sent to AWS web-browser.
 
 ![](images/AWSIOT/extra.png)
 
-[^Figure 79]: AWS IOT 1-click provision Succeeded
+[^Figure 103]: AWS IOT 1-click provision Succeeded
 
 To view the certificate details, go to AWS IoT / Security / Certificates
 
 ![](images/AWSIOT/aws_cert.png)
 
-[^Figure 80]: Certificate generated and registered to AWS IOT core
+[^Figure 104]: Certificate generated and registered to AWS IOT core
 
 ## Publish messages to AWS IoT core from the Raspberry Pi
 
@@ -929,16 +1219,16 @@ After performing all the necessary preparation steps from Step 1 to Step 6, we w
 
 ![](images/AWSIOT/Subscribe.png)
 
-[^Figure 81]: AWS IOT Test
+[^Figure 105]: AWS IOT Test
 
 We can proceed with Step 7. On the OPTIGA™ Trust M Explorer AWS IOT, input the correct Topic and the intended Data. Then, select "Start Publishing". The device can continue publishing even after reboot and no further configuration will be required.
 
 ![](images/AWSIOT/publish.png)
 
-[^Figure 82]: AWS IOT Start Publishing Selection
+[^Figure 106]: AWS IOT Start Publishing Selection
 
-On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 83 . This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
+On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 107 . This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
 
 ![](images/AWSIOT/publiushed.png)
 
-[^Figure 83]: AWS IOT Web-Browser Published
+[^Figure 107]: AWS IOT Web-Browser Published
