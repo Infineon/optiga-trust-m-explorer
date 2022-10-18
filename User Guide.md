@@ -341,7 +341,7 @@ ECC type is the ECC Key type to be generated. Key slot is the OID that will be u
 
 ECC Types : *ECC 256, ECC 384, ECC 521*, *Brainpool 256, Brainpool 384 ,Brainpool 512* ,  Key Slot : *0xE0F0 - 0xE0F3*  
 
-To generate ECC key pair, select the ECC type and Key slot. Then select "Generate Key"  In this Example, "ECC type: 256" and "Key slot: E0F1"  are used. The metadata of the private key slot and public key slot will be displayed . 
+To generate ECC key pair, select the ECC type,Key slot and Key_usage. Then select "Generate Key"  In this Example, "*ECC type: 256*" ,"*Key slot: E0F1*" and "*key_usage:Auth/Sign*" are used. The public Key will be stored into corresponding OID which has been displayed in the GUI. 
 
 ![](images/Crypto/ECC/ECC_KeyGen.png)
 
@@ -401,7 +401,7 @@ RSA Algo is the RSA Key algorithm to be used to generate the keypair. Key slot i
 
 RSA Algo : *RSA 1024, RSA 2048* . Key Slot : *0xE0FC, 0xE0FD*
 
-To generate RSA keypair, select the RSA Algo and Key slot. Then select "Generate RSA keypair" . In this example RSA Algo: *RSA 1024* and key slot: *0xE0FC* are used
+To generate RSA keypair, select the RSA Algo, Key slot and Key_usage. Then select "Generate RSA keypair" . In this example RSA Algo: *RSA 1024*, key slot: *0xE0FC* and key_usage:Auth/Enc/Sign are used.The public Key will be stored into corresponding OID which has been displayed in the GUI. 
 
 ![](images/Crypto/RSA/RSA_Generation.png)
 
@@ -469,9 +469,9 @@ AES Functions Description
 
 Generates OPTIGA™ Trust M AES symmetric key.
 
-AES Key is to select the AES key type to be generated.  AES Key:  *AES 128, AES 192, AES 256*
+AES Key is to select the AES key type to be generated.  Supported AES Key:  *AES 128, AES 192, AES 256*  Key_usage is  to select the usage for the generated AES key.
 
-To generate AES symmetric key, Select the AES Key, then select "Generate AES key".
+To generate AES symmetric key, Select the AES Key and Key_usage.  then select "Generate AES key".
 
 ![](images/Crypto/AES/Key_Generation.png)
 
