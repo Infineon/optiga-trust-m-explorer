@@ -17,6 +17,7 @@ class Tab_ECC(wx.Panel):
         
         keyslot_list = ['E0F0', 'E0F1','E0F2','E0F3']
         ecctype_list = ['ECC256', 'ECC384','ECC521','BP256','BP384','BP512']
+        keyusage1 = ['Auth/Sign','Sign','Sign/Key Agree']
         
         buttonfont = wx.Font(14, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         
@@ -26,7 +27,7 @@ class Tab_ECC(wx.Panel):
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
-        gdsizer1 = wx.GridSizer(rows=1, cols=1, vgap=10, hgap=10)
+        gdsizer1 = wx.GridSizer(rows=1, cols=2, vgap=10, hgap=10)
         gdsizer2 = wx.GridSizer(rows=1, cols=2, vgap=10, hgap=10)
         gdsizer3 = wx.GridSizer(rows=3, cols=1, vgap=30, hgap=10)
 
@@ -36,6 +37,7 @@ class Tab_ECC(wx.Panel):
         ecctypesizer = wx.BoxSizer(wx.VERTICAL)
         keyslotsizer = wx.BoxSizer(wx.VERTICAL)
         pubkeysizer = wx.BoxSizer(wx.VERTICAL)
+        keyusage = wx.BoxSizer(wx.VERTICAL)
         
         
         
@@ -43,6 +45,10 @@ class Tab_ECC(wx.Panel):
         text_ecctype = wx.StaticText(self, 0, "ECC Type:")
         self.ecctype = wx.ComboBox(self, 1, choices=ecctype_list, style=wx.CB_READONLY,  size = wx.Size(170, 30))
         self.ecctype.SetFont(textctrlfont)
+        
+        text_keyusage = wx.StaticText(self, 0, "Key_usage:")
+        self.keyusage = wx.ComboBox(self, 1, choices=keyusage1, style=wx.CB_READONLY,  size = wx.Size(170, 30))
+        self.keyusage.SetFont(textctrlfont)
         
         text_keyslot = wx.StaticText(self, 0, "Key Slot:")
         self.keyslot = wx.ComboBox(self, 1, choices=keyslot_list, style=wx.CB_READONLY,  size = wx.Size(170, 30))
@@ -94,7 +100,7 @@ class Tab_ECC(wx.Panel):
 
         # Add sizers to midsizer
         midsizer.AddSpacer(30)
-        midsizer.Add(gdsizer1, 0, wx.ALIGN_LEFT | wx.ALL, 10)
+        midsizer.Add(gdsizer1, 0, wx.EXPAND | wx.ALL, 10)
         midsizer.AddSpacer(30)
         midsizer.Add(gdsizer2, 0, wx.EXPAND | wx.ALL, 10)
         midsizer.AddSpacer(30)
@@ -122,7 +128,7 @@ class Tab_ECC(wx.Panel):
         #add sizers to gdsizer1
         gdsizer1.AddMany([
                 (ecctypesizer, 0, wx.EXPAND),
-                
+                (keyusage, 0, wx.EXPAND),
         ])
         
         
@@ -138,11 +144,13 @@ class Tab_ECC(wx.Panel):
         pubkeysizer.Add(text_pub_key)
         pubkeysizer.Add(self.pub_key)
 
-       
+        keyusage.Add(text_keyusage)
+        keyusage.Add(self.keyusage)
         
         # Set Default inputs for Text Boxes      
         self.ecctype.SetSelection(0)
         self.keyslot.SetSelection(0)
+        self.keyusage.SetSelection(0)
 
         # attach objects to the sizer
         # declare and bind events
@@ -247,10 +255,28 @@ class Tab_ECC(wx.Panel):
             elif (self.keyslot.GetSelection() == 3):
             
                 self.pub_key.Clear()
-                self.pub_key.AppendText("F1D3")
-                
+                self.pub_key.AppendText("F1D3")            
     
     def OnGenKey(self, evt):
+        
+        #key_usage = self.OnKeyUsage()
+       # print(key_usage)
+        
+        if (self.keyusage.GetSelection() == 0):
+            key_usage = "0x11"
+            
+              
+        
+        elif (self.keyusage.GetSelection() == 1):
+            key_usage = "0x10"
+        
+            
+        
+        elif (self.keyusage.GetSelection() == 2):
+            key_usage = "0x30"
+        
+        
+        print(key_usage)
         
         # for ecctype 256yes ma'am -
         if (self.ecctype.GetSelection() == 0):
@@ -260,10 +286,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f1",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x03",
                  "-o", "test_e0f1_pub.pem",
-                 "-s", "oxf1d1" ,
+                 "-s", 
                  
                  ])
                  
@@ -288,10 +314,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f2",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x03",
                  "-o", "test_e0f2_pub.pem",
-                 "-s", "oxf1d2" ,     
+                 "-s",      
               ])
                  
                  command_output = exec_cmd.execCLI([
@@ -312,10 +338,10 @@ class Tab_ECC(wx.Panel):
                 output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f3",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x03",
                  "-o", "test_e0f3_pub.pem",
-                 "-s", "oxf1d3" ,
+                 "-s", 
               ])
                 command_output = exec_cmd.execCLI([
                  "cat", "test_e0f3_pub.pem"
@@ -346,10 +372,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f1",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x04",
                  "-o", "test_e0f1_pub_384.pem",
-                 "-s", "oxf1d1" ,
+                 "-s", 
                ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f1_pub_384.pem",
@@ -369,10 +395,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f2",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x04",
                  "-o", "test_e0f2_pub_384.pem",
-                 "-s", "oxf1d2" ,     
+                 "-s",     
               ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f2_pub_384.pem",
@@ -392,10 +418,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f3",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x04",
                  "-o", "test_e0f3_pub_384.pem",
-                 "-s", "oxf1d3" ,
+                 "-s", 
               ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f3_pub_384.pem",
@@ -423,7 +449,7 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f1",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x05",
                  "-o", "test_e0f1_pub_521.pem", 
                ])
@@ -441,7 +467,7 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f2",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x05",
                  "-o", "test_e0f2_pub_521.pem",     
               ])
@@ -459,7 +485,7 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f3",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x05",
                  "-o", "test_e0f3_pub_521.pem",
               ])
@@ -483,10 +509,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f1",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x13",
                  "-o", "test_e0f1_pub_BP256.pem",
-                 "-s", "oxf1d1" ,
+                 "-s", 
                ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f1_pub_BP256.pem",
@@ -506,10 +532,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f2",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x13",
                  "-o", "test_e0f2_pub_BP256.pem",
-                 "-s", "oxf1d2" ,     
+                 "-s",      
               ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f2_pub_BP256.pem",
@@ -529,10 +555,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f3",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x13",
                  "-o", "test_e0f3_pub_BP256.pem",
-                 "-s", "oxf1d3" ,
+                 "-s", 
               ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f3_pub_BP256.pem",
@@ -560,10 +586,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f1",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x15",
                  "-o", "test_e0f1_pub_BP384.pem",
-                 "-s", "oxf1d1" ,
+                 "-s", 
                ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f1_pub_BP384.pem",
@@ -583,10 +609,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f2",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x15",
                  "-o", "test_e0f2_pub_BP384.pem",
-                 "-s", "oxf1d2" ,     
+                 "-s",     
               ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f2_pub_BP384.pem",
@@ -606,10 +632,10 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f3",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x15",
                  "-o", "test_e0f3_pub_BP384.pem",
-                 "-s", "oxf1d3" ,
+                 "-s", 
               ])
                  command_output = exec_cmd.execCLI([
                  "cat", "test_e0f3_pub_BP384.pem",
@@ -637,7 +663,7 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f1",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x16",
                  "-o", "test_e0f1_pub_BP512.pem",
                ])
@@ -654,7 +680,7 @@ class Tab_ECC(wx.Panel):
                  output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f2",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x16",
                  "-o", "test_e0f2_pub_BP512.pem",     
               ])
@@ -672,7 +698,7 @@ class Tab_ECC(wx.Panel):
                 output_message = exec_cmd.execCLI([
                  config.EXEPATH + "/bin/trustm_ecc_keygen",
                  "-g", "0xe0f3",
-                 "-t", "0x13",
+                 "-t", key_usage,
                  "-k", "0x16",
                  "-o", "test_e0f3_pub_BP512.pem",     
               ])
@@ -1094,6 +1120,7 @@ class Tab_RSA(wx.Panel):
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
         
+        gdsizer1 = wx.GridSizer(rows=1, cols=2, vgap=10, hgap=10)
         gdsizer2 = wx.GridSizer(rows=1, cols=2, vgap=10, hgap=10)
         gdsizer3 = wx.GridSizer(rows=5, cols=1, vgap=20, hgap=10)
         
@@ -1105,6 +1132,10 @@ class Tab_RSA(wx.Panel):
         # declare sizers that will be in the grid1
         rsatypesizer = wx.BoxSizer(wx.VERTICAL)
         keyslotsizer = wx.BoxSizer(wx.VERTICAL)
+        keyusagesizer = wx.BoxSizer(wx.VERTICAL)
+        pubkeysizer = wx.BoxSizer(wx.VERTICAL)
+        
+        keyusage = ['Auth','Enc','Sign','Auth/Enc/Sign','Key Agree']
        
         
         
@@ -1114,9 +1145,17 @@ class Tab_RSA(wx.Panel):
         self.rsatype = wx.ComboBox(self, 1, choices=rsatype_list, style=wx.CB_READONLY,  size = wx.Size(170, 30))
         self.rsatype.SetFont(textctrlfont)
         
+        text_keyusage = wx.StaticText(self, 0, "Key_usage:")
+        self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(170, 30))
+        self.keyusage.SetFont(textctrlfont)
+        
         text_keyslot = wx.StaticText(self, 0, "Key Slot:")
         self.keyslot = wx.ComboBox(self, 1, choices=keyslot_list, style=wx.CB_READONLY,  size = wx.Size(170, 30))
         self.keyslot.SetFont(textctrlfont)
+        
+        text_pub_key = wx.StaticText(self, 0, "Pubkey OID:")
+        self.pub_key = wx.TextCtrl(self, 1 , size = wx.Size(170, 30) ,style=wx.TE_READONLY)
+        self.pub_key.SetFont(textctrlfont)
         
         inputtext = wx.StaticText(self, -1, label="Data Input:")
         self.input_display = wx.TextCtrl(self,value="Hello World")
@@ -1162,16 +1201,16 @@ class Tab_RSA(wx.Panel):
 
         # Add sizers to midsizer
         midsizer.AddSpacer(10)
+        midsizer.AddSpacer(10)
         
-        
-        midsizer.AddSpacer(30)
+        midsizer.Add(gdsizer1, 0, wx.EXPAND | wx.ALL, 10)
         midsizer.Add(gdsizer2, 0, wx.EXPAND | wx.ALL, 10)
         
         
-        midsizer.AddSpacer(30)
+        midsizer.AddSpacer(10)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(60)
+        midsizer.AddSpacer(40)
         midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
         
         
@@ -1186,12 +1225,15 @@ class Tab_RSA(wx.Panel):
 
        ])
         
-        gdsizer2.AddMany([
-                (keyslotsizer, 0, wx.EXPAND),
+        gdsizer1.AddMany([
+                
                 (rsatypesizer, 0, wx.EXPAND),
-
+                (keyusagesizer, 0, wx.EXPAND),
         ])
                          
+        gdsizer2.Add(keyslotsizer, 0, wx.EXPAND)
+        gdsizer2.Add(pubkeysizer, 0, wx.EXPAND)
+        
         
         #add objects into sizers in gdsizer2
         keyslotsizer.Add(text_keyslot)
@@ -1199,15 +1241,22 @@ class Tab_RSA(wx.Panel):
         
         rsatypesizer.Add(text_rsatype)
         rsatypesizer.Add(self.rsatype)
-
-       
         
+        keyusagesizer.Add(text_keyusage)
+        keyusagesizer.Add(self.keyusage)
+        
+        pubkeysizer.Add(text_pub_key)
+        pubkeysizer.Add(self.pub_key)
+
+    
         # Set Default inputs for Text Boxes      
         self.rsatype.SetSelection(0)
         self.keyslot.SetSelection(0)
+        self.keyusage.SetSelection(3)
      
         #bind events
         self.button_genkey.Bind(wx.EVT_BUTTON, self.OnGenkey)
+        self.keyslot.Bind(wx.EVT_COMBOBOX, self.OnKeyslot)
         button_rsaenc.Bind(wx.EVT_BUTTON, self.OnEnc)
         button_rsadec.Bind(wx.EVT_BUTTON, self.OnDec1)
         button_rsasign.Bind(wx.EVT_BUTTON, self.OnSign)
@@ -1230,6 +1279,49 @@ class Tab_RSA(wx.Panel):
 
         self.SetSizer(mainsizer)
         mainsizer.Fit(self)
+        
+        if (self.keyslot.GetSelection() == 0):
+            
+            self.pub_key.Clear()
+            self.pub_key.AppendText("F1E0")
+      
+    def OnKeyslot(self, evt):
+        
+        if (self.keyslot.GetSelection() == 0):
+            self.pub_key.Clear()
+            self.pub_key.AppendText("F1E0")
+        
+        elif (self.keyslot.GetSelection() == 1):
+            self.pub_key.Clear()
+            self.pub_key.AppendText("F1E1")
+      
+      
+    def OnKeyUsage(self):
+        
+        if (self.keyusage.GetSelection() == 0):
+            value = "0x01"
+            
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 1):
+            value = "0x02"
+         
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 2):
+            value = "0x10"
+        
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 3):
+            value = "0x13"
+        
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 4):
+            value = "0x20"
+        
+            return(value)
     
     def OnGenkey(self, evt):
         self.text_display.AppendText("Generating Trust M RSA key pair...")
@@ -1237,7 +1329,11 @@ class Tab_RSA(wx.Panel):
     
     # note: this function/command runs for quite a while as compared to ECC.
     def OnCreateKeyPair(self):
+        key_usage = self.OnKeyUsage()
+        print(key_usage)
         keyslot = "0x" + self.keyslot.GetValue()
+        
+#         pubkeyoid = "0x" + self.pub_key.GetValue()
         pubkey = "rsa_" + self.keyslot.GetValue() + "_pub.pem"
         
         if (self.rsatype.GetSelection() == 0):
@@ -1249,15 +1345,16 @@ class Tab_RSA(wx.Panel):
         output_message = exec_cmd.execCLI([
             config.EXEPATH + "/bin/trustm_rsa_keygen",
             "-g", keyslot,
-            "-t", "0x13",
+            "-t", key_usage,
             "-k", keysize,
-            "-o", pubkey,            
+            "-o", pubkey,
+            "-s",
         ])
         
         self.text_display.AppendText(output_message)
-#         self.Update()
-        self.text_display.AppendText("'trustm_rsa_keygen -g " + keyslot + " -t 0x13 -k 0x42 -o " + pubkey + " executed\n")
+        self.text_display.AppendText("'trustm_rsa_keygen -g " + keyslot + " -t " + key_usage + " -k " + keysize + " -o " + pubkey + " -s executed\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
 
     def OnEnc(self, evt):
         pubkey = "rsa_" + self.keyslot.GetValue() + "_pub.pem"
@@ -1300,7 +1397,6 @@ class Tab_RSA(wx.Panel):
              
         ])
         self.text_display.AppendText(output_message)
-#         self.Update()
         self.text_display.AppendText("'trustm_rsa_dec -k " + keyslot + " -o datain.dec -i datain.enc executed\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Reading decrypted data...\n")
@@ -1385,7 +1481,8 @@ class Tab_AES(wx.Panel):
         textctrlfont = wx.Font()
         textctrlfont.SetPointSize(11)
         
-        aestype_list = ['AES 128', 'AES 192' , 'AES 256']        
+        aestype_list = ['AES 128', 'AES 192' , 'AES 256']
+        keyusage = ['Auth','Enc','Sign','Auth/Enc/Sign','Key Agree']
         buttonfont = wx.Font(14, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         
         # declare the sizers
@@ -1395,21 +1492,22 @@ class Tab_AES(wx.Panel):
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
         
-        gdsizer2 = wx.GridSizer(rows=1, cols=1, vgap=10, hgap=10)
+        gdsizer2 = wx.GridSizer(rows=1, cols=2, vgap=10, hgap=10)
         gdsizer3 = wx.GridSizer(rows=3, cols=1, vgap=30, hgap=10)
         backbuttonsizer = wx.BoxSizer(wx.HORIZONTAL)
         
         # declare sizers that will be in the grid1
         aestypesizer = wx.BoxSizer(wx.VERTICAL)
-        
-       
-        
-        
+        keyusagesizer = wx.BoxSizer(wx.VERTICAL)
         
         # instantiate the objects
         text_aestype = wx.StaticText(self, 0, "AES Key:")
         self.aestype = wx.ComboBox(self, -1, choices=aestype_list, style=wx.CB_READONLY,  size = wx.Size(170, 30))
         self.aestype.SetFont(textctrlfont)
+        
+        text_keyusage = wx.StaticText(self, 0, "Key_usage:")
+        self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.keyusage.SetFont(textctrlfont)
         
         inputtext = wx.StaticText(self, -1, label="Data Input:")
         self.input_display = wx.TextCtrl(self,value="Hello World1234")
@@ -1476,6 +1574,7 @@ class Tab_AES(wx.Panel):
         
         gdsizer2.AddMany([
                 (aestypesizer, 0, wx.EXPAND),
+                (keyusagesizer, 0, wx.EXPAND),
 
         ])
          
@@ -1484,11 +1583,13 @@ class Tab_AES(wx.Panel):
         
         aestypesizer.Add(text_aestype)
         aestypesizer.Add(self.aestype)
-
+        keyusagesizer.Add(text_keyusage)
+        keyusagesizer.Add(self.keyusage)
        
         
         # Set Default inputs for Text Boxes      
         self.aestype.SetSelection(0)
+        self.keyusage.SetSelection(3)
         
         #bind events
         self.button_genkey.Bind(wx.EVT_BUTTON, self.OnCreateKeyPair1)
@@ -1510,6 +1611,33 @@ class Tab_AES(wx.Panel):
         self.SetSizer(mainsizer)
         mainsizer.Fit(self)
     
+    def OnKeyUsage(self):
+        
+        if (self.keyusage.GetSelection() == 0):
+            value = "0x01"
+            
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 1):
+            value = "0x02"
+         
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 2):
+            value = "0x10"
+        
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 3):
+            value = "0x13"
+        
+            return(value)
+        
+        elif (self.keyusage.GetSelection() == 4):
+            value = "0x20"
+        
+            return(value)
+    
     def OnCreateKeyPair1(self, evt):
         self.command_display.AppendText("Generating Trust M " + self.aestype.GetValue() + " key... \n")
         self.command_display.AppendText("Set Change to ALW to enable AES Key Gen(Only executable when LcsO<op)")
@@ -1517,6 +1645,10 @@ class Tab_AES(wx.Panel):
     
     # note: this function/command runs for quite a while as compared to ECC.
     def OnCreateKeyPair(self):
+        
+        key_usage = self.OnKeyUsage()
+        print(key_usage)
+        
         output_message = exec_cmd.execCLI([
             config.EXEPATH + "/bin/trustm_metadata",
             "-w", "0xe200",
@@ -1537,12 +1669,12 @@ class Tab_AES(wx.Panel):
         
         output_message = exec_cmd.execCLI([
             config.EXEPATH + "/bin/trustm_symmetric_keygen",
-            "-t", "0x02",
+            "-t", key_usage,
             "-k", keytype,
         ])
         
         self.command_display.AppendText(output_message)
-        self.command_display.AppendText("\n./bin/trustm_symmetric_keygen -t 0x02 -k " + keytype + " executed \n")
+        self.command_display.AppendText("\n./bin/trustm_symmetric_keygen -t " + key_usage + " -k " + keytype + " executed \n")
         self.command_display.AppendText("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n")
 
 
