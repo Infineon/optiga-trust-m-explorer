@@ -548,7 +548,7 @@ class Tab_APP(wx.Panel):
         textctrlfont = wx.Font()
         textctrlfont.SetPointSize(11)
         
-        dataobject_list = ['F1D0','F1D1','F1D2','F1D3','F1D4','F1D5', 'F1D6', 'F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB']
+        dataobject_list = ['F1D0','F1D1','F1D2','F1D3','F1D4','F1D5', 'F1D6', 'F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB','F1E0', 'F1E1']
         
         buttonfont = wx.Font(13, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         
