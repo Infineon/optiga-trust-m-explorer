@@ -131,7 +131,7 @@ class Tab_ECC_CS(wx.Panel):
         
         self.input_client = wx.TextCtrl(self, -1,value="Hello from Client")
         self.input_server = wx.TextCtrl(self, -1,value="Hello from Server")
-        backimage = wx.Image('../images/back.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
         #~ backbutton = wx.BitmapButton(self, -1, img.back.getBitmap())
 
@@ -478,10 +478,10 @@ class Tab_RNG(wx.Panel):
         self.command_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
 
-        clearimage = wx.Image('../images/clear.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         clearbutton = wx.BitmapButton(self, -1, clearimage)
         
-        backimage = wx.Image('../images/back.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer to mainsizer

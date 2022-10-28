@@ -3,6 +3,7 @@ import shell_util as exec_cmd
 import misc_dialogs as misc
 import info_dialogs as info
 import json
+import config
 import images as img
 # from wx.lib.pubsub import setuparg1
 # from wx.lib.pubsub import pub as Publisher
@@ -52,23 +53,23 @@ class tab5Frame(wx.Frame):
         self.bottom_txt_display.SetFont(wx.Font(12, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
         self.aws_region_box = wx.ComboBox(self, -1, "Pick the AWS Region", choices=aws_region_list, style=wx.CB_READONLY, size=(150, -1))
         # Images
-        user = wx.Image('../images/6user.png', wx.BITMAP_TYPE_PNG)
+        user = wx.Image(config.IMAGEPATH + "/images/6user.png", wx.BITMAP_TYPE_PNG)
         user = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(user), pos=(250, 10))
         # ~user = wx.StaticBitmap(self, wx.ID_ANY, img._6user.getBitmap(), pos=(180, 10))
         
-        product = wx.Image('../images/6products.png', wx.BITMAP_TYPE_PNG)
+        product = wx.Image(config.IMAGEPATH + "/images/6products.png", wx.BITMAP_TYPE_PNG)
         product = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(product), pos=(565, 7))
         # ~product = wx.StaticBitmap(self, wx.ID_ANY, img._6products.getBitmap(), pos=(495, 10))
         
-        cloud = wx.Image('../images/6cloud.png', wx.BITMAP_TYPE_PNG)
+        cloud = wx.Image(config.IMAGEPATH + "/images/6cloud.png", wx.BITMAP_TYPE_PNG)
         cloud = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(cloud), pos=(915, 8))
         # ~cloud = wx.StaticBitmap(self, wx.ID_ANY, img._6cloud.getBitmap(), pos=(845, 10))
         
-        arrow = wx.Image('../images/6forward.png', wx.BITMAP_TYPE_PNG)
+        arrow = wx.Image(config.IMAGEPATH + "/images/6forward.png", wx.BITMAP_TYPE_PNG)
         arrow = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(arrow), pos=(435, 67))
         # ~arrow = wx.StaticBitmap(self, wx.ID_ANY, img._6forward.getBitmap(), pos=(365, 67))
         
-        arrow2 = wx.Image('../images/6exchange.png', wx.BITMAP_TYPE_PNG)
+        arrow2 = wx.Image(config.IMAGEPATH + "/images/6exchange.png", wx.BITMAP_TYPE_PNG)
         arrow2 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(arrow2), pos=(770, 49))
         # ~arrow2 = wx.StaticBitmap(self, wx.ID_ANY, img._6exchange.getBitmap(), pos=(700, 49))
 
@@ -80,17 +81,17 @@ class tab5Frame(wx.Frame):
         button_openpolicyfile = wx.Button(self, -1, 'Open policy file')
         button_createpolicy = wx.Button(self, -1, 'Create Policy (from policy file)')
         # clear image
-        clearimage = wx.Image('../images/clear.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         clearbutton = wx.BitmapButton(self, -1, clearimage)
         # ~clearbutton = wx.BitmapButton(self, -1, img.clear.getBitmap())
         
         # info image button
-        infoimage = wx.Image('../images/info.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        infoimage = wx.Image(config.IMAGEPATH + "/images/info.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         infobutton = wx.BitmapButton(self, -1, infoimage)
         # ~infobutton = wx.BitmapButton(self, -1, img.info.getBitmap())
 
         # back image
-        backimage = wx.Image('../images/back.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
         # ~backbutton = wx.BitmapButton(self, -1, img.back.getBitmap())
         

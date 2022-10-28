@@ -132,19 +132,19 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
-        serverimage = wx.Image('../images/server.png', wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
+        serverimage = wx.Image(config.IMAGEPATH + "/images/server.png", wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
         serverimage = wx.StaticBitmap(self, -1, serverimage)
 
-        clearimage = wx.Image('../images/clear.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         clearbutton = wx.BitmapButton(self, -1, clearimage)
         
-        lockedarrow = wx.Image('../images/LockedArrow.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        lockedarrow = wx.Image(config.IMAGEPATH + "/images/LockedArrow.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         lockedarrowimage = wx.StaticBitmap(self, -1,lockedarrow)
 
-        chipimage = wx.Image('../images/chipp3.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        chipimage = wx.Image(config.IMAGEPATH + "/images/chipp3.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         chipimage = wx.StaticBitmap(self, -1,chipimage)
         
-        backimage = wx.Image('../images/back.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer
@@ -716,19 +716,19 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
-        serverimage = wx.Image('../images/server.png', wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
+        serverimage = wx.Image(config.IMAGEPATH + "/images/server.png", wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
         serverimage = wx.StaticBitmap(self, -1, serverimage)
 
-        clearimage = wx.Image('../images/clear.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         clearbutton = wx.BitmapButton(self, -1, clearimage)
         
-        lockedarrow = wx.Image('../images/LockedArrow.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        lockedarrow = wx.Image(config.IMAGEPATH + "/images/LockedArrow.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         lockedarrowimage = wx.StaticBitmap(self, -1,lockedarrow)
 
-        chipimage = wx.Image('../images/chipp3.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        chipimage = wx.Image(config.IMAGEPATH + "/images/chipp3.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         chipimage = wx.StaticBitmap(self, -1,chipimage)
         
-        backimage = wx.Image('../images/back.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer
@@ -1255,19 +1255,19 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
-        serverimage = wx.Image('../images/server.png', wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
+        serverimage = wx.Image(config.IMAGEPATH + "/images/server.png", wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
         serverimage = wx.StaticBitmap(self, -1, serverimage)
 
-        clearimage = wx.Image('../images/clear.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         clearbutton = wx.BitmapButton(self, -1, clearimage)
         
-        lockedarrow = wx.Image('../images/LockedArrow.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        lockedarrow = wx.Image(config.IMAGEPATH + "/images/LockedArrow.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         lockedarrowimage = wx.StaticBitmap(self, -1,lockedarrow)
 
-        chipimage = wx.Image('../images/chipp3.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        chipimage = wx.Image(config.IMAGEPATH + "/images/chipp3.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         chipimage = wx.StaticBitmap(self, -1,chipimage)
         
-        backimage = wx.Image('../images/back.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer
@@ -1826,19 +1826,19 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
-        serverimage = wx.Image('../images/server.png', wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
+        serverimage = wx.Image(config.IMAGEPATH + "/images/server.png", wx.BITMAP_TYPE_PNG).Scale(110,110,wx.IMAGE_QUALITY_HIGH).ConvertToBitmap()
         serverimage = wx.StaticBitmap(self, -1, serverimage)
 
-        clearimage = wx.Image('../images/clear.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         clearbutton = wx.BitmapButton(self, -1, clearimage)
         
-        lockedarrow = wx.Image('../images/LockedArrow.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        lockedarrow = wx.Image(config.IMAGEPATH + "/images/LockedArrow.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         lockedarrowimage = wx.StaticBitmap(self, -1,lockedarrow)
 
-        chipimage = wx.Image('../images/chipp3.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        chipimage = wx.Image(config.IMAGEPATH + "/images/chipp3.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         chipimage = wx.StaticBitmap(self, -1,chipimage)
         
-        backimage = wx.Image('../images/back.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer

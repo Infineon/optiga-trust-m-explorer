@@ -9,7 +9,8 @@ import misc_dialogs as misc
 import shell_util as exec_cmd
 import images as img
 import subprocess
-import wx.lib.inspection
+import config
+#import wx.lib.inspection
 import os
 
 class MainFrame(wx.Frame):
@@ -32,37 +33,37 @@ class MainFrame(wx.Frame):
         title_screen = wx.StaticText(self, -1, style=wx.ALIGN_CENTER, label="OPTIGA"+ u"\u1d40\u1d39"+ " TRUST M Explorer")
         font = wx.Font(28, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         title_screen.SetFont(font)
-       
+        
         #TrustM Image
-        trustm_image = wx.Image('../images/chipp.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        trustm_image = wx.Image(config.IMAGEPATH + "/images/chipp.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         trustm_image = wx.StaticBitmap(self, -1, trustm_image)
 
         # IFX Logo
-        ifx_image = wx.Image('../images/250px-Infineon-Logo.png', wx.BITMAP_TYPE_PNG)
+        ifx_image = wx.Image(config.IMAGEPATH + "/images/250px-Infineon-Logo.png", wx.BITMAP_TYPE_PNG)
         ifx_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(ifx_image))   
         
         # Setup logo
-        tab1_image = wx.Image('../images/protected.png', wx.BITMAP_TYPE_PNG)
+        tab1_image = wx.Image(config.IMAGEPATH + "/images/protected.png", wx.BITMAP_TYPE_PNG)
         tab1_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab1_image))
 
         # Crypto logo
-        tab2_image = wx.Image('../images/crypto.png', wx.BITMAP_TYPE_PNG)
+        tab2_image = wx.Image(config.IMAGEPATH + "/images/crypto.png", wx.BITMAP_TYPE_PNG)
         tab2_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab2_image))
 
         # Engine logo
-        tab3_image = wx.Image('../images/engine.png', wx.BITMAP_TYPE_PNG)
+        tab3_image = wx.Image(config.IMAGEPATH + "/images/engine.png", wx.BITMAP_TYPE_PNG)
         tab3_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab3_image))
 
         # Cloud logo
-        tab5_image = wx.Image('../images/cloud.png', wx.BITMAP_TYPE_PNG)
+        tab5_image = wx.Image(config.IMAGEPATH + "/images/cloud.png", wx.BITMAP_TYPE_PNG)
         tab5_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab5_image))
         
         # Policy logo
-        tab4_image = wx.Image('../images/policy.png', wx.BITMAP_TYPE_PNG)
+        tab4_image = wx.Image(config.IMAGEPATH + "/images/policy.png", wx.BITMAP_TYPE_PNG)
         tab4_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab4_image))
         
         # General logo
-        tab6_image = wx.Image('../images/setup.png', wx.BITMAP_TYPE_PNG)
+        tab6_image = wx.Image(config.IMAGEPATH + "/images/setup.png", wx.BITMAP_TYPE_PNG)
         tab6_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab6_image))
 
         # declare the sizers
