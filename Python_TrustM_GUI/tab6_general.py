@@ -229,6 +229,8 @@ class Tab_KEY(wx.Panel):
         textctrlfont = wx.Font()
         textctrlfont.SetPointSize(11)
         
+        textctrlfont1 = wx.Font(11, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
+        
         keyslot_list = ['E0F0', 'E0F1','E0F2','E0F3','E0FC', 'E0FD','E200']
         pubkey_list = ['E0E0-PreProvisioned', 'E0E1', 'E0E2','E0E3', 'E0E8-TrustAnchor','E0E9-TrustAnchor',]
         Destination_list = ['E0E1','E0E2','E0E3','E0E8','E0E9',]
@@ -242,10 +244,11 @@ class Tab_KEY(wx.Panel):
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
        
-        gdsizer1 = wx.GridSizer(rows=2, cols=1, vgap=10, hgap=10)
-        gdsizer2 = wx.GridSizer(rows=3, cols=1, vgap=10, hgap=10)
-        gdsizer3 = wx.GridSizer(rows=1, cols=2, vgap=10, hgap=10)
+        gdsizer1 = wx.GridSizer(rows=2, cols=1, vgap=5, hgap=10)
+        gdsizer2 = wx.GridSizer(rows=3, cols=1, vgap=5, hgap=10)
+        gdsizer3 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=10)
         gdsizer4 = wx.GridSizer(rows=1, cols=1, vgap=5, hgap=10)
+        gdsizer5 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=10)
         backbuttonsizer = wx.BoxSizer(wx.HORIZONTAL)
         
         # declare sizers that will be in the grid1
@@ -253,6 +256,8 @@ class Tab_KEY(wx.Panel):
         keyslotsizer = wx.BoxSizer(wx.VERTICAL)
         trustancsizer = wx.BoxSizer(wx.VERTICAL)
         fileinputsizer = wx.BoxSizer(wx.VERTICAL)
+        bindsizer = wx.BoxSizer(wx.VERTICAL)
+        secretfilesizer = wx.BoxSizer(wx.VERTICAL)
        
         
         # instantiate the objects
@@ -281,8 +286,21 @@ class Tab_KEY(wx.Panel):
         button_writecert.SetFont(buttonfont)
         
         text_filename_input = wx.StaticText(self, 0, "Cert Filename:")
-        self.filename_input = wx.TextCtrl(self, -1, value="testE0E0.crt", style=(wx.TE_CHARWRAP|wx.TE_MULTILINE), size=(170, 30))
+        self.filename_input = wx.TextCtrl(self, -1, value="testE0E0.crt", style=wx.CB_READONLY, size=(170, 30))
         self.filename_input.SetFont(textctrlfont)
+        
+        text_bindsecret = wx.StaticText(self, 0, "Platform Binding Secret:")
+        text_bindsecret.SetFont(textctrlfont1)
+        self.bindsecret = wx.TextCtrl(self, 1, value= "E140", style=wx.CB_READONLY ,  size = wx.Size(170, 30))
+        self.bindsecret.SetFont(textctrlfont)
+        
+        
+        button_secret = wx.Button(self, 1, 'Write Secret', size = wx.Size(300, 40))
+        button_secret.SetFont(buttonfont)
+        
+        text_secretfile = wx.StaticText(self, 0, "Secret File:")
+        self.secretfile = wx.TextCtrl(self, -1, value= "platform_secret.dat", style=wx.CB_READONLY , size=(170, 30))
+        self.secretfile.SetFont(textctrlfont)
         
         self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
@@ -311,21 +329,26 @@ class Tab_KEY(wx.Panel):
         backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
 
         # Add sizers to midsizer
-
+        midsizer.AddSpacer(15)
+        midsizer.Add(gdsizer1, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        
         midsizer.AddSpacer(5)
-        midsizer.Add(gdsizer1, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
+        midsizer.Add(gdsizer2, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        
+        
+        midsizer.AddSpacer(5)
+        midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        
+        midsizer.AddSpacer(5)
+        midsizer.Add(gdsizer4, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
         midsizer.AddSpacer(10)
-        midsizer.Add(gdsizer2, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
+        midsizer.Add(gdsizer5, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
+        midsizer.AddSpacer(5)
+        midsizer.Add(button_secret, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
-        midsizer.AddSpacer(10)
-        midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
-        
-        midsizer.AddSpacer(10)
-        midsizer.Add(gdsizer4, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
-        
-        midsizer.AddSpacer(110)
+        midsizer.AddSpacer(50)
         midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
         
         
@@ -353,6 +376,13 @@ class Tab_KEY(wx.Panel):
         gdsizer4.AddMany([
             (button_writecert),   
             ])
+        
+        
+        gdsizer5.AddMany([
+              (bindsizer, 0, wx.ALIGN_CENTRE | wx.ALL),
+              (secretfilesizer),
+                
+       ])
  
         #add objects into sizers in gdsizer2
         keyslotsizer.Add(text_keyslot)
@@ -366,6 +396,12 @@ class Tab_KEY(wx.Panel):
         
         fileinputsizer.Add(text_filename_input)
         fileinputsizer.Add(self.filename_input)
+        
+        secretfilesizer.Add(text_secretfile)
+        secretfilesizer.Add(self.secretfile)
+        
+        bindsizer.Add(text_bindsecret)
+        bindsizer.Add(self.bindsecret)
  
         # Set Default inputs for Combo Boxes      
         self.pubkey.SetSelection(0)
@@ -377,9 +413,11 @@ class Tab_KEY(wx.Panel):
         self.button_certmetadata.Bind(wx.EVT_BUTTON, self.OnCertmeta)
         button_data.Bind(wx.EVT_BUTTON, self.OnCertData)
         button_writecert.Bind(wx.EVT_BUTTON, self.OnWriteCert)
+        button_secret.Bind(wx.EVT_BUTTON, self.OnWriteSecret)
         
         self.filename_input.Bind(wx.EVT_LEFT_DOWN,self.OnClickFileName)
-       
+        self.secretfile.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecretFile)
+        
         clearbutton.Bind(wx.EVT_BUTTON, self.OnClear)
         backbutton.Bind(wx.EVT_BUTTON, self.OnBack)
         
@@ -394,6 +432,19 @@ class Tab_KEY(wx.Panel):
         if (self.pubkey.GetSelection() == 0):
             Puboid= "E0E0"
     
+    def OnClickSecretFile(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+            
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.dat;*.crt;*.txt|Binary|*.dat|Secret|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+        cert_dir= config.IMAGEPATH + "/working_space/"
+        openFileDialog.SetDirectory(cert_dir)
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            
+                return
+        print((openFileDialog.GetPath()))
+        self.secretfile.SetValue(openFileDialog.GetPath())
+        
     
     def OnClickFileName(self, evt):
         frame = wx.Frame(None, -1, '*.*')
@@ -531,6 +582,26 @@ class Tab_KEY(wx.Panel):
         self.text_display.AppendText("'trustm_data -w " + pubkey + "-i " + certfile + " executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
    
+   
+    def OnWriteSecret (self, evt):
+        bindingsecret = self.bindsecret.GetValue()                
+        self.text_display.AppendText("Writing Platform Binding Secret into 0xE140:....\n") 
+        wx.CallLater(20, self.OnWriteSecret1)
+   
+    def OnWriteSecret1 (self):
+        
+        command_output = exec_cmd.createProcess("echo '0102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F40' | xxd -r -p > platform_secret.dat", None)
+        
+        secretoid = "0x" + self.bindsecret.GetValue()
+        certfile = self.secretfile.GetValue()
+                
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-X" , "-w", secretoid, "-i" , certfile, ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_data -X -w " + secretoid + "-i " + certfile + " executed \n")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-X" , "-r", secretoid, ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n'trustm_data -X -r " + secretoid + " ...executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
 
 
     def OnClear(self, evt):
