@@ -439,6 +439,7 @@ class Tab_KEY(wx.Panel):
         openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.dat;*.crt;*.txt|Binary|*.dat|Secret|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         cert_dir= config.IMAGEPATH + "/working_space/"
         openFileDialog.SetDirectory(cert_dir)
+        openFileDialog.SetFilename("platform_secret.dat")
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
