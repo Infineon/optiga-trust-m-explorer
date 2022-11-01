@@ -934,6 +934,9 @@ class Tab_ECC(wx.Panel):
                 
                 exec_cmd.execCLI(["rm", "test_e0f0_pub.pem", ])
                 #self.text_display.AppendText("Extracting public key from cert... \n")
+
+                command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert","-r","0xe0e0", "-o", "cert_0xe0e0.pem", ])
+                self.text_display.AppendText("'trustm_cert -r 0xe0e0 -o cert_0xe0e0.pem executed' \n")
                 exec_cmd.createProcess("openssl x509 -pubkey -noout -in cert_0xe0e0.pem > test_e0f0_pub.pem", None)
                 self.text_display.AppendText("'openssl x509 -pubkey -noout -in cert_0xe0e0.pem > test_e0f0_pub.pem' executed \n")
                 
