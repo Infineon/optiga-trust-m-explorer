@@ -79,11 +79,14 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         secret2sizer = wx.BoxSizer(wx.VERTICAL)
 
         # instantiate the objects
+        self.secret2path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret2 = wx.StaticText(self, 0, "secret:")
-        self.secret2 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret2.SetFont(textctrlfont)
+        
+        self.secret1path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret1 = wx.StaticText(self, 0, "secret:")
-        self.secret1 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret1.SetFont(textctrlfont)
         text_secret = wx.StaticText(self, 0, "Protected_Update:")
         self.secret = wx.ComboBox(self, 1, choices=secret_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
@@ -97,11 +100,15 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         text_sign_algo = wx.StaticText(self, 0, "sign_algo:")
         self.sign_algo = wx.ComboBox(self, 1, choices=sign_algo_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.sign_algo.SetFont(textctrlfont)
+        
+        self.metapath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/metadata/metadata.txt"
         text_metadata = wx.StaticText(self, 0, "metadata:")
-        self.metadata = wx.TextCtrl(self, 1, value=config.EXEPATH + "/ex_protected_update_data_set/samples/payload/metadata/metadata.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.metadata = wx.TextCtrl(self, 1, value= "metadata.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.metadata.SetFont(textctrlfont)
+        
+        self.priv_keypath = config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem"
         text_priv_key = wx.StaticText(self, 0, "trust_anchor_key:")
-        self.priv_key = wx.TextCtrl(self, -1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem", style=wx.CB_READONLY, size=(178, 30))
+        self.priv_key = wx.TextCtrl(self, -1, value= "sample_ec_256_priv.pem", style=wx.CB_READONLY, size=(178, 30))
         self.priv_key.SetFont(textctrlfont)
         text_trust_anchor_oid = wx.StaticText(self, -1, "trust_anchor_oid:")
         self.trust_anchor_oid = wx.ComboBox(self, 1, choices=meta_trust_anchor_oid_list, style=wx.CB_READONLY, size = wx.Size(178, -1))
@@ -112,8 +119,10 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         text_secret_oid = wx.StaticText(self, -1, "secret_oid:")
         self.secret_oid = wx.ComboBox(self, 1, choices=meta_secret_oid_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret_oid.SetFont(textctrlfont)
+        
+        self.trust_anchor_certpath = config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem"
         text_trust_anchor_cert = wx.StaticText(self, -1, "trust_anchor_cert:")
-        self.trust_anchor_cert = wx.TextCtrl(self, 1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
+        self.trust_anchor_cert = wx.TextCtrl(self, 1, value= "sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
         self.trust_anchor_cert.SetFont(textctrlfont)
         button_step2 = wx.Button(self, 1, 'Step2: Generate Manifest', size = wx.Size(270, -1))
         button_step2.SetFont(buttonfont)
@@ -268,7 +277,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         button_step3.Bind(wx.EVT_BUTTON, self.OnProtectedUpdate1)
         button_reset_mud.Bind(wx.EVT_BUTTON, self.OnResetMUD1)
         self.secret1.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret)
-        self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret)
+        self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret2)
         self.priv_key.Bind(wx.EVT_LEFT_DOWN,self.OnClickFileName)
         self.trust_anchor_cert.Bind(wx.EVT_LEFT_DOWN,self.OnClickCertName)
         self.metadata.Bind(wx.EVT_LEFT_DOWN,self.OnClickMetadata)
@@ -283,9 +292,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         backbutton.SetToolTip(wx.ToolTip("Go back to main page."))
 
         self.SetSizer(mainsizer)
-        mainsizer.Fit(self)
+        mainsizer.Fit(self)   
         
-        config.EXEPATH + "/ex_protected_update_data_set/samples/payload/metadata/"
 
     def OnClickMetadata(self, evt):
         frame = wx.Frame(None, -1, '*.*')
@@ -296,12 +304,20 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/metadata/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("metadata.txt")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.metadata.SetValue(openFileDialog.GetPath())
+        #self.metadata.SetValue(openFileDialog.GetPath())
+        self.metapath = openFileDialog.GetPath()
+        
+        self.metadata.Clear()
+        self.metadata.AppendText(os.path.basename(openFileDialog.GetPath()))
+#         print(self.metadata.GetValue())
+#         filename= os.path.basename(openFileDialog.GetPath())
+#         print(filename)
         
         openFileDialog.Destroy()
  
@@ -315,12 +331,18 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("sample_ec_256_priv.pem")
+
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.priv_key.SetValue(openFileDialog.GetPath())
+        #self.priv_key.SetValue(openFileDialog.GetPath())
+        self.priv_keypath = openFileDialog.GetPath()
+        
+        self.priv_key.Clear()
+        self.priv_key.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()    
 
@@ -333,12 +355,17 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("sample_ec_256_cert.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        #self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        self.trust_anchor_certpath = openFileDialog.GetPath()
+        
+        self.trust_anchor_cert.Clear()
+        self.trust_anchor_cert.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
 
@@ -352,17 +379,43 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
         
         openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("secret.txt")
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            
+                return
+        print((openFileDialog.GetPath()))
+        #self.secret1.SetValue(openFileDialog.GetPath())
+        self.secret1path = openFileDialog.GetPath()
+        
+        self.secret1.Clear()
+        self.secret1.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
+        openFileDialog.Destroy()
+    
+    def OnClickSecret2(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+            
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST )
+        
+        some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
+        
+        openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("secret.txt")
         
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.secret1.SetValue(openFileDialog.GetPath())
-        self.secret2.SetValue(openFileDialog.GetPath())
+        #self.secret2.SetValue(openFileDialog.GetPath())
+        self.secret2path = openFileDialog.GetPath()
+        
+        self.secret2.Clear()
+        self.secret2.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
-
 
     def OnRunStep1(self, evt):
         if (self.step1_combo_box.GetSelection() == 0):
@@ -374,12 +427,12 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "0x" + self.trust_anchor_oid.GetValue()
         target_oid = "0x" + self.target_oid.GetValue()
         secret_oid = "0x" + self.secret_oid.GetValue()
-        certfile = self.trust_anchor_cert.GetValue()
+        certfile = self.trust_anchor_certpath
         
         TRUST_ANCHOR_META = "2003E80111"
         #PROTECTED_UPDATE_SECRET = "49C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F649C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F6"
         
-        f = open(self.secret2.GetValue(), 'r')
+        f = open(self.secret2path, 'r')
         file= f.read()
         print(file)
         PROTECTED_UPDATE_SECRET = file
@@ -534,10 +587,13 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "trust_anchor_oid=" + self.trust_anchor_oid.GetValue()
         target_oid = "target_oid=" + self.target_oid.GetValue()
         sign_algo = "sign_algo=" + self.sign_algo.GetValue()
-        priv_key = "priv_key=" + self.priv_key.GetValue()
+        #priv_key = "priv_key=" + self.priv_key.GetValue()
+        priv_key = "priv_key=" + self.priv_keypath
         payload_type = "payload_type=" + self.payload_type.GetValue()
         
-        metadata = "metadata=" + self.metadata.GetValue()
+        #metadata = "metadata=" + self.metadata.GetValue()
+        #print(self.metapath)
+        metadata = "metadata=" + self.metapath
         content_reset = "content_reset=0"
         label = "label=test"
         enc_algo = "enc_algo=AES-CCM-16-64-128"
@@ -551,7 +607,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
                                                     + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
                                                     None)
         else:
-            secret = "secret=" + self.secret1.GetValue()
+            secret = "secret=" + self.secret1path
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + metadata + " " + content_reset + " " + label + " " + enc_algo + " " + secret_oid + " " + secret +
@@ -660,8 +716,9 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         confidential_list = ['Integrity Confidential']
         
         # instantiate the objects
+        self.secret2path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret2 = wx.StaticText(self, 0, "secret:")
-        self.secret2 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret2.SetFont(textctrlfont)
         text_keyusage = wx.StaticText(self, 0, "Key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
@@ -678,12 +735,16 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         text_sign_algo = wx.StaticText(self, 0, "sign_algo:")
         self.sign_algo = wx.ComboBox(self, 1, choices=sign_algo_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.sign_algo.SetFont(textctrlfont)
+        
+        self.keypath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_secp256r1_test.pem"
         text_keydata = wx.StaticText(self, 0, "key_data:")
-        self.keydata = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_secp256r1_test.pem", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.keydata = wx.TextCtrl(self, 1, value= "ecc_secp256r1_test.pem", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keydata.SetFont(textctrlfont)
+        
+        self.priv_keypath = config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem"
         text_priv_key = wx.StaticText(self, 0, "trust_anchor_privkey:")
         text_priv_key.SetFont(textctrlfont1)
-        self.priv_key = wx.TextCtrl(self, -1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem", style=wx.CB_READONLY, size=(178, 30))
+        self.priv_key = wx.TextCtrl(self, -1, value= "sample_ec_256_priv.pem", style=wx.CB_READONLY, size=(178, 30))
         self.priv_key.SetFont(textctrlfont)
         text_trust_anchor_oid = wx.StaticText(self, -1, "trust_anchor_oid:")
         self.trust_anchor_oid = wx.ComboBox(self, 1, choices=key_trust_anchor_oid_list, style=wx.CB_READONLY, size = wx.Size(178, -1))
@@ -694,12 +755,15 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         text_secret_oid = wx.StaticText(self, -1, "secret_oid:")
         self.secret_oid = wx.ComboBox(self, 1, choices=key_secret_oid_list, style=(wx.TE_CHARWRAP|wx.TE_MULTILINE), size=(178, 30))
         self.secret_oid.SetFont(textctrlfont)
+        
+        self.secret1path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret1 = wx.StaticText(self, 0, "secret:")
-        self.secret1 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret1.SetFont(textctrlfont)
 
+        self.trust_anchor_certpath = config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem"
         text_trust_anchor_cert = wx.StaticText(self, -1, "trust_anchor_cert:")
-        self.trust_anchor_cert = wx.TextCtrl(self, 1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
+        self.trust_anchor_cert = wx.TextCtrl(self, 1, value= "sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
         self.trust_anchor_cert.SetFont(textctrlfont)
         button_step2 = wx.Button(self, 1, 'Step2: Generate Manifest', size = wx.Size(270, -1))
         button_step2.SetFont(buttonfont)
@@ -850,7 +914,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.priv_key.Bind(wx.EVT_LEFT_DOWN,self.OnClickFileName)
         self.trust_anchor_cert.Bind(wx.EVT_LEFT_DOWN,self.OnClickCertName)
         self.secret1.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret)
-        self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret)
+        self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret2)
         self.keydata.Bind(wx.EVT_LEFT_DOWN,self.OnClickKeydata)
 
         self.SetSizer(mainsizer)
@@ -867,12 +931,18 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("ecc_secp256r1_test.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.keydata.SetValue(openFileDialog.GetPath())
+        #self.keydata.SetValue(openFileDialog.GetPath())
+        
+        self.keypath = openFileDialog.GetPath()
+        
+        self.keydata.Clear()
+        self.keydata.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()    
         
@@ -902,12 +972,17 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("sample_ec_256_priv.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.priv_key.SetValue(openFileDialog.GetPath())
+        #self.priv_key.SetValue(openFileDialog.GetPath())
+        self.priv_keypath = openFileDialog.GetPath()
+        
+        self.priv_key.Clear()
+        self.priv_key.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()    
 
@@ -920,12 +995,17 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("sample_ec_256_cert.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        #self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        self.trust_anchor_certpath = openFileDialog.GetPath()
+        
+        self.trust_anchor_cert.Clear()
+        self.trust_anchor_cert.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
 
@@ -940,17 +1020,42 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
         
         openFileDialog.SetDirectory(some_Dir)
-        
+        openFileDialog.SetFilename("secret.txt")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.secret1.SetValue(openFileDialog.GetPath())
-        self.secret2.SetValue(openFileDialog.GetPath())
+        #self.secret1.SetValue(openFileDialog.GetPath())
+        self.secret1path = openFileDialog.GetPath()
+        
+        self.secret1.Clear()
+        self.secret1.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
     
+    def OnClickSecret2(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+            
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST )
+        
+        some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
+        
+        openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("secret.txt")
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            
+                return
+        print((openFileDialog.GetPath()))
+        #self.secret2.SetValue(openFileDialog.GetPath())
+        self.secret2path = openFileDialog.GetPath()
+        
+        self.secret2.Clear()
+        self.secret2.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
+        openFileDialog.Destroy()
 
     def OnRunStep1(self, evt):
         self.OnSetupEccKeyUpdate1()
@@ -962,7 +1067,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         secret_oid = "0x" + self.secret_oid.GetValue()
         TRUST_ANCHOR_META = "2003E80111"        
         
-        f = open(self.secret1.GetValue(), 'r')
+        f = open(self.secret1path, 'r')
         file= f.read()
         print(file)
         PROTECTED_UPDATE_SECRET = file
@@ -1043,31 +1148,33 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "trust_anchor_oid=" + self.trust_anchor_oid.GetValue()
         target_oid = "target_oid=" + self.target_oid.GetValue()
         sign_algo = "sign_algo=" + self.sign_algo.GetValue()
-        priv_key = "priv_key=" + self.priv_key.GetValue()
+        #priv_key = "priv_key=" + self.priv_key.GetValue()
+        priv_key = "priv_key=" + self.priv_keypath
         payload_type = "payload_type=" + self.payload_type.GetValue()
         
-        if (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_secp256r1_test.pem" ):
+        if (self.keydata.GetValue() == "ecc_secp256r1_test.pem" ):
             key_algo =  "key_algo=3"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_secp384r1_test.pem" ):
+        elif (self.keydata.GetValue() == "ecc_secp384r1_test.pem" ):
              key_algo = "key_algo=4"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_secp521r1_test.pem" ):
+        elif (self.keydata.GetValue() == "ecc_secp521r1_test.pem" ):
              key_algo = "key_algo=5"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_brainpool_p256r1_test.pem" ):
+        elif (self.keydata.GetValue() == "ecc_brainpool_p256r1_test.pem" ):
              key_algo = "key_algo=19"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_brainpool_p384r1_test.pem" ):
+        elif (self.keydata.GetValue() == "ecc_brainpool_p384r1_test.pem" ):
              key_algo = "key_algo=21"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_brainpool_p512r1_test.pem" ):
+        elif (self.keydata.GetValue() == "ecc_brainpool_p512r1_test.pem" ):
              key_algo = "key_algo=22"
         
         key_usage = self.OnKeyUsage()
         print(key_usage)
         
-        key_data = "key_data=" + self.keydata.GetValue() 
+        #key_data = "key_data=" + self.keydata.GetValue() 
+        key_data = "key_data=" + self.keypath
         
         print(key_data) 
         
@@ -1087,7 +1194,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         #if (secret_list_value=="Integrity"):
             
         else:
-            secret = "secret=" + self.secret2.GetValue()
+            secret = "secret=" + self.secret2path
             print(secret)
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
@@ -1199,8 +1306,9 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         confidential_list = ['Integrity Confidential']
         
         # instantiate the objects
+        self.secret2path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret2 = wx.StaticText(self, 0, "secret:")
-        self.secret2 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret2.SetFont(textctrlfont)
         text_keyusage = wx.StaticText(self, 0, "Key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
@@ -1217,12 +1325,16 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         text_sign_algo = wx.StaticText(self, 0, "sign_algo:")
         self.sign_algo = wx.ComboBox(self, 1, choices=sign_algo_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.sign_algo.SetFont(textctrlfont)
+        
+        self.keypath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/aes_key_128.txt"
         text_keydata = wx.StaticText(self, 0, "key_data:")
-        self.keydata = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/aes_key_128.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.keydata = wx.TextCtrl(self, 1, value= "aes_key_128.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keydata.SetFont(textctrlfont)
+        
+        self.priv_keypath = config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem"
         text_priv_key = wx.StaticText(self, 0, "trust_anchor_privkey:")
         text_priv_key.SetFont(textctrlfont1)
-        self.priv_key = wx.TextCtrl(self, -1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem", style=wx.CB_READONLY , size=(178, 30))
+        self.priv_key = wx.TextCtrl(self, -1, value= "sample_ec_256_priv.pem", style=wx.CB_READONLY , size=(178, 30))
         self.priv_key.SetFont(textctrlfont)
         text_trust_anchor_oid = wx.StaticText(self, -1, "trust_anchor_oid:")
         self.trust_anchor_oid = wx.ComboBox(self, 1, choices=key_trust_anchor_oid_list, style=wx.CB_READONLY, size = wx.Size(178, -1))
@@ -1233,11 +1345,15 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         text_secret_oid = wx.StaticText(self, -1, "secret_oid:")
         self.secret_oid = wx.ComboBox(self, 1, choices=key_secret_oid_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret_oid.SetFont(textctrlfont)
+        
+        self.secret1path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret1 = wx.StaticText(self, 0, "secret:")
-        self.secret1 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret1.SetFont(textctrlfont)
+        
+        self.trust_anchor_certpath= config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem"
         text_trust_anchor_cert = wx.StaticText(self, -1, "trust_anchor_cert:")
-        self.trust_anchor_cert = wx.TextCtrl(self, 1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
+        self.trust_anchor_cert = wx.TextCtrl(self, 1, "sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
         self.trust_anchor_cert.SetFont(textctrlfont)
         button_step2 = wx.Button(self, 1, 'Step2: Generate Manifest', size = wx.Size(270, -1))
         button_step2.SetFont(buttonfont)
@@ -1386,7 +1502,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         button_reset_access.Bind(wx.EVT_BUTTON, self.OnResetAccess1)
         self.button_step1.Bind(wx.EVT_BUTTON, self.OnRunStep1)
         
-        self.secret2.Bind(wx.EVT_LEFT_DOWN, self.OnClickSecret)
+        self.secret2.Bind(wx.EVT_LEFT_DOWN, self.OnClickSecret2)
         self.secret1.Bind(wx.EVT_LEFT_DOWN, self.OnClickSecret)
         self.priv_key.Bind(wx.EVT_LEFT_DOWN,self.OnClickFileName)
         self.trust_anchor_cert.Bind(wx.EVT_LEFT_DOWN,self.OnClickCertName)
@@ -1405,12 +1521,17 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("aes_key_128.txt")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.keydata.SetValue(openFileDialog.GetPath())
+        #self.keydata.SetValue(openFileDialog.GetPath())
+        self.keypath = openFileDialog.GetPath()
+        
+        self.keydata.Clear()
+        self.keydata.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()    
         
@@ -1450,12 +1571,17 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("sample_ec_256_priv.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.priv_key.SetValue(openFileDialog.GetPath())
+        #self.priv_key.SetValue(openFileDialog.GetPath())
+        self.priv_keypath = openFileDialog.GetPath()
+        
+        self.priv_key.Clear()
+        self.priv_key.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()    
 
@@ -1468,12 +1594,17 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("sample_ec_256_cert.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        #self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        self.trust_anchor_certpath = openFileDialog.GetPath()
+        
+        self.trust_anchor_cert.Clear()
+        self.trust_anchor_cert.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
 
@@ -1487,18 +1618,44 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
         
         openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("secret.txt")
         
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.secret1.SetValue(openFileDialog.GetPath())
-        self.secret2.SetValue(openFileDialog.GetPath())
+        #self.secret1.SetValue(openFileDialog.GetPath())
+        self.secret1path = openFileDialog.GetPath()
+        
+        self.secret1.Clear()
+        self.secret1.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
 
-
+   
+    def OnClickSecret2(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+            
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        
+        some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
+        
+        openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("secret.txt")
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            
+                return
+        print((openFileDialog.GetPath()))
+        #self.secret2.SetValue(openFileDialog.GetPath())
+        self.secret2path = openFileDialog.GetPath()
+        
+        self.secret2.Clear()
+        self.secret2.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
+        openFileDialog.Destroy()
 
 
     def OnRunStep1(self, evt):
@@ -1509,11 +1666,11 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "0x" + self.trust_anchor_oid.GetValue()
         target_oid = "0x" + self.target_oid.GetValue()
         secret_oid = "0x" + self.secret_oid.GetValue()
-        certfile = self.trust_anchor_cert.GetValue()
+        certfile = self.trust_anchor_certpath
         
         TRUST_ANCHOR_META = "2003E80111"
         
-        f = open(self.secret1.GetValue(), 'r')
+        f = open(self.secret1path, 'r')
         file= f.read()
         print(file)
         PROTECTED_UPDATE_SECRET = file
@@ -1628,23 +1785,23 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "trust_anchor_oid=" + self.trust_anchor_oid.GetValue()
         target_oid = "target_oid=" + self.target_oid.GetValue()
         sign_algo = "sign_algo=" + self.sign_algo.GetValue()
-        priv_key = "priv_key=" + self.priv_key.GetValue()
+        priv_key = "priv_key=" + self.priv_keypath
         payload_type = "payload_type=" + self.payload_type.GetValue()
         
         
-        if (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/aes_key_128.txt"):
+        if (self.keydata.GetValue() == "aes_key_128.txt"):
             key_algo= "key_algo=129"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/aes_key_192.txt"):
+        elif (self.keydata.GetValue() == "aes_key_192.txt"):
             key_algo= "key_algo=130"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/aes_key_256.txt"):
+        elif (self.keydata.GetValue() == "aes_key_256.txt"):
             key_algo= "key_algo=131"
         
         key_usage = self.OnKeyUsage()
         print(key_usage)
        
-        key_data = "key_data=" + self.keydata.GetValue()
+        key_data = "key_data=" + self.keypath
         content_reset = "content_reset=0"
         label = "label=test"
         seed_length = "seed_length=64"
@@ -1659,7 +1816,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
                                                     + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
                                                     None)
         else:
-            secret = "secret=" + self.secret2.GetValue()
+            secret = "secret=" + self.secret2path
             print(secret)
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
@@ -1786,12 +1943,16 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         text_sign_algo = wx.StaticText(self, 0, "sign_algo:")
         self.sign_algo = wx.ComboBox(self, 1, choices=sign_algo_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.sign_algo.SetFont(textctrlfont)
+        
+        self.keypath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/rsa_1024_test.pem"
         text_keydata = wx.StaticText(self, 0, "key_data:")
-        self.keydata = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/rsa_1024_test.pem", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.keydata = wx.TextCtrl(self, 1, value= "rsa_1024_test.pem", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keydata.SetFont(textctrlfont)
+        
+        self.priv_keypath = config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem"
         text_priv_key = wx.StaticText(self, 0, "trust_anchor_privkey:")
         text_priv_key.SetFont(textctrlfont1)
-        self.priv_key = wx.TextCtrl(self, -1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem", style=wx.CB_READONLY, size=(178, 30))
+        self.priv_key = wx.TextCtrl(self, -1, value= "sample_ec_256_priv.pem", style=wx.CB_READONLY, size=(178, 30))
         self.priv_key.SetFont(textctrlfont)
         text_trust_anchor_oid = wx.StaticText(self, -1, "trust_anchor_oid:")
         self.trust_anchor_oid = wx.ComboBox(self, 1, choices=key_trust_anchor_oid_list, style=wx.CB_READONLY, size = wx.Size(178, -1))
@@ -1802,14 +1963,20 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         text_secret_oid = wx.StaticText(self, -1, "secret_oid:")
         self.secret_oid = wx.ComboBox(self, 1, choices=key_secret_oid_list, style=wx.CB_READONLY, size=(178, 30))
         self.secret_oid.SetFont(textctrlfont)
+        
+        self.secret1path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret1 = wx.StaticText(self, 0, "secret:")
-        self.secret1 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret1.SetFont(textctrlfont)
+        
+        self.secret2path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret2 = wx.StaticText(self, 0, "secret:")
-        self.secret2 = wx.TextCtrl(self, 1, value= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret2.SetFont(textctrlfont)
+        
+        self.trust_anchor_certpath = config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem"
         text_trust_anchor_cert = wx.StaticText(self, -1, "trust_anchor_cert:")
-        self.trust_anchor_cert = wx.TextCtrl(self, 1, value= config.EXEPATH + "/scripts/certificates/sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
+        self.trust_anchor_cert = wx.TextCtrl(self, 1, value= "sample_ec_256_cert.pem",style=wx.CB_READONLY, size = wx.Size(178, 30))
         self.trust_anchor_cert.SetFont(textctrlfont)
         button_step2 = wx.Button(self, 1, 'Step2: Generate Manifest', size = wx.Size(270, -1))
         button_step2.SetFont(buttonfont)
@@ -1960,7 +2127,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         self.priv_key.Bind(wx.EVT_LEFT_DOWN,self.OnClickFileName)
         self.trust_anchor_cert.Bind(wx.EVT_LEFT_DOWN,self.OnClickCertName)
         self.secret1.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret)
-        self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret)
+        self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret2)
         self.keydata.Bind(wx.EVT_LEFT_DOWN,self.OnClickKeydata)
         
         # Set tooltips
@@ -1985,12 +2152,18 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("rsa_1024_test.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.keydata.SetValue(openFileDialog.GetPath())
+#         self.keydata.SetValue(openFileDialog.GetPath())
+        self.keypath = openFileDialog.GetPath()
+        
+        self.keydata.Clear()
+        self.keydata.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
         
         openFileDialog.Destroy()
     
@@ -2030,12 +2203,17 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("sample_ec_256_priv.pem")
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.priv_key.SetValue(openFileDialog.GetPath())
+        #self.priv_key.SetValue(openFileDialog.GetPath())
+        self.priv_keypath = openFileDialog.GetPath()
+        
+        self.priv_key.Clear()
+        self.priv_key.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()    
 
@@ -2048,12 +2226,18 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
         openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("sample_ec_256_cert.pem")
+        
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        #self.trust_anchor_cert.SetValue(openFileDialog.GetPath())
+        self.trust_anchor_certpath = openFileDialog.GetPath()
+        
+        self.trust_anchor_cert.Clear()
+        self.trust_anchor_cert.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
 
@@ -2066,17 +2250,43 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
         
         openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("secret.txt")
         
         
         if openFileDialog.ShowModal() ==wx.ID_CANCEL:
             
                 return
         print((openFileDialog.GetPath()))
-        self.secret1.SetValue(openFileDialog.GetPath())
-        self.secret2.SetValue(openFileDialog.GetPath())
+        #self.secret1.SetValue(openFileDialog.GetPath())
+        self.secret1path = openFileDialog.GetPath()
+        
+        self.secret1.Clear()
+        self.secret1.AppendText(os.path.basename(openFileDialog.GetPath()))
         
         openFileDialog.Destroy()
-
+ 
+    def OnClickSecret2(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+            
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST )
+        
+        some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
+        
+        openFileDialog.SetDirectory(some_Dir)
+        openFileDialog.SetFilename("secret.txt")
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            
+                return
+        print((openFileDialog.GetPath()))
+        #self.secret2.SetValue(openFileDialog.GetPath())
+        self.secret2path = openFileDialog.GetPath()
+        
+        self.secret2.Clear()
+        self.secret2.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
+        openFileDialog.Destroy()
 
 
     def OnRunStep1(self, evt):
@@ -2090,7 +2300,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         TRUST_ANCHOR_META = "2003E80111"
         #PROTECTED_UPDATE_SECRET = "49C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F649C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F6"
         
-        f = open(self.secret1.GetValue(), 'r')
+        f = open(self.secret1path, 'r')
         file= f.read()
         print(file)
         PROTECTED_UPDATE_SECRET = file
@@ -2170,19 +2380,19 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "trust_anchor_oid=" + self.trust_anchor_oid.GetValue()
         target_oid = "target_oid=" + self.target_oid.GetValue()
         sign_algo = "sign_algo=" + self.sign_algo.GetValue()
-        priv_key = "priv_key=" + self.priv_key.GetValue()
+        priv_key = "priv_key=" + self.priv_keypath
         payload_type = "payload_type=" + self.payload_type.GetValue()
         
-        if (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/rsa_1024_test.pem" ):
+        if (self.keydata.GetValue() == "rsa_1024_test.pem" ):
             key_algo =  "key_algo=65"
         
-        elif (self.keydata.GetValue() == config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/rsa_2048_test.pem" ):
+        elif (self.keydata.GetValue() == "rsa_2048_test.pem" ):
             key_algo =  "key_algo=66"
         
         key_usage = self.OnKeyUsage()
         print(key_usage)
         
-        key_data = "key_data=" + self.keydata.GetValue() 
+        key_data = "key_data=" + self.keypath 
         print(key_data)
         label = "label=test"
         seed_length = "seed_length=64"
@@ -2198,7 +2408,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
                                                     None)
             
         else:
-            secret = "secret=" + self.secret2.GetValue()
+            secret = "secret=" + self.secret2path
             print(secret)
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
