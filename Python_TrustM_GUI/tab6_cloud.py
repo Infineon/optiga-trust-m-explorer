@@ -18,7 +18,7 @@ aws_region_list = [
     'eu-west-1', 'eu-west-2', 'eu-west-3', 'eu-north-1']
 
 
-class tab5Frame(wx.Frame):
+class tab6Frame(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title="AWS: IOT Core", size=(1280, 720), style=(wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX)))
         self.Centre(wx.BOTH)

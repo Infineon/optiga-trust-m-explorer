@@ -2466,7 +2466,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         self.Parent.Parent.OnCloseWindow(None)
 
 
-class Tab1Frame(wx.Frame):
+class Tab4Frame(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title="Trust M GUI", size=(1280, 720), style=(wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX)))
         self.Centre(wx.BOTH)

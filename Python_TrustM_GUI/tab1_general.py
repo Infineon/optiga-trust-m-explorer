@@ -790,7 +790,7 @@ class Tab_APP(wx.Panel):
 
 
 
-class Tab6Frame(wx.Frame):
+class Tab1Frame(wx.Frame):
     
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title="General", size=(1280, 720), style=(wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX)))

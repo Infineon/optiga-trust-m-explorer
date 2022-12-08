@@ -1,6 +1,6 @@
 import wx
 
-# Info for tab5_cloud
+# Info for tab6_cloud
 class CloudDemoInfoDlg(wx.MessageDialog):
     def __init__(self, parent, title):
         wx.MessageDialog.__init__(self, parent, message="", caption=title, style=wx.OK | wx.ICON_INFORMATION)

@@ -1,10 +1,10 @@
 import wx
-import tab1_setuptm as t1
-import tab2_cryptotm as t2
-import tab3_enginetm as t3
-import tab4_storagetm as t4
-import tab5_cloud as t5
-import tab6_general as t6
+import tab1_general as t1
+import tab2_crypto as t2
+import tab3_engine as t3
+import tab4_protected as t4
+import tab5_storage as t5
+import tab6_cloud as t6
 import misc_dialogs as misc
 import shell_util as exec_cmd
 import images as img
@@ -22,12 +22,12 @@ class MainFrame(wx.Frame):
         self.SetFont(main_menu_font)
 
         # Create all the button widgets first
-        self.button1 = wx.Button(self, -1, 'Protected Update', size = wx.Size(367, -1))
+        self.button1 = wx.Button(self, -1, 'General Features')
         self.button2 = wx.Button(self, -1, 'Cryptographic Functions')
         self.button3 = wx.Button(self, -1, 'OpenSSL-Engine')
-        self.button4 = wx.Button(self, -1, 'Secure Storage', size = wx.Size(367, -1))
-        self.button5 = wx.Button(self, -1, 'AWS: IOT Core', size = wx.Size(367, -1))
-        self.button6 = wx.Button(self, -1, 'General Features')
+        self.button4 = wx.Button(self, -1, 'Protected Update', size = wx.Size(367, -1))
+        self.button5 = wx.Button(self, -1, 'Secure Storage', size = wx.Size(367, -1))
+        self.button6 = wx.Button(self, -1, 'AWS: IOT Core', size = wx.Size(367, -1))
         # Title screen widget setup
         # "\xe2\x84\xa2" represents the Trademark symbol in UTF-8 for Python 2.x, will not display properly on Windows (or Python 3.x)
         title_screen = wx.StaticText(self, -1, style=wx.ALIGN_CENTER, label="OPTIGA"+ u"\u1d40\u1d39"+ " TRUST M Explorer")
@@ -42,8 +42,8 @@ class MainFrame(wx.Frame):
         ifx_image = wx.Image(config.IMAGEPATH + "/images/250px-Infineon-Logo.png", wx.BITMAP_TYPE_PNG)
         ifx_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(ifx_image))   
         
-        # Setup logo
-        tab1_image = wx.Image(config.IMAGEPATH + "/images/protected.png", wx.BITMAP_TYPE_PNG)
+        # General logo
+        tab1_image = wx.Image(config.IMAGEPATH + "/images/setup.png", wx.BITMAP_TYPE_PNG)
         tab1_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab1_image))
 
         # Crypto logo
@@ -53,17 +53,17 @@ class MainFrame(wx.Frame):
         # Engine logo
         tab3_image = wx.Image(config.IMAGEPATH + "/images/engine.png", wx.BITMAP_TYPE_PNG)
         tab3_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab3_image))
-
-        # Cloud logo
-        tab5_image = wx.Image(config.IMAGEPATH + "/images/cloud.png", wx.BITMAP_TYPE_PNG)
-        tab5_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab5_image))
         
-        # Policy logo
-        tab4_image = wx.Image(config.IMAGEPATH + "/images/policy.png", wx.BITMAP_TYPE_PNG)
+        # Protected logo
+        tab4_image = wx.Image(config.IMAGEPATH + "/images/protected.png", wx.BITMAP_TYPE_PNG)
         tab4_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab4_image))
         
-        # General logo
-        tab6_image = wx.Image(config.IMAGEPATH + "/images/setup.png", wx.BITMAP_TYPE_PNG)
+        # Secure Storage logo
+        tab5_image = wx.Image(config.IMAGEPATH + "/images/policy.png", wx.BITMAP_TYPE_PNG)
+        tab5_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab5_image))
+        
+        # Cloud logo
+        tab6_image = wx.Image(config.IMAGEPATH + "/images/cloud.png", wx.BITMAP_TYPE_PNG)
         tab6_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab6_image))
 
         # declare the sizers
@@ -82,21 +82,21 @@ class MainFrame(wx.Frame):
         
         horisizer2.AddSpacer(1278)
 
-        gdsizer1.Add(tab6_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
+        gdsizer1.Add(tab1_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
         gdsizer1.Add(tab2_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
         gdsizer1.Add(tab3_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
 
-        gdsizer1.Add(self.button6, 1, wx.EXPAND | wx.ALL, 30)
+        gdsizer1.Add(self.button1, 1, wx.EXPAND | wx.ALL, 30)
         gdsizer1.Add(self.button2, 1, wx.EXPAND | wx.ALL, 30)
         gdsizer1.Add(self.button3, 1, wx.EXPAND | wx.ALL, 30)
 
-        gdsizer2.Add(tab1_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
         gdsizer2.Add(tab4_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
         gdsizer2.Add(tab5_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
+        gdsizer2.Add(tab6_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
 
-        gdsizer2.Add(self.button1, 1, wx.EXPAND | wx.ALL, 30)
         gdsizer2.Add(self.button4, 1, wx.EXPAND | wx.ALL, 30)
         gdsizer2.Add(self.button5, 1, wx.EXPAND | wx.ALL, 30)
+        gdsizer2.Add(self.button6, 1, wx.EXPAND | wx.ALL, 30)
         
         
 
@@ -143,23 +143,18 @@ class MainFrame(wx.Frame):
     # Technically this can be split into 6 different functions but I prefer it this way
     def OnButtonClick(self, evt):
         event_obj = evt.GetEventObject()
-        if (event_obj == self.FindWindowByLabel(label='Protected Update')):
-            self.activetab = t1.Tab1Frame(self, "Protected Update")
+        if (event_obj == self.FindWindowByLabel(label='General Features')):
+            self.activetab = t1.Tab1Frame(self, "General")
         elif (event_obj == self.FindWindowByLabel(label='Cryptographic Functions')):
             self.activetab = t2.Tab2Frame(self, "Crypto")
         elif (event_obj == self.FindWindowByLabel(label='OpenSSL-Engine')):
-            # ~ #~ if (misc.EngineDlg(self, "Warning!").ShowModal() == -1):
-                # ~ #~ return
             self.activetab = t3.Tab3Frame(self, "Engine")
+        elif (event_obj == self.FindWindowByLabel(label='Protected Update')):
+            self.activetab = t4.Tab4Frame(self, "Protected Update")
         elif (event_obj == self.FindWindowByLabel(label='Secure Storage')):
-            self.activetab = t4.Tab4Frame(self, "Secure Storage")
+            self.activetab = t5.Tab5Frame(self, 'Secure Storage')       
         elif (event_obj == self.FindWindowByLabel(label='AWS: IOT Core')):
-            # ~ #~ if (misc.EngineDlg(self, "Warning!").ShowModal() == -1):
-                # ~ #~ return
-            self.activetab = t5.tab5Frame(self, 'Cloud')
-        
-        elif (event_obj == self.FindWindowByLabel(label='General Features')):
-            self.activetab = t6.Tab6Frame(self, "General ")
+            self.activetab = t6.tab6Frame(self, "Cloud")
         
         else:
             return

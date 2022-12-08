@@ -9,7 +9,7 @@ import config
 TARGET_OID_list = ['F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB', 'F1E0', 'F1E1']
 SECRET_OID_list = ['F1D8', 'F1D7', 'F1D6', 'F1D9']
 
-class Tab4Frame(wx.Frame):
+class Tab5Frame(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title="Secure Storage", size=(1280, 720), style=(wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX)))
         self.Centre(wx.BOTH)

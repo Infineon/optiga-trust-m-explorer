@@ -1,6 +1,6 @@
 import wx
 import shell_util as exec_cmd
-import tab1_setuptm as t1
+import tab4_protected as t4
 
 
 # Generic File Editor for AWS Cloud connectivity (for tab5 use)
