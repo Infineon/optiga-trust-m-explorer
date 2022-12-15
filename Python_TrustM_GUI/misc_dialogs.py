@@ -1,9 +1,10 @@
 import wx
 import shell_util as exec_cmd
 import tab4_protected as t4
+import tab6_cloud as t6
 
 
-# Generic File Editor for AWS Cloud connectivity (for tab5 use)
+# Generic File Editor for AWS Cloud connectivity (for tab6 use)
 class EditorFrame(wx.Dialog):
     def __init__(self, parent, title, filename):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title=title)
