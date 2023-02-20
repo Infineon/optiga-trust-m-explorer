@@ -25,6 +25,7 @@ This document is intended for the users who wish to explore the functionalities 
 
 - [2.3 Application Data OID](#application-data-oid)
 
+
 [3. Cryptographic Functions](#cryptographic-functions)
 
 - [3.1 ECC Cryptographic Functions](#ecc-cryptographic-function)
@@ -86,6 +87,14 @@ This document is intended for the users who wish to explore the functionalities 
   - [5.4.4 Step 3 Update the RSA Key OID](#step-3-update-the-rsa-key-oid)
   - [5.4.5 Read RSA Key Objects Metadata](#read-rsa-key-objects-metadata)
   - [5.4.6 Reset RSA Key Access Condition](#reset-rsa-key-access-condition)
+- [5.5 Data Protected Update](#data-protected-update)
+  - [5.5.1 Data Protected Update Functions](#data-protected-update-functions)
+  - [5.5.2 Data Update Step 1 (Provisioning for All OIDs)](#data-update-step-1-provisioning-for-all-oids)
+  - [5.5.3 Data Update Step 2 (Generate Manifest and Fragment)](#data-update-step-2-generate-manifest-and-fragment)
+  - [5.5.4 Data Update Step 3 Update the OID Data](#data-update-step-3-update-the-oid-data)
+  - [5.5.5 Read Data Objects Metadata](#read-data-objects-metadata)
+  - [5.5.6 Reset Target OID Access Condition](#reset-target-oid-access-condition)
+
 
 [6. Secure Storage](#secure-storage)
 
@@ -136,8 +145,7 @@ Displays Basic Information of the  OPTIGA™ Trust M. Displays the Chip informat
 Function Descriptions of the General Tab
 
 ![](images/General_Features/general/functions.png)
-
-[^Figure 1]:OPTIGA™ Trust M General functions described
+[^Figure 1]: OPTIGA™ Trust M General functions described
 
 ### Chip info
 
@@ -147,7 +155,7 @@ To read out the OPTIGA™ Trust M chip info, select "OPTIGA™ Trust M chip info
 
 ![](images/General_Features/general/chipinfo.png)
 
-[^Figure 2]:OPTIGA™ Trust M chip info displayed
+[^Figure 2]: OPTIGA™ Trust M chip info displayed
 
 ### Read Metadata For All Data Objects
 
@@ -156,8 +164,7 @@ Displays the metadata for all data objects : *0xE0E0-0xE0E3, 0xE0E8-0xE0E9, 0xE0
 To read out metadata, select "Read Metadata For All Data Objects".
 
 ![](images/General_Features/general/metadata_all.png)
-
-[^Figure 3]:Metadata for all data objects displayed
+[^Figure 3]: Metadata for all data objects displayed
 
 ### Read All Objects Data
 
@@ -198,6 +205,7 @@ To read data status, select "Read Data For Common Data Objects".
 ![](images/General_Features/general/data_common.png)
 
 [^Figure 7]:Data Status of common data objects displayed
+
 
 ## Private Key and Cert OID
 
@@ -327,6 +335,7 @@ To Write Data, enter the Data input and select the Data Object ID to write to. T
 
 [^Figure 20]:Write Input Data into data object ID: *0xF1D0* successfully
 
+
 # Cryptographic Functions
 
 This section shows you the Cryptographic Functions of the OPTIGA™ Trust M. It can be used to generate keys , encrypt/decrypt and sign/verify using Trust M library.
@@ -357,7 +366,7 @@ ECC type is the ECC Key type to be generated. Key slot is the OID that will be u
 
 ECC Types : *ECC 256, ECC 384, ECC 521*, *Brainpool 256, Brainpool 384 ,Brainpool 512* ,  Key Slot : *0xE0F0 - 0xE0F3*  
 
-To generate ECC key pair, select the ECC type,Key slot and Key_usage. Then select "Generate Key"  In this Example, "*ECC type: 256*" ,"*Key slot: E0F1*" and "*key_usage:Auth/Sign*" are used. The public Key will be stored into corresponding OID which has been displayed in the GUI. 
+To generate ECC key pair, select the ECC type, Key slot and Key_usage. Then select "Generate Key"  In this Example, "*ECC type: 256*" ,"*Key slot: E0F1*" and "*key_usage:Auth/Sign*" are used. The public Key will be stored into corresponding OID which has been displayed in the GUI. 
 
 ![](images/Crypto/ECC/ECC_KeyGen.png)
 
@@ -657,7 +666,7 @@ This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentiall
 
 ![](images/Protected_Update/protected_update_main.png)
 
-[^ Figure 53 ]: OPTIGA Trust M Explorer Application: Protected Update Selection
+[^Figure 53 ]: OPTIGA Trust M Explorer Application: Protected Update Selection
 
 # Metadata Protected Update
 
@@ -680,7 +689,7 @@ For Step 1, There are two options, Wipe target data and Keep Target data.  For W
 
 For both options, the "Trust anchor OID" is used to store the trust anchor and the data object type is set to Trust Anchor. The Protected Update Secret is written to the data object of "Secret OID " and the Data type will be set to UPDATESEC . The metadata of target OID will be set according during Provisioning. 
 
-Trust Anchor OID options: *0xE0E8 - 0XE0E9* , Target OID options: *0xE0E1 - 0xE0E3, 0xF1D5 - 0xF1DB,0xE0F1 - 0xE0F3,0xE0FC - 0xE0FD*
+Trust Anchor OID options: *0xE0E8 - 0xE0E9*, *0xE0EF* , Target OID options: *0xE0E1 - 0xE0E3, 0xF1D0 - 0xF1DB,0xE0F1 - 0xE0F3,0xE0FC - 0xE0FD, 0xF1E0-0xF1E1*
 
 Secret OID options: *0xF1D0, 0xF1D4 - 0xF1DB*
 
@@ -698,7 +707,7 @@ After provisioning,  we can press "Read Objects Metadata" button to read out the
 
 ![](images/Protected_Update/metadata/readmetadata.png)
 
-[^ Figure 56 ]: Read objects Metadata after provisioning
+[^ Figure 56]: Read objects Metadata after provisioning
 
 In this example, the *MUD* for target OID should be *int-0xE0E8&&Conf-0xF1D4* after provisioning. 
 
@@ -1007,9 +1016,95 @@ Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that th
 
 
 
+# Data Protected Update
+
+This section shows the use of the  OPTIGA™ Trust M Integrity and Confidential Protected Update for data of OIDs by using the Trust Anchor and Secret installed in the OPTIGA™ Trust M.
+
+1. Select "Data Update"
+2. Overview of the "Data Update" tab.
+
+![](images/Protected_Update/data/datascreen.png)
+
+[^Figure 82]:Data Protected Update screen
+
+## Data Protected Update Functions
+
+Description of the Steps to do a successful Protected Update of OPTIGA™ Trust M Data Objects.
+
+### Data Update: Step 1 (Provisioning for All OIDs)
+
+For Step 1, the "Trust anchor OID" is used to store the trust anchor and the data object type is set to Trust Anchor. The Protected Update Secret is written to the data object of "Secret OID " and the Data type will be set to UPDATESEC . The metadata of target OID will be set accordingly during Provisioning. 
+
+Trust Anchor OID options: *0xE0E8 - 0xE0E9, 0xE0EF*, Target OID options: *0xF1D0 - 0xF1DB, 0xF1E0 - 0xF1E1, 0xE0E1 - 0xE0E3*
+
+Secret OID options: *0xF1D0, 0xF1D4 - 0xF1DB*
+
+In this example we will Provision for all OIDs. Select the "Trust anchor OID", "Target OID", "Secret OID". Then select the secret file to be used to provision the Secret OID and the Trust anchor Cert file to be used by clicking the respective textboxes. 
+
+![](images/Protected_Update/data/fileopen.png)
+
+[^Figure 83]:Selection of Trust Anchor Certificate and Input Secret file
+
+To Provision,  Select "Step1: Provisioning for All OIDs". 
+
+
+
+![](images/Protected_Update/data/provision.png)
+
+[^Figure 84]:Provisioning for Data Protected Update 
+
+In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
+
+### Data Update: Step 2 (Generate Manifest and Fragment)
+
+Generate the manifest and fragment for the Data Protected Update.
+
+To generate the Manifest and fragment, Enter the "payload version" and select the "data" file you want to import into OPTIGA™ Trust M
+
+Choose the trust_anchor_key (Corresponding to trust_anchor_cert) and also the secret file (same with the secret stored inside  "Secret OID")
+
+Choose the correct data type representation in *data type* box
+> Note: For data file containing hex value strings, choose *data type* to be *hex*, and for data file containing ASCII strings, choose *data type* to be *ascii*
+
+Select the "Step2 : Generate Manifest" button.  In this example the "payload version" is set to 1 and the payload_type is set to *data* and data used is the *type3_data,txt* file and the secret used is secret.txt file. 
+
+The Manifest and Fragment Generation are based on all the input inside the purple box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
+
+![](images/Protected_Update/data/manifest.png)
+
+[^Figure 85]: Data and Manifest generated 
+
+### Data Update: Step 3 Update the OID Data
+
+Updates the Data for the target OID
+
+To Update the data of the target OID, Select "Step3: Update Trust M Objects". 
+
+![](images/Protected_Update/data/update.png)
+
+[^Figure 86]:Data Protected Update successful
+
+### Read Data Objects Metadata
+
+Displays the metadata of the "Trust Anchor OID", "Target OID" and "Secret OID".
+
+To read out metadata , select "Read Objects Metadata".
+
+![](images/Protected_Update/data/metadata.png)
+
+[^Figure 87]:Read Out object metadata
+
+### Reset Target OID Access Condition
+
+Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that the Target OID will be accessible for use in other features after a successful Protected Update and not locked. 
+
+
+
+![](images/Protected_Update/data/reset.png)
+
+[^Figure 88]:Target OID access condition is reset successfully
+
 # Secure Storage
-
-
 
 ## Secure Storage Functions
 
@@ -1017,7 +1112,7 @@ Secure Storage Functions Description
 
 ![](images/Secure_Storage/Secure_Storage_Functions.png)
 
-[^Figure 82]: Secure Storage functions described
+[^Figure 89]: Secure Storage functions described
 
 ### Provision For HMAC Authentication
 
@@ -1033,7 +1128,7 @@ To Provision , Select the "Target OID" and "Secret OID". Then select "Provision 
 
 ![](images/Secure_Storage/Provision.png)
 
-[^Figure 83]: Provisioning HMAC authentication storage
+[^Figure 90]: Provisioning HMAC authentication storage
 
 ### HMAC Verify and Write
 
@@ -1045,7 +1140,7 @@ To write the data into the "Target OID" , Select the "Target OID" and "Secret OI
 
 ![](images/Secure_Storage/Hmac_verify_write.png)
 
-[^Figure 84]: Verify and Write to Target OID 
+[^Figure 91]: Verify and Write to Target OID 
 
 ### HMAC Verify and Read
 
@@ -1057,7 +1152,7 @@ To readout the data in the Target OID, Select the "Target OID" and "Secret OID",
 
 ![](images/Secure_Storage/Hmac_verify_datareadout.png)
 
-[^Figure 85]: Verify and read Target OID
+[^Figure 92]: Verify and read Target OID
 
 ### Read Objects Metadata
 
@@ -1067,7 +1162,7 @@ To read out metadata , select "Read Object Metadata".
 
 ![](images/Secure_Storage/metadata.png)
 
-[^Figure 86]: Read Objects metadata displayed
+[^Figure 93]: Read Objects metadata displayed
 
 # Secured connection to AWS IoT core
 
@@ -1087,11 +1182,11 @@ Go back to the main screen and select "AWS:IOT Core".
 
 ![](images/AWSIOT/MainScreen.png)
 
-[^Figure 87]: OPTIGA Trust M Explorer Application: AWS:IOT Core Selection
+[^Figure 94]: OPTIGA Trust M Explorer Application: AWS:IOT Core Selection
 
 ![](images/AWSIOT/AWS_Screen.png)
 
-[^Figure 88]: AWS:IOT Core Main Screen
+[^Figure 95]: AWS:IOT Core Main Screen
 
 ## Get started with AWS IoT Core
 
@@ -1099,29 +1194,29 @@ To generate "Access Key ID" , "Secret Access Key" and "Session Token"  log in to
 
 ![](images/AWSIOT/AWS_Signin.png)
 
-[^Figure 89]: AWS IOT Login
+[^Figure 96]: AWS IOT Login
 
 Next, go to your credentials.
 
 ![](images/AWSIOT/security_cred.jpg)
 
-[^Figure 90]: AWS IOT Security Credentials
+[^Figure 97]: AWS IOT Security Credentials
 
 Download and retrieve your security credentials.
 
 ![](images/AWSIOT/download.png)
 
-[^Figure 91]: AWS IOT Download Security Credentials
+[^Figure 98]: AWS IOT Download Security Credentials
 
 ![](images/AWSIOT/Credentials1.png)
 
-[^Figure 92]: Security_Credentials.CSV
+[^Figure 99]: Security_Credentials.CSV
 
 For AWS SSO user, Go to Your own login Page through SSO. For example,
 
 ![](images/AWSIOT/AWS_Account.png)
 
-[^Figure 93]: IFXCloudUserAdministratorAccess Page 
+[^Figure 100]: IFXCloudUserAdministratorAccess Page 
 
 Click *Command line or programmatic access* button to copy out the AWS_access_key_id,AWS_secret_access_key and AWS_session_token.
 
@@ -1129,61 +1224,61 @@ Click *Command line or programmatic access* button to copy out the AWS_access_ke
 
 ![](images/AWSIOT/Credentials.png)
 
-[^Figure 94]:AWS Access credentials
+[^Figure 101]:AWS Access credentials
 
 To retrieve Endpoint, go to "Services" and select "IOT Core".
 
 ![](images/AWSIOT/Services_iotcore.jpg)
 
-[^Figure 95]: AWS IOT Core
+[^Figure 102]: AWS IOT Core
 
 Select "Settings" at the left side of the webbrowser.
 
 ![](images/AWSIOT/IOT_core_settings.jpg)
 
-[^Figure 96]: AWS IOT Core Settings
+[^Figure 103]: AWS IOT Core Settings
 
 At "Custom Endpoint", copy the endpoint.
 
 ![](images/AWSIOT/endpoint_aws.png)
 
-[^Figure 97]: AWS IOT Core Settings Endpoint
+[^Figure 104]: AWS IOT Core Settings Endpoint
 
 Input the "Access Key ID" , "Secret Access Key" and "Session Token" and choose the correct server location
 
 ![](images/AWSIOT/Credentials_entered.png)
 
-[^Figure  98]: AWS IOT Configuration
+[^Figure  105]: AWS IOT Configuration
 
 Select "Set AWS credentials".
 
 ![](images/AWSIOT/Credentials_entered2.png)
 
-[^Figure 99]: AWS IOT Set AWS Credentials Selection
+[^Figure 106]: AWS IOT Set AWS Credentials Selection
 
 Next, set Endpoint by selecting "Open config file".
 
 ![](images/AWSIOT/AWS_Main2.png)
 
-[^Figure 100]: AWS IOT Open Config File Selection
+[^Figure 107]: AWS IOT Open Config File Selection
 
 Paste the endpoint  from your AWS account and save.
 
 ![](images/AWSIOT/Endpoint_editing.png)
 
-[^Figure 101]: AWS IOT Open Config File
+[^Figure 108]: AWS IOT Open Config File
 
 **Skip this step if a policy file has already been created.** First, select "Open policy file", make no changes and save. This is a one time setting only.
 
 ![](images/AWSIOT/AWS_Create_Policy.png)
 
-[^Figure 102]: AWS IOT Open Policy File Selection
+[^Figure 109]: AWS IOT Open Policy File Selection
 
 Select "Create Policy (from policy file)". Once policy has been created, there will be no need to do this step again.
 
 ![](images/AWSIOT/policyfille.png)
 
-[^Figure 103]: AWS IOT Policy File
+[^Figure 110]: AWS IOT Policy File
 
 ## Create device certificate and assign it to Thing with policy
 
@@ -1191,7 +1286,7 @@ Once configuration is done, to provision the certificate, select "1-click provis
 
 ![](images/AWSIOT/AWS_Main3.png)
 
-[^Figure 104]:  AWS IOT 1-click provision Selection
+[^Figure 111]:  AWS IOT 1-click provision Selection
 
 The following code will be run for Step 1 to Step 6.
 
@@ -1221,13 +1316,13 @@ Step 6: The policy is attached to the received certificate
 
 ![](images/AWSIOT/extra.png)
 
-[^Figure 105]: AWS IOT 1-click provision Succeeded
+[^Figure 112]: AWS IOT 1-click provision Succeeded
 
 To view the certificate details, go to AWS IoT / Security / Certificates
 
 ![](images/AWSIOT/aws_cert.png)
 
-[^Figure 106]: Certificate generated and registered to AWS IOT core
+[^Figure 113]: Certificate generated and registered to AWS IOT core
 
 ## Publish messages to AWS IoT core from the Raspberry Pi
 
@@ -1235,16 +1330,16 @@ After performing all the necessary preparation steps from Step 1 to Step 6, we w
 
 ![](images/AWSIOT/Subscribe.png)
 
-[^Figure 107]: AWS IOT Test
+[^Figure 114]: AWS IOT Test
 
 We can proceed with Step 7. On the OPTIGA™ Trust M Explorer AWS IOT, input the correct Topic and the intended Data. Then, select "Start Publishing". The device can continue publishing even after reboot and no further configuration will be required.
 
 ![](images/AWSIOT/publish.png)
 
-[^Figure 108]: AWS IOT Start Publishing Selection
+[^Figure 115]: AWS IOT Start Publishing Selection
 
 On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 109 . This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
 
 ![](images/AWSIOT/publiushed.png)
 
-[^Figure 109]: AWS IOT Web-Browser Published
+[^Figure 116]: AWS IOT Web-Browser Published
