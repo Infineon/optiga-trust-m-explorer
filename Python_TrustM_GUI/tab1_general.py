@@ -4,6 +4,7 @@ import misc_dialogs as misc
 import images as img
 import config
 from binascii import unhexlify
+import os
 
 
 class Tab_GEN(wx.Panel):
@@ -790,6 +791,876 @@ class Tab_APP(wx.Panel):
 
 
 
+class Tab_META(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        
+        textctrlfont = wx.Font()
+        textctrlfont.SetPointSize(11)
+        
+        buttonfont = wx.Font(11, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        
+        # declare the sizers
+        mainsizer = wx.BoxSizer(wx.VERTICAL)
+        mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        midsizer = wx.BoxSizer(wx.VERTICAL)
+        gdsizer1 = wx.GridSizer(rows=3, cols=2, vgap=10, hgap=20)
+        #gdsizer2 = wx.GridSizer(rows=3, cols=2, vgap=10, hgap=20)
+        gdsizer2 = wx.GridSizer(cols=2, vgap=10, hgap=20)
+        
+        gdsizer3 = wx.GridSizer(rows=1, cols=1, vgap=5, hgap=20)
+        gdsizer4 = wx.GridSizer(rows = 1, cols = 1, vgap = 5, hgap = 20)
+        gdsizer5 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=20)
+        gdsizer6 = wx.GridSizer(rows=1, cols=1, vgap=0, hgap=20)
+        gdsizer7 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=20)
+        gdsizer8 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=20)
+        #gdsizer8 = wx.GridSizer(rows=1, cols=2, vgap = 5, hgap=20 )
+        
+        file_sizer = wx.BoxSizer(wx.VERTICAL)
+        inputmetasizer = wx.BoxSizer(wx.VERTICAL)
+        
+        backbuttonsizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        # declare sizers that will be in the grid2
+        
+        lcs0sizer = wx.BoxSizer(wx.VERTICAL)
+        changesizer = wx.BoxSizer(wx.VERTICAL)
+        readsizer = wx.BoxSizer(wx.VERTICAL)
+        exesizer = wx.BoxSizer(wx.VERTICAL)
+
+        
+        # declare sizers that will be in the grid1
+        sysdatasizer = wx.BoxSizer(wx.VERTICAL)
+        counterobjsizer = wx.BoxSizer(wx.VERTICAL)
+        keysizer = wx.BoxSizer(wx.VERTICAL)
+        certsizer = wx.BoxSizer(wx.VERTICAL)
+        gendataobjsizer = wx.BoxSizer(wx.VERTICAL)
+        bindsecretsizer = wx.BoxSizer(wx.VERTICAL)
+        
+        # declare sizers that will be in the grid3
+        trustoidsizer = wx.BoxSizer(wx.VERTICAL)
+        secretoidsizer = wx.BoxSizer(wx.VERTICAL)
+        # MUD provision checkbox sizer
+        MUDCheckBoxSizer = wx.BoxSizer(wx.VERTICAL)
+        
+        # general oid data type sizer
+        datatypesizer = wx.BoxSizer(wx.VERTICAL)
+
+
+        # instantiate the objects
+        sysdatalist = ['E0C0','E0C1','E0C2','E0C3','E0C4','EOC5','E0C6','E0C9','-']
+        key_list = ['E0F0', 'E0F1','E0F2','E0F3','E0FC','E0FD','E200','-']
+        counter_list = ['E120','E121','E122','E123','-']
+        cert_list = ['E0E1','E0E2','E0E3','E0E8','E0E9','E0EF','-']
+        genoid_list = ['F1D0','F1D1','F1D2','F1D3','F1D4','F1D5', 'F1D6', 'F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB','F1E0', 'F1E1','-']
+        bind_list = ['E140','-']
+        
+        lcs0_list = ['Creation','Initialization','Operational','Termination']
+        change_list = ['ALW','NEV','Lcs0<0x03','Lcs0<0x07','Lcs0<0x0F']
+        read_list =  ['ALW','NEV','Lcs0<0x03','Lcs0<0x07','Lcs0<0x0F']
+        exe_list = ['ALW','NEV','Lcs0<0x03','Lcs0<0x07','Lcs0<0x0F']
+        
+        trustoid_list = ['E0E8', 'E0E9', 'E0EF']
+        secretoid_list = ['F1D4', 'F1D5','F1D6', 'F1DB']
+        
+        datatype_list = ['-', 'BSTR', 'UPCTR', 'TA', 'DEVCERT', 'PRESSEC', 'PTFBIND', 'UPDATESEC', 'AUTOREF']
+        
+        
+        text_sysdata = wx.StaticText(self, 0, "System DataObject:")
+        self.sysdata = wx.ComboBox(self, 1, choices=sysdatalist, style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.sysdata.SetFont(textctrlfont)
+        
+        text_counterobj = wx.StaticText(self, 0, "Counter Objects:")
+        self.counterobj = wx.ComboBox(self, 1, choices=counter_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.counterobj.SetFont(textctrlfont)
+        
+        text_key = wx.StaticText(self, 0, "ECC/RSA/AES key")
+        self.key = wx.ComboBox(self, 1, choices=key_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.key.SetFont(textctrlfont)
+        
+        text_cert = wx.StaticText(self, 0, "Cert")
+        self.cert = wx.ComboBox(self, 1, choices=cert_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.cert.SetFont(textctrlfont)
+        
+        text_gendataobj = wx.StaticText(self, 0, "General OID")
+        self.gendataobj = wx.ComboBox(self, 1, choices=genoid_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.gendataobj.SetFont(textctrlfont)
+        
+        text_bindsecret = wx.StaticText(self, 0, "Binding_Secret:")
+        self.bindsecret = wx.ComboBox(self, 1, choices=bind_list,style=wx.CB_READONLY, size = wx.Size(178, -1))
+        self.bindsecret.SetFont(textctrlfont)
+        
+        text_lcs0 = wx.StaticText(self, 0, "Lcs0:4 modes")
+        self.lcs0 = wx.ComboBox(self, 1, choices=lcs0_list,style=wx.CB_READONLY, size = wx.Size(178, -1))
+        self.lcs0.SetFont(textctrlfont)
+        
+        text_change = wx.StaticText(self, 0, "Change")
+        self.change = wx.ComboBox(self, 1, choices=change_list,style=wx.CB_READONLY, size = wx.Size(178, -1))
+        self.change.SetFont(textctrlfont)
+        
+        text_read = wx.StaticText(self, 0, "Read")
+        self.read = wx.ComboBox(self, 1, choices=read_list,style=wx.CB_READONLY, size = wx.Size(178, -1))
+        self.read.SetFont(textctrlfont)
+        
+        text_exe = wx.StaticText(self, 0, "Exe")
+        self.exe = wx.ComboBox(self, 1, choices=exe_list,style=wx.CB_READONLY, size = wx.Size(178, -1))
+        self.exe.SetFont(textctrlfont)
+        
+        # general OID data type
+        text_oid_datatype = wx.StaticText(self, 0, "General OID data type")
+        self.oid_datatype = wx.ComboBox(self, 1, choices=datatype_list, style=wx.CB_READONLY, size=wx.Size(178, -1))
+        self.oid_datatype.SetFont(textctrlfont)
+        #
+        
+        text_trust_anchor_oid = wx.StaticText(self, -1, "trust_anchor_oid:")
+        self.trust_anchor_oid = wx.ComboBox(self, 1, choices=trustoid_list, style=wx.CB_READONLY, size = wx.Size(178, -1))
+        self.trust_anchor_oid.SetFont(textctrlfont)
+        
+
+        
+        text_secret_oid = wx.StaticText(self, -1, "secret_oid:")
+        self.secret_oid = wx.ComboBox(self, 1, choices=secretoid_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret_oid.SetFont(textctrlfont)
+        
+        # checkbox for MUD provision
+        self.MUDCheckBox = wx.CheckBox(self, label = 'MUD Provision', style = wx.CHK_2STATE)
+        self.MUDCheckBox.SetValue(True) # default to checked
+        #
+        
+
+        self.custom_metadata_input = wx.TextCtrl(self, -1, value = "Custom Metadata", size = (190, 30))
+        self.custom_metadata_input.SetFont(textctrlfont)
+        
+#       test
+        button_write_metadata = wx.Button(self, 1, 'Write Metadata', size = (178, -1))
+        button_write_metadata.SetFont(buttonfont)
+#       
+
+        # button to read current metadata
+        button_read_metadata = wx.Button(self, 1, 'Read Metadata', size = (178, -1))
+        button_read_metadata.SetFont(buttonfont)
+        #
+
+        button_reset_mud = wx.Button(self, 1, 'Reset MUD', size = wx.Size(190, -1))
+        button_reset_mud.SetFont(buttonfont)
+        button_write_custom_metadata = wx.Button(self, 1, 'Write Custom Metadata', size = wx.Size(190, -1))
+        button_write_custom_metadata.SetFont(buttonfont)
+        
+        
+        
+        #button_save_custom_metadata = wx.Button(self, 1, 'Save Custom Metadata', size = wx.Size(178, -1))
+        #button_save_custom_metadata.SetFont(buttonfont)
+
+        
+        self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+
+
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearbutton = wx.BitmapButton(self, -1, clearimage)
+        
+        
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backbutton = wx.BitmapButton(self, -1, backimage)
+       
+        #Add mainhorisizer to mainsizer
+        mainsizer.Add(mainhorisizer, 1, wx.EXPAND)
+       
+        # Add Sub Sizers to the mainhorisizer
+        mainhorisizer.Add(midsizer, 1, wx.EXPAND)
+        mainhorisizer.Add(self.text_display, 2, wx.EXPAND | wx.ALL, 5)
+        
+        # Add Objects to backbuttonsizer
+        #leftsizer.Add(backbuttonsizer, 0, wx.LEFT | wx.BOTTOM, 10)
+        
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT, 0)
+        backbuttonsizer.AddSpacer(10)
+        backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
+
+        # Add sizers to midsizer
+        midsizer.AddSpacer(10)
+        midsizer.Add(gdsizer1, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        midsizer.AddSpacer(10)
+        midsizer.Add(gdsizer2, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        
+        midsizer.AddSpacer(0)
+        midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        
+        midsizer.AddSpacer(0)
+        midsizer.Add(gdsizer4, 0, wx.LEFT | wx.ALL, 5)
+        
+        midsizer.AddSpacer(0)
+        midsizer.Add(gdsizer5, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        #midsizer.AddSpacer()
+        midsizer.Add(gdsizer6, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        midsizer.AddSpacer(10)
+        midsizer.Add(gdsizer7, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        midsizer.AddSpacer(10)
+        midsizer.Add(gdsizer8, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        #midsizer.AddSpacer(5)
+        #midsizer.Add(gdsizer8, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        midsizer.AddSpacer(10)
+        midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
+        
+        
+        
+        #add buttons into gdsizer3
+        gdsizer2.AddMany([
+            (lcs0sizer, 0, wx.EXPAND),
+            (changesizer, 0, wx.EXPAND),
+            (readsizer, 0, wx.EXPAND),
+            (exesizer, 0, wx.EXPAND),
+
+        ])
+        
+        #add sizers to gdsizer1
+        gdsizer1.AddMany([
+                (sysdatasizer, 0, wx.EXPAND),
+                (counterobjsizer, 0, wx.EXPAND),
+                (keysizer, 0, wx.EXPAND),
+                (certsizer, 0, wx.EXPAND),
+                (gendataobjsizer, 0, wx.EXPAND),
+                (bindsecretsizer, 0, wx.EXPAND),
+        ])
+        
+        #add sizers to gdsizer3
+        #gdsizer3.AddMany([(button_write_metadata),])
+        
+        gdsizer3.AddMany([(datatypesizer, 0, wx.EXPAND), ])
+        
+        gdsizer4.AddMany([(MUDCheckBoxSizer, 0, wx.EXPAND),])
+        
+        
+        #add sizers to gdsizer4
+        gdsizer5.AddMany([
+                (trustoidsizer, 0, wx.EXPAND),
+                (secretoidsizer, 0, wx.EXPAND),
+        ])
+        
+
+        gdsizer6.AddMany([(button_reset_mud),])
+        
+                
+        gdsizer7.AddMany([(button_read_metadata),
+                (button_write_metadata),])
+        
+
+        gdsizer8.AddMany([(file_sizer),
+                        (button_write_custom_metadata),])
+        
+
+                
+        #add objects into sizers in gdsizer1
+        sysdatasizer.Add(text_sysdata)
+        sysdatasizer.Add(self.sysdata)
+        
+        counterobjsizer.Add(text_counterobj)
+        counterobjsizer.Add(self.counterobj)
+        
+        keysizer.Add(text_key)
+        keysizer.Add(self.key)
+        
+        certsizer.Add(text_cert)
+        certsizer.Add(self.cert)
+        gendataobjsizer.Add(text_gendataobj)
+        gendataobjsizer.Add(self.gendataobj)
+        
+        bindsecretsizer.Add(text_bindsecret)
+        bindsecretsizer.Add(self.bindsecret)
+        
+        lcs0sizer.Add(text_lcs0)
+        lcs0sizer.Add(self.lcs0)
+        changesizer.Add(text_change)
+        changesizer.Add(self.change)
+        readsizer.Add(text_read)
+        readsizer.Add(self.read)
+        exesizer.Add(text_exe)
+        exesizer.Add(self.exe)
+        file_sizer.Add(self.custom_metadata_input)
+
+        
+        # oid datatype sizer
+        datatypesizer.Add(text_oid_datatype)
+        datatypesizer.Add(self.oid_datatype)
+        #
+        
+
+
+        #add objects into sizers in gdsizer2
+        trustoidsizer.Add(text_trust_anchor_oid)
+        trustoidsizer.Add(self.trust_anchor_oid)
+#         targetoidsizer.Add(text_target_oid)
+#         targetoidsizer.Add(self.target_oid)
+        secretoidsizer.Add(text_secret_oid)
+        secretoidsizer.Add(self.secret_oid)
+
+
+        # MUD Checkbox sizer
+        MUDCheckBoxSizer.Add(self.MUDCheckBox)
+
+
+        # helper function to choose the last item in the list
+        def lastIndex(inputList:list) -> int:
+            return len(inputList) - 1
+        #
+
+        
+        # Set Default inputs for Text Boxes      
+        self.sysdata.SetSelection(lastIndex(sysdatalist))
+        self.counterobj.SetSelection(lastIndex(counter_list))
+        self.key.SetSelection(lastIndex(key_list))
+        self.cert.SetSelection(lastIndex(cert_list))
+        self.gendataobj.SetSelection(lastIndex(genoid_list))
+        self.bindsecret.SetSelection(lastIndex(bind_list))
+        
+        self.oid_datatype.SetSelection(0)
+        self.oid_datatype.Disable()
+        
+        self.lcs0.SetSelection(0)
+        self.change.SetSelection(3)
+        self.read.SetSelection(0)
+        self.exe.SetSelection(0)
+        self.trust_anchor_oid.SetSelection(0)
+        self.secret_oid.SetSelection(0)
+       
+
+        # attach objects to the sizer
+        # declare and bind events
+        self.sysdata.Bind(wx.EVT_COMBOBOX, self.OnSys)
+        self.counterobj.Bind(wx.EVT_COMBOBOX, self.OnCounter)
+        self.key.Bind(wx.EVT_COMBOBOX, self.OnKey)
+        self.cert.Bind(wx.EVT_COMBOBOX, self.OnCert)
+        self.gendataobj.Bind(wx.EVT_COMBOBOX, self.OnGen)
+        self.bindsecret.Bind(wx.EVT_COMBOBOX,self.OnBind)
+        self.custom_metadata_input.Bind(wx.EVT_LEFT_DOWN, self.OnClickFileName)
+# for normal write metadata
+        self.lcs0.Bind(wx.EVT_COMBOBOX, self.OnLcs0)
+        self.change.Bind(wx.EVT_COMBOBOX, self.OnChange)
+        self.read.Bind(wx.EVT_COMBOBOX, self.OnRead)
+        self.exe.Bind(wx.EVT_COMBOBOX, self.OnExe)
+#
+        clearbutton.Bind(wx.EVT_BUTTON, self.OnClear)
+        backbutton.Bind(wx.EVT_BUTTON, self.OnBack)
+        #self.input.Bind(wx.EVT_LEFT_DOWN,self.OnClickFileName)
+# for normal write metadata
+        button_write_metadata.Bind(wx.EVT_BUTTON, self.OnWriteMetadata)
+#
+        button_write_custom_metadata.Bind(wx.EVT_BUTTON, self.OnWriteCustomMetadata)
+        #button_save_custom_metadata.Bind(wx.EVT_BUTTON, self.OnSaveMetadata)
+        
+        # for reading metadata
+        button_read_metadata.Bind(wx.EVT_BUTTON, self.OnReadMetadata)
+        #
+        
+        # for MUD provision checkbox
+        self.MUDCheckBox.Bind(wx.EVT_CHECKBOX, self.OnMUDCheckBox)
+        #
+        
+        # for reset access conditions
+        button_reset_mud.Bind(wx.EVT_BUTTON, self.OnResetAccess)
+
+        self.SetSizer(mainsizer)
+        mainsizer.Fit(self)   
+        
+
+    def OnSys(self, evt):
+        
+        if (self.sysdata.GetValue() == '-'):
+            self.counterobj.Enable()
+            self.key.Enable()
+            self.cert.Enable()
+            self.gendataobj.Enable()
+            self.bindsecret.Enable()
+            
+        else:
+            self.counterobj.Disable()
+            self.key.Disable()
+            self.cert.Disable()
+            self.gendataobj.Disable()
+            self.bindsecret.Disable()
+            self.oid_datatype.SetSelection(0)
+            self.oid_datatype.Disable()
+
+        self.dataobject = self.sysdata.GetValue()
+
+    def OnCounter(self, evt):
+        
+        if (self.counterobj.GetValue() == '-'):
+            self.sysdata.Enable()
+            self.key.Enable()
+            self.cert.Enable()
+            self.gendataobj.Enable()
+            self.bindsecret.Enable()
+            
+        else:
+            self.sysdata.Disable()
+            self.key.Disable()
+            self.cert.Disable()
+            self.gendataobj.Disable()
+            self.bindsecret.Disable()
+            self.oid_datatype.SetSelection(0)
+            self.oid_datatype.Disable()
+          
+        self.dataobject = self.counterobj.GetValue() 
+          
+    def OnKey(self, evt):
+        
+        if (self.key.GetValue() == '-'):
+            self.sysdata.Enable()
+            self.counterobj.Enable()
+            self.cert.Enable()
+            self.gendataobj.Enable()
+            self.bindsecret.Enable()
+            
+        else:
+            self.sysdata.Disable()
+            self.counterobj.Disable()
+            self.cert.Disable()
+            self.gendataobj.Disable()
+            self.bindsecret.Disable()
+            self.oid_datatype.SetSelection(0)
+            self.oid_datatype.Disable()
+      
+        self.dataobject = self.key.GetValue()
+      
+    def OnCert(self, evt):
+        
+        if (self.cert.GetValue() == '-'):
+            self.sysdata.Enable()
+            self.counterobj.Enable()
+            self.key.Enable()
+            self.gendataobj.Enable()
+            self.bindsecret.Enable()
+            
+        else:
+            self.sysdata.Disable()
+            self.counterobj.Disable()
+            self.key.Disable()
+            self.gendataobj.Disable()
+            self.bindsecret.Disable() 
+            self.oid_datatype.SetSelection(0)
+            self.oid_datatype.Disable()
+        
+        self.dataobject = self.cert.GetValue()
+        
+    def OnGen(self, evt):
+        
+        if (self.gendataobj.GetValue() == '-'):
+            self.sysdata.Enable()
+            self.counterobj.Enable()
+            self.key.Enable()
+            self.cert.Enable()
+            self.bindsecret.Enable()
+            self.oid_datatype.SetSelection(0)
+            self.oid_datatype.Disable()
+            
+        else:
+            self.sysdata.Disable()
+            self.counterobj.Disable()
+            self.key.Disable()
+            self.cert.Disable()
+            self.bindsecret.Disable()   
+            self.oid_datatype.Enable() 
+
+        self.dataobject = self.gendataobj.GetValue()
+
+    def OnBind(self, evt):
+        
+        if (self.bindsecret.GetValue() == '-'):
+            self.sysdata.Enable()
+            self.counterobj.Enable()
+            self.key.Enable()
+            self.cert.Enable()
+            self.gendataobj.Enable()
+            
+        else:
+            self.sysdata.Disable()
+            self.counterobj.Disable()
+            self.key.Disable()
+            self.cert.Disable()
+            self.gendataobj.Disable()
+            self.oid_datatype.SetSelection(0)
+            self.oid_datatype.Disable()
+    
+        self.dataobject = self.bindsecret.GetValue()
+        
+    def OnLcs0(self, evt):
+        self.lcs0value = self.lcs0.GetValue()
+        
+        if (self.lcs0.GetValue() == 'Operational' or self.lcs0.GetValue() == 'Termination'):
+                wx.CallLater(20, self.OnLcs0Warning)
+        
+    def OnLcs0Warning(self):
+        if (self.MUDCheckBox.GetValue() == False):
+        
+                warningDialog = wx.MessageDialog(None, "Warning: Any manipulation with the lifecycle state might lock the data key/slot permanently. As a safety measure, \"MUD Provision\" has been enabled. This is NOT REVERSIBLE WITHOUT MUD PROVISION. Continue?", 'Warning', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_WARNING)
+                result = warningDialog.ShowModal()
+        
+                if result == wx.ID_YES:
+                        self.lcs0value = self.lcs0.GetValue()
+                        self.MUDCheckBox.SetValue(True)
+                        self.trust_anchor_oid.Enable()
+                        self.secret_oid.Enable()
+                        
+                else:
+                        self.lcs0.SetSelection(0)
+                        self.lcs0value = self.lcs0.GetValue()
+                
+                warningDialog.Destroy()
+        
+    def OnChange(self, evt):
+        self.changevalue = self.change.GetValue()
+
+    def OnRead(self, evt):
+        self.readvalue = self.read.GetValue()    
+        
+    def OnExe(self, evt):
+        self.exevalue = self.exe.GetValue()
+    
+    def OnClickFileName(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+            
+        #openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.bin;*.crt|Binary|*.bin|Certificate|*.crt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","Text|*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+        cert_dir= config.IMAGEPATH + "/working_space/"
+        openFileDialog.SetDirectory(cert_dir)
+        openFileDialog.SetFilename("Custom_Metadata.txt")
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            
+                return
+        print((openFileDialog.GetPath()))
+        
+        self.inputpath = os.path.dirname((openFileDialog.GetPath()))
+        self.inputMetadata = (openFileDialog.GetPath())
+        
+        self.custom_metadata_input.Clear()
+        self.custom_metadata_input.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
+        openFileDialog.Destroy()
+        
+        wx.CallLater(15, self.OnSaveCustomMetadata)
+    
+# normal metadata write
+    def OnWriteMetadata(self, evt):
+        try:
+                DataObject = self.dataobject
+                
+                if (self.MUDCheckBox.GetValue() == True):
+                        wx.CallLater(15, self.OnWriteMetadataWithMUDExec)
+                
+                else :
+                        self.text_display.AppendText("Writing Metadata to OPTIGA™ TrustM's Data Object " + DataObject + " ....\n")
+                        wx.CallLater(15, self.OnWriteMetadataExec)
+
+        except AttributeError:
+                wx.CallLater(10, self.OnNoOIDSelected)
+
+        
+    def OnNoOIDSelected(self):
+        infoDialog = wx.MessageDialog(None, "Select Target OID To Write/Read Metadata", "No Target OID Selected", wx.OK | wx.ICON_INFORMATION)
+        infoDialog.ShowModal()
+        
+    def OnWriteMetadataWithMUDExec(self):
+        trust_anchor_oid = "0x" + self.trust_anchor_oid.GetValue()
+        secret_oid = "0x" + self.secret_oid.GetValue()
+        target_oid = "0x" + self.dataobject
+        
+        TRUST_ANCHOR_META = "2003E80111"
+        PROTECTED_UPDATE_SECRET_META = "200BD103E1FC07D30100E80123"
+        TARGET_OID_META="2010C1020000F00101D80721" + self.trust_anchor_oid.GetValue() + "FD20" + self.secret_oid.GetValue()
+        
+        
+        #Step1: Provisioning metadata for Trust Anchor
+        self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
+        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
+        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", trust_anchor_oid, "-F", "trust_anchor_metadata.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w 0x" + trust_anchor_oid + " -F trust_anchor_metadata.bin'" + " executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        
+        #Step2: Provisioning metadata for Protected Update Secret OID
+        self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
+        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
+        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", secret_oid, "-F", "protected_update_secret_metadata.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w " + secret_oid + " -F protected_update_secret_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        ##Set metadata for Target OID
+        self.text_display.AppendText("Set metadata protected update for Target OID (Provision for Target OID)... \n")
+        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META + " | xxd -r -p > targetOID_metadata.bin", None)
+        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        self.text_display.AppendText("Writing targetOID_metadata.bin as metadata of Target OID... \n")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w " + target_oid + " -F targetOID_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        wx.CallLater(15, self.OnWriteMetadataExec)
+        
+        
+    def OnWriteMetadataExec(self):
+        DataObject = "0x" + self.dataobject
+        MetadataToWrite = ""
+        
+        if (self.change.GetValue() == 'ALW'):
+                changeToWrite = "-Ca"
+        if (self.change.GetValue() == 'NEV'):
+                changeToWrite = "-Cn"
+        if (self.change.GetValue() == 'Lcs0<0x03'):
+                changeToWrite = "-Ci"        
+        if (self.change.GetValue() == 'Lcs0<0x07'):
+                changeToWrite = "-Co"
+        if (self.change.GetValue() == 'Lcs0<0x0F'):
+                changeToWrite = "-Ct"
+                
+        if (self.read.GetValue() == 'ALW'):
+                readToWrite = "-Ra"
+        if (self.read.GetValue() == 'NEV'):
+                readToWrite = "-Rn"
+        if (self.read.GetValue() == 'Lcs0<0x03'):
+                readToWrite = "-Ri"        
+        if (self.read.GetValue() == 'Lcs0<0x07'):
+                readToWrite = "-Ro"
+        if (self.read.GetValue() == 'Lcs0<0x0F'):
+                readToWrite = "-Rt"
+
+        if (self.exe.GetValue() == 'ALW'):
+                exeToWrite = "-Ea"
+        if (self.exe.GetValue() == 'NEV'):
+                exeToWrite = "-En"
+        if (self.exe.GetValue() == 'Lcs0<0x03'):
+                exeToWrite = "-Ei"        
+        if (self.exe.GetValue() == 'Lcs0<0x07'):
+                exeToWrite = "-Eo"
+        if (self.exe.GetValue() == 'Lcs0<0x0F'):
+                exeToWrite = "-Et"
+                
+        if (self.lcs0.GetValue() == 'Creation'):
+                lcs0ToWrite = ""
+        if (self.lcs0.GetValue() == 'Initialization'):
+                lcs0ToWrite = "-I"
+        if (self.lcs0.GetValue() == 'Operational'):
+                lcs0ToWrite = "-O"
+        if (self.lcs0.GetValue() == 'Termination'):
+                lcs0ToWrite = "-T"        
+        
+        # if changing data type is selected
+        if (self.oid_datatype.GetValue() != '-'):
+                datatype = "2003E801"
+                
+                if (self.oid_datatype.GetValue() == 'BSTR'):
+                        datatype += "00"
+                
+                elif (self.oid_datatype.GetValue() == 'UPCTR'):
+                        datatype += "01"
+                
+                elif (self.oid_datatype.GetValue() == 'TA'):
+                        datatype += "11"
+                        
+                elif (self.oid_datatype.GetValue() == 'DEVCERT'):
+                        datatype += "12"
+                
+                elif (self.oid_datatype.GetValue() == 'PRESSEC'):
+                        datatype += "21"
+        
+                elif (self.oid_datatype.GetValue() == 'PTFBIND'):
+                        datatype += "22"
+                
+                elif (self.oid_datatype.GetValue() == 'UPDATSEC'):
+                        datatype += "23"
+                        
+                elif (self.oid_datatype.GetValue() == 'AUTOREF'):
+                        datatype += "31"
+                        
+                else:
+                        datatype += "00" #default to BSTR
+                
+                datatype_file = config.IMAGEPATH + "/working_space/datatype_meta.bin"
+                
+                # writing data type metadata seperately since the linux cli commands dont support 
+                with open (datatype_file, "wb") as file:
+                        file.write(unhexlify(datatype))
+                
+                command_output = exec_cmd.execCLI(["hd", datatype_file,])
+                self.text_display.AppendText("Contents of the data type file:\n")
+                self.text_display.AppendText(command_output)
+                
+                command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", DataObject,"-F", datatype_file ])
+                self.text_display.AppendText(command_output)
+                self.text_display.AppendText("'trustm_metadata -w " + DataObject + " -F " + datatype_file + "' executed \n")
+                self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+                
+                
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", DataObject, changeToWrite, readToWrite, exeToWrite, lcs0ToWrite])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w " + DataObject + " " + changeToWrite + " " + readToWrite + " " + exeToWrite + " " + lcs0ToWrite + "' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+#
+        
+    def OnResetAccess(self, evt):
+        try:
+                DataObject = self.dataobject
+                self.text_display.AppendText("Resetting Metadata Update Description tag for Target OID 0x" + DataObject + "\n")
+                wx.CallLater(10, self.OnResetAccessExec)
+        
+        except AttributeError:
+                wx.CallLater(10, self.OnNoOIDSelected)
+        
+    def OnResetAccessExec(self):
+        RESET_MUD_META="2003D801FF"
+        target_oid = "0x" + self.dataobject
+        exec_cmd.createProcess("echo " + RESET_MUD_META + " | xxd -r -p > mud_reset.bin", None)
+        command_output = exec_cmd.execCLI(["xxd", "mud_reset.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("mud_reset.bin generated\n")
+        self.text_display.AppendText("Writing metadata for Target OID... \n")
+        exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "mud_reset.bin", ])
+        self.text_display.AppendText("'trustm_metadata -w " + target_oid + " -F mud_reset.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+    def OnSaveMetadata(self, evt):
+        metadataInput = self.custom_metadata_input.GetValue()
+        if (len(metadataInput) % 2 != 0):
+                errorDialog = wx.MessageDialog(None, "Invalid Metadata Input", 'Error', wx.OK | wx.ICON_ERROR)
+                if (errorDialog.ShowModal() == wx.ID_OK):
+                        return
+        
+        
+       # print(inputToFile)
+        
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+        
+        saveFileDialog = wx.FileDialog(frame, "Save Metadata", "", "", "Binary|*.bin|All|*.*", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        saveFileDialog.SetDirectory(config.IMAGEPATH + "/working_space/")
+        
+        
+        if saveFileDialog.ShowModal() == wx.ID_CANCEL :
+                return
+        
+        self.saveFilePath = saveFileDialog.GetPath()
+        
+        with open(self.saveFilePath, "wb") as file:
+               file.write(unhexlify(metadataInput))
+         
+        saveFileDialog.Destroy()
+
+    def OnSaveCustomMetadata(self):
+        try:
+                customMetadataBin = self.inputpath + "/custom_metadata.bin"
+                
+                with open(self.inputMetadata) as f, open(customMetadataBin, 'wb') as fout:
+                        for line in f:
+                                fout.write(unhexlify(''.join(line.split())))
+                
+                command_output = exec_cmd.execCLI(["hd", customMetadataBin,])
+                self.text_display.AppendText("Contents of the custom metadata file:\n")
+                self.text_display.AppendText(command_output)
+                
+        except AttributeError:
+                wx.CallLater(10, self.OnNoMetadataFileSelected)
+                
+    def OnNoMetadataFileSelected(self):
+        infoDialog = wx.MessageDialog(None, "Select Metadata File to Write to Target OID", "No Metadata File Selected", wx.OK | wx.ICON_INFORMATION)
+        infoDialog.ShowModal()
+
+    def OnMUDCheckBox(self, evt):
+        cb = evt.GetEventObject()
+        
+        if (cb.GetValue() == False):
+                self.trust_anchor_oid.Disable()
+                self.secret_oid.Disable()
+                
+        else:
+                self.trust_anchor_oid.Enable()
+                self.secret_oid.Enable()
+                
+        # add warning regarding LCS0
+        if (cb.GetValue() == False and (self.lcs0.GetValue() == 'Operational' or self.lcs0.GetValue() == 'Termination')):
+                warningDialog = wx.MessageDialog(None, "Warning: Any manipulation with the lifecycle state might lock the data key/slot permanently. As a safety measure, \"MUD Provision\" has been enabled. This is NOT REVERSIBLE WITHOUT MUD PROVISION. Continue?", 'Warning', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_WARNING)
+                result = warningDialog.ShowModal()
+                
+                if (result == wx.ID_YES):
+                        self.MUDCheckBox.SetValue(True)
+                        self.trust_anchor_oid.Enable()
+                        self.secret_oid.Enable()
+                        
+                else:
+                        self.MUDCheckBox.SetValue(False)
+                        self.lcs0.SetSelection(0)
+                        self.trust_anchor_oid.Disable()
+                        self.secret_oid.Disable()
+                        
+                warningDialog.Destroy()
+    
+     
+    def OnMetadata(self, evt): 
+        
+        DataObject = self.dataobject
+        
+        self.text_display.AppendText("Writing Metadata to OPTIGA™ TrustM's Data Object " + DataObject + " ....\n")
+        wx.CallLater(15, self.OnMetadata1)
+        
+    def OnWriteCustomMetadata(self, evt):
+        try:
+                DataObject = self.dataobject
+        
+                self.text_display.AppendText("Writing Metadata to OPTIGA™ TrustM's Data Object " + DataObject + " ....\n")
+                wx.CallLater(10, self.OnMetadata1)
+                
+        except AttributeError:
+                wx.CallLater(10, self.OnNoOIDSelected)
+        
+    def OnMetadata1(self):
+        try:
+                DataObject = "0x" + self.dataobject
+                inputfile = self.inputpath + "/custom_metadata.bin"
+        
+                command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", DataObject,"-F", inputfile ])
+                self.text_display.AppendText(command_output)
+                self.text_display.AppendText("'trustm_metadata -w " + DataObject + " -F " + inputfile + "' executed \n")
+                self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+                
+        except AttributeError:
+                wx.CallLater(10, self.OnNoMetadataFileSelected)
+
+    def OnReadMetadata(self, evt):
+        try:
+                self.text_display.AppendText("Reading out Metadata of OPTIGA™ TrustM's Data Object ID " + self.dataobject + "....\n")
+                wx.CallLater(20, self.OnReadMetadataExec)
+        
+        except AttributeError:
+                wx.CallLater(20, self.OnNoOIDSelected)
+                
+    def OnReadMetadataExec(self):
+        dataobj = "0x" + self.dataobject
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-r", dataobj, ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -r " + dataobj + "' executed \n")
+        self.text_display.AppendText("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n")
+
+    def OnClear(self, evt):
+        self.text_display.Clear()
+
+    # Calling parent of the parent, as direct parent is the notebook,
+    # then the second parent is the frame, from which we call the destruction
+    def OnBack(self, evt):
+        self.Parent.Parent.OnCloseWindow(None)
+
 class Tab1Frame(wx.Frame):
     
     def __init__(self, parent, title):
@@ -804,12 +1675,13 @@ class Tab1Frame(wx.Frame):
         self.tab1_gen = Tab_GEN(self.tab_base)
         self.tab2_key = Tab_KEY(self.tab_base)
         self.tab3_app = Tab_APP(self.tab_base)
+        self.tab4_meta = Tab_META(self.tab_base)
 
         # Add tabs
         self.tab_base.AddPage(self.tab1_gen, 'General')
-        self.tab_base.AddPage(self.tab2_key, 'Private Key and Cert OID')
-        
+        self.tab_base.AddPage(self.tab2_key, 'Private Key and Cert OID')        
         self.tab_base.AddPage(self.tab3_app, 'Application Data OID')
+        self.tab_base.AddPage(self.tab4_meta, 'Write Metadata')
         
 
         self.Show(True)
