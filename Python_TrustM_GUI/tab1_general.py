@@ -5,10 +5,17 @@ import images as img
 import config
 from binascii import unhexlify
 import os
-
+import subprocess
+import xml.dom.minidom
+import math
 
 class Tab_GEN(wx.Panel):
     
+    oidList = ['E0C0', 'E0C1', 'E0C2', 'E0C5', 'E0C6', 'F1C1', 'F1C2', 'E0E0', 'E0E1', 'E0E2', 'E0E3', 'E0C4', 'E0C3', 'F1C0', 'E0C9', 'E0E8', 'E0E9', 'E0EF', 'E120', 'E121', 'E122', 'E123', 'F1D0', 'F1D1', 'F1D2', 'F1D3', 'F1D4', 'F1D5', 'F1D6', 'F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB', 'F1E0', 'F1E1', 'E140', 'E0F0', 'E0F1', 'E0F2', 'E0F3', 'E0FC', 'E0FD', 'E200']
+    specialOIDList = ['E0F0', 'E0F1', 'E0F2', 'E0F3', 'E0FC', 'E0FD', 'E200']
+    chipSpecificOIDList = ['E0E0', 'E0C0', 'E0C1', 'E0C2', 'E0C3', 'E0C4', 'E0C5', 'E0C6', 'E0C9', 'F1C0', 'F1C1', 'F1C2'] 
+    noDataOIDList = ['E0C2', 'E0C5', 'F1C2', 'E0F0', 'E0F1', 'E0F2', 'E0F3', 'E0FC', 'E0FD', 'E200']
+        
     def __init__(self, parent):
         
         wx.Panel.__init__(self, parent)
@@ -23,7 +30,7 @@ class Tab_GEN(wx.Panel):
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
-        gdsizer3 = wx.GridSizer(rows=6, cols=1, vgap=30, hgap=10)
+        gdsizer3 = wx.GridSizer(rows=7, cols=1, vgap=30, hgap=10)
         
         backbuttonsizer = wx.BoxSizer(wx.HORIZONTAL)
         
@@ -31,7 +38,6 @@ class Tab_GEN(wx.Panel):
         ecctypesizer = wx.BoxSizer(wx.VERTICAL)
         keyslotsizer = wx.BoxSizer(wx.VERTICAL)
         pubkeysizer = wx.BoxSizer(wx.VERTICAL)
-        
         
         
         # instantiate the objects
@@ -48,7 +54,8 @@ class Tab_GEN(wx.Panel):
         button_metastatus.SetFont(buttonfont)
         button_status = wx.Button(self, 1, 'Read Data For Common Data Objects', size = wx.Size(350, 50))
         button_status.SetFont(buttonfont)
-        
+        button_export_config = wx.Button(self, 1, 'Generate OPTIGA Trust Configurator Files', size = wx.Size(350, 50))
+        button_export_config.SetFont(buttonfont)
         
         self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
@@ -76,10 +83,10 @@ class Tab_GEN(wx.Panel):
         backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
 
         # Add sizers to midsizer
-        midsizer.AddSpacer(40)
+        midsizer.AddSpacer(20)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(80)
+        midsizer.AddSpacer(23)
         midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
         
         #add buttons into gdsizer3
@@ -91,7 +98,7 @@ class Tab_GEN(wx.Panel):
            (button_priv),
            (button_metastatus),
            (button_status),
-
+           (button_export_config),
        ])
                        
         # Set Default inputs for Text Boxes      
@@ -105,6 +112,7 @@ class Tab_GEN(wx.Panel):
         button_priv.Bind(wx.EVT_BUTTON, self.OnReadPriv)
         button_metastatus.Bind(wx.EVT_BUTTON, self.OnMetaStatus)
         button_status.Bind(wx.EVT_BUTTON, self.OnReadStatus)
+        button_export_config.Bind(wx.EVT_BUTTON, self.OnExportConfig)
         clearbutton.Bind(wx.EVT_BUTTON, self.OnFlush)
         backbutton.Bind(wx.EVT_BUTTON, self.OnBack)
         
@@ -123,6 +131,8 @@ class Tab_GEN(wx.Panel):
         button_metastatus.SetToolTip(wx.ToolTip("Read all data objects metadata status for oid: 0xE0C0-0xE0C6 , 0xF1C0-0xF1C2 "))
         
         button_status.SetToolTip(wx.ToolTip("Read all data object's status for oid: 0xE0C0-0xE0C6 , 0xF1C0-0xF1C2 "))
+        
+        button_export_config.SetToolTip(wx.ToolTip("OPTIGA Trust Configurator(OTC) is a tool which can be used to generate customer specific configurations for Infineon Secure Elements. The OTC files generated here can be imported into infineon OPTIGA Trust Configurator to create custom security chip configurations"))
         
         clearbutton.SetToolTip(wx.ToolTip("Clear all textboxes."))
         backbutton.SetToolTip(wx.ToolTip("Go back to main page."))
@@ -211,6 +221,836 @@ class Tab_GEN(wx.Panel):
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("\n'/bin/trustm_read_status' executed\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")
+    
+    def OnExportConfig(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+        
+        saveFileDialog = wx.DirDialog(frame, "Save Config File Folders", "", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        saveFileDialog.SetPath(config.IMAGEPATH + "/working_space/")
+        
+        
+        if saveFileDialog.ShowModal() == wx.ID_CANCEL :
+                return
+        
+        self.configFilePath = saveFileDialog.GetPath() + "/OPTIGA_Trust_M_V3_SLS32AIA010ML_K_Infineon_Technologies"
+        
+        saveFileDialog.Destroy()
+        
+        infoDialog = wx.MessageDialog(None, "Please import the generated folder into OPTIGA Trust Configurator for final configuration. OPTIGA Trust Configurator can be downloaded from Infineon website.\nPlease wait for several minutes when Exporting the configurations", "Generate files in OPTIGA Trust Configurator Tool tabs", wx.OK | wx.CANCEL | wx.ICON_INFORMATION)
+        
+        # if user changes mind
+        if infoDialog.ShowModal() == wx.ID_CANCEL:
+                return
+        
+        if (os.path.exists(self.configFilePath) == False):
+                os.mkdir(self.configFilePath)
+        
+        print(self.configFilePath)
+        
+        self.text_display.write("Exporting the configuration of all data objects\n")
+        
+        wx.CallLater(10, self.OnExportConfigExec)
+        
+    def OnExportConfigExec(self):
+        # constants for default parameters (customer contact, intermediate CAs)
+        CUSTOMER_NAME = "Example Name"
+        CUSTOMER_EMAIL = "example@email.com"
+        CUSTOMER_COMPANY = "Example"
+        CUSTOMER_PROJECT = "Example"
+        #
+        
+        
+        #self.text_display.write("Exporting all data objects into OTC File/n")
+        # create xml file
+        configFile = xml.dom.minidom.parseString("<OPTIGA/>")    
+        
+        # assign root node
+        root = configFile.documentElement
+            
+        # tool version
+        toolVer = configFile.createElement("Tool_Version")
+        ver = configFile.createTextNode("1.00.0177")
+        toolVer.appendChild(ver)
+        root.appendChild(toolVer)
+        
+        # product tags
+        product = configFile.createElement("Product")
+        product.setAttribute("Version", "OPTIGA™ Trust M V3 (SLS32AIA010ML/K)")
+        root.appendChild(product)
+        
+        
+        # infineon contact
+        contactInfineon = configFile.createElement("Contact_infineon")
+        contactInfineon.setAttribute("Domain", "Infineon")
+        product.appendChild(contactInfineon) # append contact_infineon to product
+        
+        # customer contact
+        contactCustomer = configFile.createElement("Contact_customer")
+        contactCustomer.setAttribute("Domain", "customer")
+        product.appendChild(contactCustomer) # append contact_customer to product
+        
+        # contact details
+        # infineon contact
+        contactInfineonChild = configFile.createElement("Contact")
+        
+        contactInfineonFirstName = configFile.createElement("First_Name")
+        contactInfineonFirstName.appendChild(configFile.createTextNode("Example Name"))
+        
+        contactInfineonEmail = configFile.createElement("Email")
+        contactInfineonEmail.appendChild(configFile.createTextNode("example@email.com"))
+        
+        contactInfineonChild.appendChild(contactInfineonFirstName)
+        contactInfineonChild.appendChild(contactInfineonEmail)    
+        
+        contactInfineon.appendChild(contactInfineonChild)
+        
+        # customer contact
+        contactCustomerChild = configFile.createElement("Contact")
+        
+        contactCustomerFirstName = configFile.createElement("Name")
+        contactCustomerFirstName.appendChild(configFile.createTextNode(CUSTOMER_NAME))
+        
+        contactCustomerEmail = configFile.createElement("Email")
+        contactCustomerEmail.appendChild(configFile.createTextNode(CUSTOMER_EMAIL))
+        
+        contactCustomerCompany = configFile.createElement("Company")
+        contactCustomerCompany.appendChild(configFile.createTextNode(CUSTOMER_COMPANY))
+        
+        contactCustomerProject = configFile.createElement("Project_Name")
+        contactCustomerProject.appendChild(configFile.createTextNode(CUSTOMER_PROJECT))
+        
+        contactCustomerChild.appendChild(contactCustomerFirstName)
+        contactCustomerChild.appendChild(contactCustomerEmail)    
+        contactCustomerChild.appendChild(contactCustomerCompany)
+        contactCustomerChild.appendChild(contactCustomerProject)
+        
+        contactCustomer.appendChild(contactCustomerChild)
+        
+        # chip config
+        chipConfig = configFile.createElement("Chip_config")
+        chipConfig.setAttribute("value", "product_config")
+        product.appendChild(chipConfig)
+        
+        slaveAddr = configFile.createElement("Slave_Address")
+        slaveAddr.appendChild(configFile.createTextNode("0x30"))
+        
+        tempVar = configFile.createElement("Temp_Variant")
+        tempVar.appendChild(configFile.createTextNode("STR (Standard, -25°c to +85°c)"))
+        
+        chipLabel = configFile.createElement("Chip_Label")
+        chipLabel.appendChild(configFile.createTextNode("01"))
+        
+        chipIDName = configFile.createElement("Chip_Id_Name")
+        chipIDName.setAttribute("user_modified", "false")
+        chipIDName.appendChild(configFile.createTextNode("TMS30"))
+        
+        chipConfig.appendChild(slaveAddr)
+        chipConfig.appendChild(tempVar)
+        chipConfig.appendChild(chipLabel)
+        chipConfig.appendChild(chipIDName)
+        
+        # objects tag for oids
+        objects = configFile.createElement("objects")
+        product.appendChild(objects)
+            
+        # write oid data into .dat and xml files 
+        for oid in self.oidList:
+                targetOID = "0x" + oid
+                errorOutput = "Error"
+                hasData = False
+                startData = False
+                
+                ##########################################################################################################
+                # if the current oid is not a speical oid (cannot read data and/or no meaningful data)
+                if (oid not in self.noDataOIDList):
+                        dataToWrite = ""
+                        commandDataOutput = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-r", targetOID, "-X"])
+                        decodedDataOutput = commandDataOutput.decode()
+                        
+                        # if the data inside cannot be read -> skip
+                        if (errorOutput not in decodedDataOutput):
+                                # has data
+                                hasData = True
+                        
+                                ###########
+                                self.text_display.write("Exporting data from OID " + oid)
+                                ###########
+                        
+                                # reading each line in command output
+                                for line in decodedDataOutput:
+                                        # the colon ':' stats the data section of the command output
+                                        if (line == ':'):
+                                                startData = True
+                                                continue
+                                                
+                                        # the '=' ends the data section of the command output
+                                        if (line == '=' and startData == True):
+                                                break
+                                        
+                                        # skip the spaces 
+                                        if (line == ' '):
+                                                continue
+                                        
+                                        # append to data output
+                                        if (startData == True):
+                                                dataToWrite += line
+                                                                                    
+                                # write output data to .dat file
+                                with open(self.configFilePath + "/" + oid + ".dat", "w") as file:
+                                        file.write(dataToWrite)
+                                
+                                # text cmd output
+                                self.text_display.write(" ... done\n")
+                                
+                #########################################################################################################
+                
+                ###########
+                self.text_display.write("Exporting metadata from OID " + oid)
+                ###########
+                
+                # writing to xml
+                commandMetadataOutput = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-r", targetOID, "-X"])
+                decodedMetadataOutput = commandMetadataOutput.decode()
+                
+                # get the output lines by lists
+                lines = decodedMetadataOutput.splitlines()
+                metadataLineCount = 0 # counter to skip first 4 lines 
+                metadataToWrite = ""
+                
+                # get the size of the metadata
+                size = int(lines[4][6:10])
+                lineLimit = math.ceil(size / 16.0)
+                
+                
+                # reading line by line
+                for line in lines[5:]:
+                        # increase line count
+                        metadataLineCount += 1
+                        
+                        # if we are still within limit of metadata
+                        if (metadataLineCount <= lineLimit):
+                                metadataToWrite += line.strip() + " "
+                
+                # remove headers from metadata        
+                metadataToWrite.replace(" ", "")
+                metadataToWrite = metadataToWrite[6:]
+                
+                # remove read tags for private key oids
+                if (oid in self.specialOIDList):
+                        readTagIndex = metadataToWrite.find("D1")
+                
+                        # if read tag exists
+                        if (readTagIndex > -1):
+                                # get size in bytes of the read tag
+                                readTagSize = int(metadataToWrite[readTagIndex + 3:readTagIndex + 5])
+                                
+                                # find the substring of the read tag
+                                readTag = metadataToWrite[readTagIndex:(readTagIndex + (4 + 3 * readTagSize) + 1)]
+                                
+                                # and remove the read tag altogether
+                                metadataToWrite = metadataToWrite.replace(readTag, "")
+                
+                # actual parsing to xml file
+                objectID = configFile.createElement("oid")
+                objectID.setAttribute("id", oid)
+                objects.appendChild(objectID)
+                
+                metadata = configFile.createElement("metadata")
+                metadata.setAttribute("value", "Updated_Tags")
+                metadata.appendChild(configFile.createTextNode(metadataToWrite))
+                objectID.appendChild(metadata)
+                
+                data = configFile.createElement("data")
+                if (hasData == True and oid not in self.chipSpecificOIDList):
+                        data.setAttribute("data_from", "Customer")
+                        data.setAttribute("value", "Updated")
+                        #data.appendChild(configFile.createTextNode(oid + ".dat"))
+                else:
+                        data.setAttribute("data_from", "Infineon")
+                        data.setAttribute("value", "Default")
+                        #data.appendChild(configFile.createTextNode(""))
+                        
+                if (hasData == True):
+                        data.appendChild(configFile.createTextNode(oid + ".dat"))
+                
+                else:
+                        data.appendChild(configFile.createTextNode(""))
+                        
+                data.setAttribute("type", "Plain")
+                data.setAttribute("chip_individual", "false")
+                        
+                objectID.appendChild(data)
+                
+                if (oid == 'E200'):
+                        cryptMode = configFile.createElement("Crypto-Mode")
+                        cryptMode.appendChild(configFile.createTextNode("AES_ECB"))
+                        plaintext = configFile.createElement("Plain-Text")
+                        ciphertext = configFile.createElement("Cipher-Text")
+                        
+                        objectID.appendChild(cryptMode)
+                        objectID.appendChild(plaintext)
+                        objectID.appendChild(ciphertext)
+                        
+                # text cmd output
+                self.text_display.write(" ... done\n")
+        
+        # default keypair configuration 
+        keypairs = configFile.createElement("keypairs")
+        #keypairs.appendChild(configFile.createTextNode(""))
+        
+        # create keypair node
+        keypair = configFile.createElement("keypair")
+        keypairs.appendChild(keypair)
+        
+        # algo tag
+        algo = configFile.createElement("algo")
+        keypair.appendChild(algo)
+        algo.setAttribute("required", "true")
+        algo.appendChild(configFile.createTextNode("Elliptic Curve - NIST P 256"))
+        
+        # keypair name tag
+        keypairName = configFile.createElement("keypair-name")
+        keypair.appendChild(keypairName)
+        keypairName.appendChild(configFile.createTextNode("E0F0-E0E0"))
+        
+        # private key tag
+        privateKey = configFile.createElement("private-key")
+        keypair.appendChild(privateKey)
+        privateKey.appendChild(configFile.createTextNode("E0F0"))
+        
+        # public key tag
+        publicKey = configFile.createElement("public-key")
+        keypair.appendChild(publicKey)
+        publicKey.appendChild(configFile.createTextNode("E0E0"))
+        
+        # cert type tag
+        certType = configFile.createElement("cert-type")
+        keypair.appendChild(certType)
+        certType.appendChild(configFile.createTextNode("TLS Identity Certificate"))
+        
+        # cert chain tag
+        certChain = configFile.createElement("cert-chain")
+        keypair.appendChild(certChain)
+        certChain.appendChild(configFile.createTextNode("XX"))
+        
+        # trust anchor
+        trustAnchor = configFile.createElement("trust-Anchor")
+        keypair.appendChild(trustAnchor)
+        
+        # root CA: signed by Infineon
+        rootCA = configFile.createElement("root-ca")
+        trustAnchor.appendChild(rootCA)
+        rootCA.setAttribute("required", "true")
+        rootCA.appendChild(configFile.createTextNode("Signed by Infineon"))
+
+        # algo tag
+        algo = configFile.createElement("algo")
+        trustAnchor.appendChild(algo)
+        algo.setAttribute("required", "true")
+        algo.appendChild(configFile.createTextNode("Elliptic Curve - NIST P 384"))
+        
+        # trust-anchor tag
+        # different style to avoid mismatching
+        trustanchor = configFile.createElement("trust-anchor")
+        trustAnchor.appendChild(trustanchor)
+        
+        # todo: add info to ask customer to double check and edit in contact + keypair tab
+        trustanchor.appendChild(configFile.createTextNode(CUSTOMER_COMPANY + " IntermediateCA.pem"))
+        
+        # subject tab
+        subject = configFile.createElement("subject")
+        trustAnchor.appendChild(subject)
+                
+        # common name tag
+        commonName = configFile.createElement("common-name")
+        subject.appendChild(commonName)
+        commonName.setAttribute("required", "true")
+        commonName.appendChild(configFile.createTextNode(CUSTOMER_COMPANY + " IntermediateCA"))
+        
+        # email address tag
+        emailAddr = configFile.createElement("email-address")
+        subject.appendChild(emailAddr)
+        
+        # serial number tag
+        serialNumber = configFile.createElement("serial-number")
+        subject.appendChild(serialNumber)
+        serialNumber.appendChild(configFile.createTextNode("17095fce"))
+        
+        # given name tag
+        givenName = configFile.createElement("given-name")
+        subject.appendChild(givenName)
+        givenName.appendChild(configFile.createTextNode(""))
+        
+        # surname tag
+        surname = configFile.createElement("surname")
+        subject.appendChild(surname)
+        surname.appendChild(configFile.createTextNode(""))
+        
+        # locality tag
+        locality = configFile.createElement("locality")
+        subject.appendChild(locality)
+        locality.appendChild(configFile.createTextNode(""))
+        
+        # organization unit name
+        orgUnitName = configFile.createElement("organization-unit-name")
+        subject.appendChild(orgUnitName)
+        orgUnitName.appendChild(configFile.createTextNode("OPTIGA (TM)"))
+        
+        # organization name
+        orgName = configFile.createElement("organization-name")
+        subject.appendChild(orgName)
+        orgName.appendChild(configFile.createTextNode(CUSTOMER_COMPANY))
+        
+        # state province tags
+        state = configFile.createElement("state-province")
+        subject.appendChild(state)
+        state.appendChild(configFile.createTextNode(""))
+        
+        # country name tags
+        country = configFile.createElement("country-name")
+        subject.appendChild(country)
+        country.appendChild(configFile.createTextNode(""))
+        
+        # validity tags
+        validity = configFile.createElement("validity")
+        trustAnchor.appendChild(validity)
+        
+        validFrom = configFile.createElement("valid-from")
+        validity.appendChild(validFrom)
+        validFrom.appendChild(configFile.createTextNode("2020-08-07"))
+        
+        validTill = configFile.createElement("valid-till")
+        validity.appendChild(validTill)
+        validTill.appendChild(configFile.createTextNode("2050-08-07"))
+        
+        # basic constraints tab
+        basicConstraints = configFile.createElement("basic-constraints")
+        trustAnchor.appendChild(basicConstraints)
+        
+        # critical
+        critical = configFile.createElement("critical")
+        basicConstraints.appendChild(critical)
+        critical.appendChild(configFile.createTextNode("false"))
+        
+        # ca cert
+        caCert = configFile.createElement("ca-cert")
+        basicConstraints.appendChild(caCert)
+        caCert.appendChild(configFile.createTextNode("true"))
+
+        # path length
+        pathLength = configFile.createElement("path-length")
+        basicConstraints.appendChild(pathLength)
+        pathLength.appendChild(configFile.createTextNode("0"))
+        
+        # authority key id tag
+        authKeyId = configFile.createElement("authority-key-id")
+        trustAnchor.appendChild(authKeyId)
+        
+        # critical 
+        authKeyCrit = configFile.createElement("critical")
+        authKeyId.appendChild(authKeyCrit)
+        authKeyCrit.appendChild(configFile.createTextNode("false"))
+        
+        # key id
+        keyId = configFile.createElement("key-id")
+        authKeyId.appendChild(keyId)
+        keyId.appendChild(configFile.createTextNode("82b83dcc71b83e7ef69cd61dc84d5232706cc79d"))
+
+        # name and sn
+        nameSn = configFile.createElement("name-and-sn")
+        authKeyId.appendChild(nameSn)
+        nameSn.appendChild(configFile.createTextNode(""))
+        
+        # cert policy
+        certPolicy = configFile.createElement("certificate-policy")
+        trustAnchor.appendChild(certPolicy)
+        
+        # cert policy critical
+        certPolicyCrit = configFile.createElement("critical")
+        certPolicy.appendChild(certPolicyCrit)
+        certPolicyCrit.appendChild(configFile.createTextNode("false"))
+        
+        # object id
+        certPolicyObject = configFile.createElement("object-id")
+        certPolicy.appendChild(certPolicyObject)
+        certPolicyObject.appendChild(configFile.createTextNode("1.2.276.0.68.1.20.1"))
+        
+        # cps-uri tag
+        cpsuri = configFile.createElement("cps-uri")
+        certPolicy.appendChild(cpsuri)
+        cpsuri.appendChild(configFile.createTextNode(""))
+        
+        # user notice tag
+        usernotice = configFile.createElement("user-notice")
+        certPolicy.appendChild(usernotice)
+        usernotice.appendChild(configFile.createTextNode(""))
+        
+        # ca-crl-distribution tag
+        caCrlDist = configFile.createElement("ca-crl-distribution")
+        trustAnchor.appendChild(caCrlDist)
+        
+        # crit
+        caCrlDistCrit = configFile.createElement("critical")
+        caCrlDist.appendChild(caCrlDistCrit)
+        caCrlDistCrit.appendChild(configFile.createTextNode("false"))
+        
+        # url tag
+        url = configFile.createElement("url")
+        caCrlDist.appendChild(url)
+        url.appendChild(configFile.createTextNode(""))
+        
+        # issuer 
+        issuer = configFile.createElement("issuer")
+        caCrlDist.appendChild(issuer)
+        issuer.appendChild(configFile.createTextNode(""))
+        
+        # cert template tag
+        certTemplate = configFile.createElement("cert-template")
+        trustAnchor.appendChild(certTemplate)
+
+        # critical
+        certTemplateCrit = configFile.createElement("critical")
+        certTemplate.appendChild(certTemplateCrit)
+        certTemplateCrit.appendChild(configFile.createTextNode("false"))
+        
+        # extension-val tag
+        extension = configFile.createElement("extension-val")
+        certTemplate.appendChild(extension)
+        extension.appendChild(configFile.createTextNode(""))
+        
+        # key usage
+        keyUsage = configFile.createElement("key-usage")
+        trustAnchor.appendChild(keyUsage)
+        
+        # critical
+        keyUsageCrit = configFile.createElement("critical")
+        keyUsage.appendChild(keyUsageCrit)
+        keyUsageCrit.appendChild(configFile.createTextNode("true"))
+        
+        # digital signature
+        digitalSig = configFile.createElement("digital-signature")
+        keyUsage.appendChild(digitalSig)
+        digitalSig.appendChild(configFile.createTextNode("false"))
+                
+        # non repudiation tag
+        nonRepudiation = configFile.createElement("non-repudiation")
+        keyUsage.appendChild(nonRepudiation)
+        nonRepudiation.appendChild(configFile.createTextNode("false"))        
+        
+        # key enchipherment tag
+        keyEnchipherment = configFile.createElement("key-enchipherment")
+        keyUsage.appendChild(keyEnchipherment)
+        keyEnchipherment.appendChild(configFile.createTextNode("false"))
+        
+        # data enchipherment tag
+        dataEnchipherment = configFile.createElement("data-enchipherment")
+        keyUsage.appendChild(dataEnchipherment)
+        dataEnchipherment.appendChild(configFile.createTextNode("false"))
+        
+        # key agreement tag
+        keyAgreement = configFile.createElement("key-agreement")
+        keyUsage.appendChild(keyAgreement)
+        keyAgreement.appendChild(configFile.createTextNode("false"))
+        
+        # certificate signing tag
+        certSigning = configFile.createElement("certificate-signing")
+        keyUsage.appendChild(certSigning)
+        certSigning.appendChild(configFile.createTextNode("true"))
+        
+        # crl-signing tag
+        crlSigning = configFile.createElement("crl-signing")
+        keyUsage.appendChild(crlSigning)
+        crlSigning.appendChild(configFile.createTextNode("false"))
+        
+        # enipher only tag
+        encipherOnly = configFile.createElement("encipher-only")
+        keyUsage.appendChild(encipherOnly)
+        encipherOnly.appendChild(configFile.createTextNode("false"))
+        
+        # decipher only tag
+        decipherOnly = configFile.createElement("decipher-only")
+        keyUsage.appendChild(decipherOnly)
+        decipherOnly.appendChild(configFile.createTextNode("false"))
+        
+        # device certificate
+        deviceCert = configFile.createElement("device-cert")
+        keypair.appendChild(deviceCert)
+        
+        # subject tag
+        subject = configFile.createElement("subject")
+        deviceCert.appendChild(subject)
+        
+        # common name tag
+        commonName = configFile.createElement("common-name")
+        commonName.setAttribute("required", "true")
+        subject.appendChild(commonName)
+        commonName.appendChild(configFile.createTextNode(CUSTOMER_COMPANY + " IoTNode"))
+        
+        # email address
+        emailAddr = configFile.createElement("email-address")
+        subject.appendChild(emailAddr)
+        emailAddr.appendChild(configFile.createTextNode(""))
+                
+        # serial number
+        serialNumber = configFile.createElement("serial-number")
+        subject.appendChild(serialNumber)
+        serialNumber.appendChild(configFile.createTextNode(""))
+        
+        # given name
+        givenName = configFile.createElement("given-name")
+        subject.appendChild(givenName)
+        givenName.appendChild(configFile.createTextNode(""))
+        
+        # surname
+        surname = configFile.createElement("surname")
+        subject.appendChild(surname)
+        surname.appendChild(configFile.createTextNode(""))
+        
+        # locality
+        locality = configFile.createElement("locality")
+        subject.appendChild(locality)
+        locality.appendChild(configFile.createTextNode(""))
+        
+        # organization unit name
+        organizationUnitName = configFile.createElement("organization-unit-name")
+        subject.appendChild(organizationUnitName)
+        organizationUnitName.appendChild(configFile.createTextNode(""))
+        
+        # organization name
+        organizationName = configFile.createElement("organization-name")
+        subject.appendChild(organizationName)
+        organizationName.appendChild(configFile.createTextNode(CUSTOMER_COMPANY))
+        
+        # state province
+        stateProvince = configFile.createElement("state-province")
+        subject.appendChild(stateProvince)
+        stateProvince.appendChild(configFile.createTextNode(""))
+        
+        # country name
+        country = configFile.createElement("country-name")
+        subject.appendChild(country)
+        country.appendChild(configFile.createTextNode(""))
+        
+        # basic constraints tab
+        basicConstraints = configFile.createElement("basic-constraints")
+        deviceCert.appendChild(basicConstraints)
+        
+        # critical
+        critical = configFile.createElement("critical")
+        basicConstraints.appendChild(critical)
+        critical.appendChild(configFile.createTextNode("false"))
+        
+        # ca cert
+        caCert = configFile.createElement("ca-cert")
+        basicConstraints.appendChild(caCert)
+        caCert.appendChild(configFile.createTextNode("true"))
+
+        # path length
+        pathLength = configFile.createElement("path-length")
+        basicConstraints.appendChild(pathLength)
+        pathLength.appendChild(configFile.createTextNode("0"))
+        
+        # authority key id tag
+        authKeyId = configFile.createElement("authority-key-id")
+        deviceCert.appendChild(authKeyId)
+        
+        # critical 
+        authKeyCrit = configFile.createElement("critical")
+        authKeyId.appendChild(authKeyCrit)
+        authKeyCrit.appendChild(configFile.createTextNode("false"))
+        
+        # key id
+        keyId = configFile.createElement("key-id")
+        authKeyId.appendChild(keyId)
+        keyId.appendChild(configFile.createTextNode(""))
+
+        # name and sn
+        nameSn = configFile.createElement("name-and-sn")
+        authKeyId.appendChild(nameSn)
+        nameSn.appendChild(configFile.createTextNode(""))
+        
+        # cert policy
+        certPolicy = configFile.createElement("certificate-policy")
+        deviceCert.appendChild(certPolicy)
+        
+        # cert policy critical
+        certPolicyCrit = configFile.createElement("critical")
+        certPolicy.appendChild(certPolicyCrit)
+        certPolicyCrit.appendChild(configFile.createTextNode("false"))
+        
+        # object id
+        certPolicyObject = configFile.createElement("object-id")
+        certPolicy.appendChild(certPolicyObject)
+        certPolicyObject.appendChild(configFile.createTextNode(""))
+        
+        # cps-uri tag
+        cpsuri = configFile.createElement("cps-uri")
+        certPolicy.appendChild(cpsuri)
+        cpsuri.appendChild(configFile.createTextNode(""))
+        
+        # user notice tag
+        usernotice = configFile.createElement("user-notice")
+        certPolicy.appendChild(usernotice)
+        usernotice.appendChild(configFile.createTextNode(""))
+        
+        # ca-crl-distribution tag
+        caCrlDist = configFile.createElement("crl-distribution")
+        deviceCert.appendChild(caCrlDist)
+        
+        # crit
+        caCrlDistCrit = configFile.createElement("critical")
+        caCrlDist.appendChild(caCrlDistCrit)
+        caCrlDistCrit.appendChild(configFile.createTextNode("false"))
+        
+        # url tag
+        url = configFile.createElement("url")
+        caCrlDist.appendChild(url)
+        url.appendChild(configFile.createTextNode(""))
+        
+        # issuer 
+        issuer = configFile.createElement("issuer")
+        caCrlDist.appendChild(issuer)
+        issuer.appendChild(configFile.createTextNode(""))
+        
+        # cert template tag
+        certTemplate = configFile.createElement("cert-template")
+        deviceCert.appendChild(certTemplate)
+
+        # critical
+        certTemplateCrit = configFile.createElement("critical")
+        certTemplate.appendChild(certTemplateCrit)
+        certTemplateCrit.appendChild(configFile.createTextNode("false"))
+        
+        # extension-val tag
+        extension = configFile.createElement("extension-val")
+        certTemplate.appendChild(extension)
+        extension.appendChild(configFile.createTextNode(""))
+        
+        # key usage
+        keyUsage = configFile.createElement("key-usage")
+        deviceCert.appendChild(keyUsage)
+        
+        # critical
+        keyUsageCrit = configFile.createElement("critical")
+        keyUsage.appendChild(keyUsageCrit)
+        keyUsageCrit.appendChild(configFile.createTextNode("true"))
+        
+        # digital signature
+        digitalSig = configFile.createElement("digital-signature")
+        keyUsage.appendChild(digitalSig)
+        digitalSig.appendChild(configFile.createTextNode("true"))
+                
+        # non repudiation tag
+        nonRepudiation = configFile.createElement("non-repudiation")
+        keyUsage.appendChild(nonRepudiation)
+        nonRepudiation.appendChild(configFile.createTextNode("false"))        
+        
+        # key enchipherment tag
+        keyEnchipherment = configFile.createElement("key-enchipherment")
+        keyUsage.appendChild(keyEnchipherment)
+        keyEnchipherment.appendChild(configFile.createTextNode("false"))
+        
+        # data enchipherment tag
+        dataEnchipherment = configFile.createElement("data-enchipherment")
+        keyUsage.appendChild(dataEnchipherment)
+        dataEnchipherment.appendChild(configFile.createTextNode("false"))
+        
+        # key agreement tag
+        keyAgreement = configFile.createElement("key-agreement")
+        keyUsage.appendChild(keyAgreement)
+        keyAgreement.appendChild(configFile.createTextNode("false"))
+        
+        # certificate signing tag
+        certSigning = configFile.createElement("certificate-signing")
+        keyUsage.appendChild(certSigning)
+        certSigning.appendChild(configFile.createTextNode("false"))
+        
+        # crl-signing tag
+        crlSigning = configFile.createElement("crl-signing")
+        keyUsage.appendChild(crlSigning)
+        crlSigning.appendChild(configFile.createTextNode("false"))
+        
+        # enipher only tag
+        encipherOnly = configFile.createElement("encipher-only")
+        keyUsage.appendChild(encipherOnly)
+        encipherOnly.appendChild(configFile.createTextNode("false"))
+        
+        # deipher only tag
+        decipherOnly = configFile.createElement("decipher-only")
+        keyUsage.appendChild(decipherOnly)
+        decipherOnly.appendChild(configFile.createTextNode("false"))
+        
+        # ext key usage tag
+        extKeyUsage = configFile.createElement("ext-key-usage")
+        deviceCert.appendChild(extKeyUsage)
+        
+        # critical 
+        critical = configFile.createElement("critical")
+        extKeyUsage.appendChild(critical)
+        critical.appendChild(configFile.createTextNode("false"))
+        
+        # server auth
+        serverAuth = configFile.createElement("server-auth")
+        extKeyUsage.appendChild(serverAuth)
+        serverAuth.appendChild(configFile.createTextNode("false"))
+        
+        # email protection 
+        emailProtection = configFile.createElement("email-protection")
+        extKeyUsage.appendChild(emailProtection)
+        emailProtection.appendChild(configFile.createTextNode("false"))
+        
+        # client auth
+        clientAuth = configFile.createElement("client-auth")
+        extKeyUsage.appendChild(clientAuth)
+        clientAuth.appendChild(configFile.createTextNode("false"))
+        
+        # time stamping
+        timeStamp = configFile.createElement("time-stamping")
+        extKeyUsage.appendChild(timeStamp)
+        timeStamp.appendChild(configFile.createTextNode("false"))
+        
+        # code signing
+        codeSign  = configFile.createElement("code-signing")
+        extKeyUsage.appendChild(codeSign)
+        codeSign.appendChild(configFile.createTextNode("false"))
+
+        # ocp signing
+        ocpSign = configFile.createElement("ocp-signing")
+        extKeyUsage.appendChild(ocpSign)
+        ocpSign.appendChild(configFile.createTextNode("false"))
+        
+        # validity
+        validity = configFile.createElement("validity")
+        deviceCert.appendChild(validity)
+        
+        # valid duration
+        validDuration = configFile.createElement("valid-duration")
+        validity.appendChild(validDuration)
+        validDuration.setAttribute("required", "true")
+        validDuration.appendChild(configFile.createTextNode("240"))
+        
+
+        #
+        
+        additionalInfo = configFile.createElement("additional_info")
+        additionalInfo.appendChild(configFile.createTextNode(""))
+        
+        product.appendChild(keypairs)
+        product.appendChild(additionalInfo)
+        
+        
+        # misc
+        common = configFile.createElement("common")
+        product.appendChild(common)
+
+        # save to xml file
+        with open(self.configFilePath + "/OTC.xml", "w") as file:
+                file.write(configFile.toprettyxml())
+         
+        self.text_display.AppendText("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++")        
+        self.text_display.AppendText("\nGenerated OTC file at " + self.configFilePath + "\n")
+        self.text_display.AppendText("+++++++++++++++++++++++++++++++++++++++++++++++++++++")
     
     # to clear the textbox
     def OnFlush(self, evt):
