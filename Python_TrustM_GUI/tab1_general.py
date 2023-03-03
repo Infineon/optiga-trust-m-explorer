@@ -3,6 +3,7 @@ import shell_util as exec_cmd
 import misc_dialogs as misc
 import images as img
 import config
+import binascii
 from binascii import unhexlify
 import os
 import subprocess
@@ -2405,8 +2406,13 @@ class Tab_META(wx.Panel):
                 
                 with open(self.inputMetadata) as f, open(customMetadataBin, 'wb') as fout:
                         for line in f:
-                                fout.write(unhexlify(''.join(line.split())))
-                
+                                try:
+                                        fout.write(unhexlify(''.join(line.split())))
+                                
+                                except binascii.Error:
+                                        wx.CallLater(10, self.OnInvalidCustomMetadata)
+                                        return
+                                        
                 command_output = exec_cmd.execCLI(["hd", customMetadataBin,])
                 self.text_display.AppendText("Contents of the custom metadata file:\n")
                 self.text_display.AppendText(command_output)
@@ -2416,6 +2422,10 @@ class Tab_META(wx.Panel):
                 
     def OnNoMetadataFileSelected(self):
         infoDialog = wx.MessageDialog(None, "Select Metadata File to Write to Target OID", "No Metadata File Selected", wx.OK | wx.ICON_INFORMATION)
+        infoDialog.ShowModal()
+        
+    def OnInvalidCustomMetadata(self):
+        infoDialog = wx.MessageDialog(None, "Double check metadata file to ensure it contains only hex strings", "Invalid metadata file", wx.OK | wx.ICON_INFORMATION)
         infoDialog.ShowModal()
 
     def OnMUDCheckBox(self, evt):
