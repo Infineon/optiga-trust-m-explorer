@@ -4,6 +4,7 @@ import misc_dialogs as misc
 import images as img
 import config
 from binascii import unhexlify
+import os
 
 
 class Tab_ECC(wx.Panel):
@@ -80,6 +81,7 @@ class Tab_ECC(wx.Panel):
         
         backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         backbutton = wx.BitmapButton(self, -1, backimage)
+        
        
         #Add mainhorisizer to mainsizer
         mainsizer.AddSpacer(5)
@@ -1492,8 +1494,14 @@ class Tab_AES(wx.Panel):
         mainsizer = wx.BoxSizer(wx.VERTICAL)
         input_sizer = wx.BoxSizer(wx.HORIZONTAL)
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
+        datafile_sizer = wx.BoxSizer(wx.VERTICAL)
+        ivfile_sizer = wx.BoxSizer(wx.VERTICAL)
+        datafilecheckbox_sizer = wx.BoxSizer(wx.VERTICAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
+        
+        gdsizer0 = wx.GridSizer(rows = 1, cols = 1, vgap=5, hgap=5)
+        gdsizer1 = wx.GridSizer(rows = 1, cols = 2, vgap=5, hgap=10)
         
         gdsizer2 = wx.GridSizer(rows=1, cols=2, vgap=10, hgap=10)
         gdsizer3 = wx.GridSizer(rows=3, cols=1, vgap=30, hgap=10)
@@ -1522,7 +1530,18 @@ class Tab_AES(wx.Panel):
         button_aesdec = wx.Button(self, 1, 'AES Decrypt', size = wx.Size(300, 50))
         button_aesdec.SetFont(buttonfont)
         
-
+        # custom data input
+        datafiletext = wx.StaticText(self, -1, label="Data File Input")
+        self.datafileinput = wx.TextCtrl(self, value="Custom Data File", size = (190, 30))
+        self.datafileinput.Disable()
+        
+        self.datacheckbox = wx.CheckBox(self, label = "Use Data File Input", style = wx.CHK_2STATE)
+        self.datacheckbox.SetValue(False)
+        
+        # initialization file input
+        ivfiletext = wx.StaticText(self, -1, label ="Initialization File Input")
+        self.ivfileinput = wx.TextCtrl(self, value="IV File", size = (190, 30))
+ 
         
         self.command_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.command_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
@@ -1552,7 +1571,11 @@ class Tab_AES(wx.Panel):
         backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
 
         # Add sizers to midsizer
-        midsizer.AddSpacer(30)
+        midsizer.AddSpacer(10)
+        midsizer.Add(gdsizer0, 0, wx.LEFT | wx.ALL, 10)
+        
+        midsizer.AddSpacer(10)
+        midsizer.Add(gdsizer1, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
         
         midsizer.AddSpacer(10)
@@ -1562,10 +1585,17 @@ class Tab_AES(wx.Panel):
         midsizer.AddSpacer(30)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(180)
+        midsizer.AddSpacer(75)
         midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
         
         
+        # add checkbox to gdsizer0
+        gdsizer0.AddMany([(datafilecheckbox_sizer, 0, wx.EXPAND)])
+        
+        # add file selection to gdsizer1
+        gdsizer1.AddMany([(datafile_sizer, 0, wx.EXPAND), 
+                        (ivfile_sizer, 0, wx.EXPAND),])
+
         #add buttons into gdsizer3
         gdsizer3.AddMany([
            
@@ -1581,6 +1611,16 @@ class Tab_AES(wx.Panel):
 
         ])
          
+        # add objects into data file sizer
+        datafile_sizer.Add(datafiletext)
+        datafile_sizer.Add(self.datafileinput)
+        
+        # add object into checkbox sizer
+        datafilecheckbox_sizer.Add(self.datacheckbox)
+        
+        # add object into iv file sizer
+        ivfile_sizer.Add(ivfiletext)
+        ivfile_sizer.Add(self.ivfileinput)
         
         #add objects into sizers in gdsizer2
         
@@ -1601,18 +1641,72 @@ class Tab_AES(wx.Panel):
         #self.aestype.Bind(wx.EVT_COMBOBOX, self.OnType)
         clearbutton.Bind(wx.EVT_BUTTON, self.OnClear)
         backbutton.Bind(wx.EVT_BUTTON, self.OnBack)
+        self.datacheckbox.Bind(wx.EVT_CHECKBOX, self.OnDataCheckBox)
+        self.ivfileinput.Bind(wx.EVT_LEFT_DOWN, self.OnClickInputIV)
+        self.datafileinput.Bind(wx.EVT_LEFT_DOWN, self.OnClickInputData)
         
         
         # Set tooltips
         
         self.button_genkey.SetToolTip(wx.ToolTip("Generate OPTIGA™ Trust M AES Symmetric key" ))
         button_aesenc.SetToolTip(wx.ToolTip("Encrypt data using AES symmetric key CBC mode"))
-        button_aesdec.SetToolTip(wx.ToolTip("Decrypt using AES CBC mode, an encrypted aes256.enc and output to mydata.txt.dec"))
+        button_aesdec.SetToolTip(wx.ToolTip("Decrypt using AES CBC mode and output to mydata.txt.dec"))
         clearbutton.SetToolTip(wx.ToolTip("Clear all textboxes"))
         backbutton.SetToolTip(wx.ToolTip("Go back to main page.")) 
 
         self.SetSizer(mainsizer)
         mainsizer.Fit(self)
+        
+    def OnDataCheckBox(self, evt):
+        cb = evt.GetEventObject()
+        
+        if (cb.GetValue() == False):
+            self.input_display.Enable()
+            self.datafileinput.Disable()
+            
+        else:
+            self.input_display.Disable()
+            self.datafileinput.Enable()
+             
+    def OnClickInputIV(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+        
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","Binary|*.bin", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+        filedir = config.IMAGEPATH + "/working_space/"
+        openFileDialog.SetDirectory(filedir)
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            return
+                
+        print((openFileDialog.GetPath()))
+        
+        self.inputiv = (openFileDialog.GetPath())
+        
+        self.ivfileinput.Clear()
+        self.ivfileinput.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
+        openFileDialog.Destroy()
+
+    def OnClickInputData(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+        
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.*", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+        filedir = config.IMAGEPATH + "/working_space/"
+        openFileDialog.SetDirectory(filedir)
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            return
+                
+        print((openFileDialog.GetPath()))
+        
+        self.inputdata = (openFileDialog.GetPath())
+        
+        self.datafileinput.Clear()
+        self.datafileinput.AppendText(os.path.basename(openFileDialog.GetPath()))
+        
+        openFileDialog.Destroy()
     
     def OnKeyUsage(self):
         
@@ -1683,32 +1777,39 @@ class Tab_AES(wx.Panel):
 
     def OnEnc(self, evt):
         
-        self.command_display.AppendText("\nEncrypting " + self.aestype.GetValue() + " key...\n")
+        if (self.datacheckbox.GetValue() == False):
+             datain = self.input_display.GetValue()
+             exec_cmd.createProcess("echo " + datain + " > mydata.txt", None)           
         
-        datain = self.input_display.GetValue()
-        
-        val = len(datain)
-        
-        if val >= 14:
-             exec_cmd.createProcess("echo " + datain + " >mydata.txt", None)
-            
-             if (self.aestype.GetSelection() == 0):
-                 exec_cmd.createProcess("echo initializedv128 >iv_aes128.bin", None)
-                 iv = "iv_aes128.bin"
-                 aesenc = "aes128.enc"
+        else:
+             try:
+                datain = self.inputdata
+             
+             except AttributeError:
+                wx.CallLater(10, self.OnNoDataFileSelected)
+                return
                 
-             elif (self.aestype.GetSelection() == 1):
-                 exec_cmd.createProcess("echo initializedv192 >iv_aes192.bin", None)
-                 iv = "iv_aes192.bin"
-                 aesenc = "aes192.enc"
-            
-             elif (self.aestype.GetSelection() == 2):
-                 exec_cmd.createProcess("echo initializedv256 >iv_aes256.bin", None)
-                 iv = "iv_aes256.bin"
-                 aesenc = "aes256.enc"
-            
-             exec_cmd.execCLI(["rm", aesenc])
-            
+        try:
+             iv = self.inputiv
+             
+        except AttributeError:
+             wx.CallLater(10, self.OnNoIVFileSelected)
+             return
+             
+        if (self.aestype.GetSelection() == 0):
+             aesenc = "aes128.enc"
+             
+        elif (self.aestype.GetSelection() == 1):
+             aesenc = "aes192.enc"
+        
+        elif (self.aestype.GetSelection() == 2):
+             aesenc = "aes256.enc"
+        
+        exec_cmd.execCLI(["rm", aesenc])
+        
+        self.command_display.AppendText("\nEncrypting " + self.aestype.GetValue() + " key...\n")
+    
+        if (self.datacheckbox.GetValue() == False):
              output_message = exec_cmd.execCLI([
              config.EXEPATH + "/bin/trustm_symmetric_enc",
              "-m", "0x09",
@@ -1717,37 +1818,56 @@ class Tab_AES(wx.Panel):
              "-v", iv,     
             ])
          
-             self.command_display.AppendText(output_message)
-    #         self.Update()
+             self.command_display.AppendText(output_message)   
+                
              self.command_display.AppendText("\n/trustm_symmetric_enc -m 0x09 -v " + iv + " -i mydata.txt -o " + aesenc + " is executed\n")
              self.command_display.AppendText("\n++++++++++++++++++++++++++++++++++++++++++++\n")
-            
-       
-            
+        
         else:
-            self.command_display.Clear()
-            self.command_display.AppendText("\n\nPlease Enter Minimum 15 Characters \n")
+             output_message = exec_cmd.execCLI([
+             config.EXEPATH + "/bin/trustm_symmetric_enc",
+             "-m", "0x09",
+             "-o", aesenc,
+             "-i", datain,
+             "-v", iv,     
+            ])
+         
+             self.command_display.AppendText(output_message)   
+                
+             self.command_display.AppendText("\n/trustm_symmetric_enc -m 0x09 -v " + iv + " -i " + datain + " -o  " + aesenc +  " is executed\n")
+             self.command_display.AppendText("\n++++++++++++++++++++++++++++++++++++++++++++\n")
+    
+    def OnNoDataFileSelected(self):
+        infoDialog = wx.MessageDialog(None, "Select Data File to Encrypt", "No Data File Selected", wx.OK | wx.ICON_INFORMATION)
+        infoDialog.ShowModal()
+        
+    def OnNoIVFileSelected(self):
+        infoDialog = wx.MessageDialog(None, "Select Initialization File", "No Initialization File Selected", wx.OK | wx.ICON_INFORMATION)
+        infoDialog.ShowModal()    
     
     def OnDec1(self, evt):
-        self.command_display.AppendText("\nDecrypting with " + self.aestype.GetValue() + " Symmetric key...\n")
         wx.CallLater(10, self.OnDec)
     
     def OnDec(self):
+        try:
+            iv = self.inputiv
+            
+        except AttributeError:
+            wx.CallLater(10, self.OnNoIVFileSelected)
+            return    
+        
         
         if (self.aestype.GetSelection() == 0):
-            iv = "iv_aes128.bin"
             aesenc = "aes128.enc"
                 
         elif (self.aestype.GetSelection() == 1):
-            iv = "iv_aes192.bin"
             aesenc = "aes192.enc"
             
         elif (self.aestype.GetSelection() == 2):
-            iv = "iv_aes256.bin"
             aesenc = "aes256.enc"
         
         
-        
+        self.command_display.AppendText("\nDecrypting with " + self.aestype.GetValue() + " Symmetric key...\n")
         
         output_message = exec_cmd.execCLI([
             config.EXEPATH + "/bin/trustm_symmetric_dec",
