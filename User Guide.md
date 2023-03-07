@@ -546,8 +546,6 @@ To Decrypt the message, Select "RSA Decrypt"  to decrypt and display the decrypt
 
 [^Figure 40]: Decrypted using private key
 
-
-
 ### RSA Sign
 
 Hashes and signs the input using the OPTIGA™ Trust M RSA keypair
@@ -811,7 +809,7 @@ After provisioning,  we can press "Read Objects Metadata" button to read out the
 
 In this example, the *MUD* for target OID should be *int-0xE0E8&&Conf-0xF1D4* after provisioning. 
 
-### Step 2 (Generate Manifest)
+### Step 2 (Generate the Manifest and Fragment)
 
 Generate the manifest and fragment for the metadata Protected Update.
 
@@ -829,7 +827,7 @@ The Manifest and Fragment Generation are based on all the input inside the red b
 
 [^Figure 67]: Manifest and Fragment generated 
 
-### Step 3 Update the metadata for Target OID
+### Step 3 Protected Update for the metadata of Target OID
 
 Protected Updates for the metadata of the target OID
 
@@ -914,7 +912,7 @@ The Manifest and Fragment Generation are based on all the input inside the box. 
 
 [^Figure 74]: ECC Key Manifest and Fragment generated 
 
-### ECC: Step 3 Update the ECC Key OID
+### ECC: Step 3 Protected Update for the ECC Key 
 
 Protected Updates the ECC key data into the target OID
 
@@ -999,7 +997,7 @@ The Manifest and Fragment Generation are based on all the input inside the red b
 
 [^Figure 81]: AES Manifest and Fragment generated 
 
-### AES: Step 3 Update the AES Key OID
+### AES: Step 3 Protected Update for AES Key 
 
 Updates the AES key for the AES Key OID
 
@@ -1058,8 +1056,6 @@ In this example we will Provision for all OIDs. Select the "Trust anchor OID", "
 
 To Provision,  Select "Step1: Provisioning for All OIDs". 
 
-
-
 ![](images/Protected_Update/rsa/provision.png)
 
 [^Figure 87]:Provisioning for RSA Key Protected Update 
@@ -1078,13 +1074,11 @@ Select the "Step2 : Generate Manifest" button.  In this example the "payload ver
 
 The Manifest and Fragment Generation are based on all the input inside the red box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
 
-
-
 ![](images/Protected_Update/rsa/manifest.png)
 
 [^Figure 88]: RSA Manifest generated 
 
-### RSA: Step 3 Update the RSA Key OID
+### RSA: Step 3 Protected Update for the RSA Key 
 
 Updates the RSA key for the target OID
 
@@ -1108,13 +1102,9 @@ To read out metadata , select "Read Objects Metadata".
 
 Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that the Target OID will be accessible for use in other features after a successful Protected Update and not locked. 
 
-
-
 ![](images/Protected_Update/rsa/reset.png)
 
 [^Figure 91]:RSA key Target OID access condition is reset successfully
-
-
 
 # Data Protected Update
 
@@ -1170,13 +1160,11 @@ Select the "Step2 : Generate Manifest" button.  In this example the "payload ver
 
 The Manifest and Fragment Generation are based on all the input inside the red box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
 
-
-
 ![](images/Protected_Update/data/manifest.png)
 
 [^Figure 95]: Data and Manifest generated 
 
-### Data Update: Step 3 Update the OID Data
+### Data Update: Step 3 Protected Update for the target OID 
 
 Updates the Data for the target OID
 
@@ -1200,8 +1188,6 @@ To read out metadata , select "Read Objects Metadata".
 
 Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that the Target OID will be accessible for use in other features after a successful Protected Update and not locked. 
 
-
-
 ![](images/Protected_Update/data/reset.png)
 
 [^Figure 98]:Target OID access condition is reset successfully
@@ -1209,8 +1195,6 @@ Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that th
 
 
 # Secure Storage
-
-
 
 ## Secure Storage Functions
 
