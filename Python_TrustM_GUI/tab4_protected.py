@@ -827,17 +827,22 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         secretoidsizer = wx.BoxSizer(wx.VERTICAL)
         trustcertsizer = wx.BoxSizer(wx.VERTICAL)
         secret1sizer = wx.BoxSizer(wx.VERTICAL)
+        keylengthsizer = wx.BoxSizer(wx.VERTICAL)
         keyusagesizer = wx.BoxSizer(wx.VERTICAL)
         secret2sizer = wx.BoxSizer(wx.VERTICAL)
         
         keyusage = ['Auth/Sign','Sign','Sign/Key Agree']
         confidential_list = ['Integrity Confidential']
+        keylength = ['ecc_secp256r1', 'ecc_secp384r1', 'ecc_secp521r1', 'ecc_brainpool_p256r1', 'ecc_brainpool_p384r1', 'ecc_brainpool_p512r1']
         
         # instantiate the objects
         self.secret2path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret2 = wx.StaticText(self, 0, "secret:")
         self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret2.SetFont(textctrlfont)
+        text_keylength = wx.StaticText(self, 0, "Key_length:")
+        self.keylength = wx.ComboBox(self, 1, choices=keylength, style=wx.CB_READONLY, size=wx.Size(178, -1))
+        self.keylength.SetFont(textctrlfont)
         text_keyusage = wx.StaticText(self, 0, "Key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keyusage.SetFont(textctrlfont)
@@ -965,7 +970,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
                 
         ])
         
-        gdsizer1.AddSpacer(20)
+        gdsizer1.Add(keylengthsizer, 0, wx.EXPAND)
         gdsizer1.Add(keyusagesizer, 0, wx.EXPAND)
         gdsizer1.Add(secret2sizer, 0, wx.EXPAND)
         
@@ -991,6 +996,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         signsizer.Add(self.sign_algo)
         keydatasizer.Add(text_keydata)
         keydatasizer.Add(self.keydata)
+        keylengthsizer.Add(text_keylength)
+        keylengthsizer.Add(self.keylength)
         privsizer.Add(text_priv_key)
         privsizer.Add(self.priv_key)
         keyusagesizer.Add(text_keyusage)
@@ -1017,6 +1024,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.target_oid.SetSelection(0)
         self.secret_oid.SetSelection(0)
         self.keyusage.SetSelection(0)
+        self.keylength.SetSelection(0)
 
 
         # attach objects to the sizer
@@ -1080,6 +1088,34 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
             value = "key_usage=30"
         
             return(value)
+            
+    def OnKeyLength(self):
+        value = "key_algo=3"
+        
+        if (self.keylength.GetSelection() == 0):
+            value = "key_algo=3"
+            return (value)
+            
+        elif (self.keylength.GetSelection() == 1):
+            value = "key_algo=4"
+            return (value)
+        
+        elif (self.keylength.GetSelection() == 2):
+            value = "key_algo=5"
+            return (value)
+        
+        elif (self.keylength.GetSelection() == 3):
+            value = "key_algo=19"
+            return (value)
+        
+        elif (self.keylength.GetSelection() == 4):
+            value = "key_algo=21"
+            return (value)
+            
+        else:
+            value = "key_algo=22"
+            return (value)
+            
         
     def OnClickFileName(self, evt):
         frame = wx.Frame(None, -1, '*.*')
@@ -1183,7 +1219,9 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "0x" + self.trust_anchor_oid.GetValue()
         target_oid = "0x" + self.target_oid.GetValue()
         secret_oid = "0x" + self.secret_oid.GetValue()
-        TRUST_ANCHOR_META = "2003E80111"        
+        certfile = self.trust_anchor_certpath
+        
+        TRUST_ANCHOR_META = "2003E80111"
         
         f = open(self.secret1path, 'r')
         file= f.read()
@@ -1192,14 +1230,49 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         f.close()
         
         PROTECTED_UPDATE_SECRET_META = "200BD103E1FC07D30100E80123"
-        
-                
-        #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
-       
-        self.text_display.AppendText("Provisioning for binary protected update secret ... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret_metadata.dat' executed \n")
+     
+        #Step1: Provisioning initial Trust Anchor, metadata for Trust Anchor
+        self.text_display.AppendText("Provisioning for initial Trust Anchor OID... \n")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-w", trust_anchor_oid, "-i", certfile, ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_cert -w " + trust_anchor_oid + " -i " + certfile + "'" + " executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
+        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
+        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", trust_anchor_oid, "-F", "trust_anchor_metadata.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w " + trust_anchor_oid + " -F trust_anchor_metadata.bin'" + " executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        
+        #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
+        self.text_display.AppendText("Provisioning for protected update secret... \n")
+        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
+        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret.dat' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")    
+        
+        self.text_display.AppendText("Writing protected update secret into secret_oid...")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-e", "-w", secret_oid, "-i", "protected_update_secret.dat", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_data -e -w " + secret_oid + " -i protected_update_secret.dat'" + " executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+       
+        self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
+        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
+        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", secret_oid, "-F", "protected_update_secret_metadata.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w " + secret_oid + " -F protected_update_secret_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")     
+        
         
         
     def OnSetupEccKeyUpdate1(self):
@@ -1270,23 +1343,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         priv_key = "priv_key=" + self.priv_keypath
         payload_type = "payload_type=" + self.payload_type.GetValue()
         
-        if (self.keydata.GetValue() == "ecc_secp256r1_test.pem" ):
-            key_algo =  "key_algo=3"
-        
-        elif (self.keydata.GetValue() == "ecc_secp384r1_test.pem" ):
-             key_algo = "key_algo=4"
-        
-        elif (self.keydata.GetValue() == "ecc_secp521r1_test.pem" ):
-             key_algo = "key_algo=5"
-        
-        elif (self.keydata.GetValue() == "ecc_brainpool_p256r1_test.pem" ):
-             key_algo = "key_algo=19"
-        
-        elif (self.keydata.GetValue() == "ecc_brainpool_p384r1_test.pem" ):
-             key_algo = "key_algo=21"
-        
-        elif (self.keydata.GetValue() == "ecc_brainpool_p512r1_test.pem" ):
-             key_algo = "key_algo=22"
+        key_algo = self.OnKeyLength()
+        print(key_algo)
         
         key_usage = self.OnKeyUsage()
         print(key_usage)
@@ -1408,6 +1466,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         payloadtypesizer = wx.BoxSizer(wx.VERTICAL)
         signsizer = wx.BoxSizer(wx.VERTICAL)
         keydatasizer = wx.BoxSizer(wx.VERTICAL)
+        keylengthsizer = wx.BoxSizer(wx.VERTICAL)
         contentsizer = wx.BoxSizer(wx.VERTICAL)
         privsizer = wx.BoxSizer(wx.VERTICAL)
         
@@ -1422,6 +1481,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         
         keyusage = ['Auth','Enc','Sign','Auth/Enc/Sign','Key Agree']
         confidential_list = ['Integrity Confidential']
+        keylength = ['AES 128', 'AES 192', 'AES 256']
         
         # instantiate the objects
         self.secret2path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
@@ -1431,6 +1491,9 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         text_keyusage = wx.StaticText(self, 0, "Key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keyusage.SetFont(textctrlfont)
+        text_keylength = wx.StaticText(self, 0, "Key_length")
+        self.keylength = wx.ComboBox(self, 1, choices=keylength, style=wx.CB_READONLY, size=wx.Size(178, -1))
+        self.keylength.SetFont(textctrlfont)
         text_secret = wx.StaticText(self, 0, "Protected_Update:")
         self.secret = wx.ComboBox(self, 1, choices=confidential_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
@@ -1556,7 +1619,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
                 (privsizer, 0, wx.EXPAND)
         ])
         
-        gdsizer1.AddSpacer(10)
+        gdsizer1.Add(keylengthsizer)
         gdsizer1.Add(keyusagesizer, 0, wx.EXPAND)
         gdsizer1.Add(secret2sizer, 0, wx.EXPAND)
         
@@ -1588,6 +1651,8 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         secret2sizer.Add(self.secret2)
         keyusagesizer.Add(text_keyusage)
         keyusagesizer.Add(self.keyusage)
+        keylengthsizer.Add(text_keylength)
+        keylengthsizer.Add(self.keylength)
         
         #add objects into sizers in gdsizer2
         trustoidsizer.Add(text_trust_anchor_oid)
@@ -1609,6 +1674,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.target_oid.SetSelection(0)
         self.secret_oid.SetSelection(0)
         self.keyusage.SetSelection(3)
+        self.keylength.SetSelection(0)
 
         # attach objects to the sizer
         # declare and bind events
@@ -1679,6 +1745,22 @@ class Tab_AesConfidentialUpdate(wx.Panel):
             value = "key_usage=20"
         
             return(value)
+                
+    def OnKeyLength(self):
+        value = "key_algo=129"
+        if (self.keylength.GetSelection() == 0):
+            value = "key_algo=129"
+            return (value)
+        
+        elif (self.keylength.GetSelection() == 1):
+            value = "key_algo=130"
+            return (value)
+                
+        elif (self.keylength.GetSelection() == 2):
+            value = "key_algo=131"
+            return (value)
+        
+        return (value)
         
     def OnClickFileName(self, evt):
         frame = wx.Frame(None, -1, '*.*')
@@ -1800,7 +1882,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("Provisioning for initial Trust Anchor OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-w", trust_anchor_oid, "-i", certfile, ])
         self.text_display.AppendText(command_output)
-        self.text_display.AppendText("'trustm_cert -w 0x" + trust_anchor_oid + " -i " + certfile + "'" + " executed \n")
+        self.text_display.AppendText("'trustm_cert -w " + trust_anchor_oid + " -i " + certfile + "'" + " executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
@@ -1811,7 +1893,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", trust_anchor_oid, "-F", "trust_anchor_metadata.bin", ])
         self.text_display.AppendText(command_output)
-        self.text_display.AppendText("'trustm_metadata -w 0x" + trust_anchor_oid + " -F trust_anchor_metadata.bin'" + " executed \n")
+        self.text_display.AppendText("'trustm_metadata -w " + trust_anchor_oid + " -F trust_anchor_metadata.bin'" + " executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         
@@ -1824,7 +1906,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("Writing protected update secret into secret_oid...")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-e", "-w", secret_oid, "-i", "protected_update_secret.dat", ])
         self.text_display.AppendText(command_output)
-        self.text_display.AppendText("'trustm_data -e -w 0x" + secret_oid + " -i protected_update_secret.dat'" + " executed \n")
+        self.text_display.AppendText("'trustm_data -e -w " + secret_oid + " -i protected_update_secret.dat'" + " executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
        
         self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
@@ -1907,14 +1989,8 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         payload_type = "payload_type=" + self.payload_type.GetValue()
         
         
-        if (self.keydata.GetValue() == "aes_key_128.txt"):
-            key_algo= "key_algo=129"
-        
-        elif (self.keydata.GetValue() == "aes_key_192.txt"):
-            key_algo= "key_algo=130"
-        
-        elif (self.keydata.GetValue() == "aes_key_256.txt"):
-            key_algo= "key_algo=131"
+        key_algo = self.OnKeyLength()
+        print(key_algo)
         
         key_usage = self.OnKeyUsage()
         print(key_usage)
@@ -2030,6 +2106,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         payloadtypesizer = wx.BoxSizer(wx.VERTICAL)
         signsizer = wx.BoxSizer(wx.VERTICAL)
         keydatasizer = wx.BoxSizer(wx.VERTICAL)
+        keylengthsizer = wx.BoxSizer(wx.VERTICAL)
         contentsizer = wx.BoxSizer(wx.VERTICAL)
         privsizer = wx.BoxSizer(wx.VERTICAL)
         
@@ -2044,11 +2121,15 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         
         keyusage = ['Auth','Enc','Sign','Auth/Enc/Sign','Key Agree']
         confidential_list = ['Integrity Confidential']
+        keylength = ['RSA 1024', 'RSA 2048']
         
         # instantiate the objects
         text_keyusage = wx.StaticText(self, 0, "Key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keyusage.SetFont(textctrlfont)
+        text_keylength = wx.StaticText(self, 0, "Key_length:")
+        self.keylength = wx.ComboBox(self, 1, choices=keylength, style=wx.CB_READONLY, size = wx.Size(178, -1))
+        self.keylength.SetFont(textctrlfont)
         text_secret = wx.StaticText(self, 0, "Protected_Update:")
         self.secret = wx.ComboBox(self, 1, choices=confidential_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
@@ -2178,7 +2259,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
                 (privsizer, 0, wx.EXPAND)
         ])
         
-        gdsizer1.AddSpacer(20)
+        gdsizer1.Add(keylengthsizer, 0, wx.EXPAND)
         gdsizer1.Add(keyusagesizer, 0, wx.EXPAND)
         gdsizer1.Add(secret2sizer, 0, wx.EXPAND)
         
@@ -2208,6 +2289,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         privsizer.Add(self.priv_key)
         keyusagesizer.Add(text_keyusage)
         keyusagesizer.Add(self.keyusage)
+        keylengthsizer.Add(text_keylength)
+        keylengthsizer.Add(self.keylength)
         secret2sizer.Add(text_secret2)
         secret2sizer.Add(self.secret2)
 
@@ -2231,6 +2314,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         self.target_oid.SetSelection(0)
         self.secret_oid.SetSelection(0)
         self.keyusage.SetSelection(3)
+        self.keylength.SetSelection(0)
 
         # attach objects to the sizer
         # declare and bind events
@@ -2311,6 +2395,19 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
             value = "key_usage=20"
         
             return(value)
+            
+    def OnKeyLength(self):
+        value = "key_algo=65"
+        
+        if (self.keylength.GetSelection() == 0):
+            value = "key_algo=65"
+            return (value)
+            
+        else:
+            value = "key_algo=66"
+            return (value)
+            
+        return (value)
         
     def OnClickFileName(self, evt):
         frame = wx.Frame(None, -1, '*.*')
@@ -2415,8 +2512,9 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         trust_anchor_oid = "0x" + self.trust_anchor_oid.GetValue()
         target_oid = "0x" + self.target_oid.GetValue()
         secret_oid = "0x" + self.secret_oid.GetValue()
+        certfile = self.trust_anchor_certpath
+        
         TRUST_ANCHOR_META = "2003E80111"
-        #PROTECTED_UPDATE_SECRET = "49C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F649C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F6"
         
         f = open(self.secret1path, 'r')
         file= f.read()
@@ -2425,13 +2523,48 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         f.close()
         
         PROTECTED_UPDATE_SECRET_META = "200BD103E1FC07D30100E80123"
-                
-        #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
-       
-        self.text_display.AppendText("Provisioning for binary protected update secret ... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret_metadata.dat' executed \n")
+     
+        #Step1: Provisioning initial Trust Anchor, metadata for Trust Anchor
+        self.text_display.AppendText("Provisioning for initial Trust Anchor OID... \n")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-w", trust_anchor_oid, "-i", certfile, ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_cert -w 0x" + trust_anchor_oid + " -i " + certfile + "'" + " executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
+        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
+        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", trust_anchor_oid, "-F", "trust_anchor_metadata.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w 0x" + trust_anchor_oid + " -F trust_anchor_metadata.bin'" + " executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        
+        #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
+        self.text_display.AppendText("Provisioning for protected update secret... \n")
+        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
+        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret.dat' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")    
+        
+        self.text_display.AppendText("Writing protected update secret into secret_oid...")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-e", "-w", secret_oid, "-i", "protected_update_secret.dat", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_data -e -w 0x" + secret_oid + " -i protected_update_secret.dat'" + " executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+       
+        self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
+        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
+        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
+        
+        self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", secret_oid, "-F", "protected_update_secret_metadata.bin", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("'trustm_metadata -w " + secret_oid + " -F protected_update_secret_metadata.bin' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")       
         
         
     def OnSetupRSAKeyUpdate1(self):
@@ -2501,11 +2634,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         priv_key = "priv_key=" + self.priv_keypath
         payload_type = "payload_type=" + self.payload_type.GetValue()
         
-        if (self.keydata.GetValue() == "rsa_1024_test.pem" ):
-            key_algo =  "key_algo=65"
-        
-        elif (self.keydata.GetValue() == "rsa_2048_test.pem" ):
-            key_algo =  "key_algo=66"
+        key_algo = self.OnKeyLength()
+        print(key_algo)
         
         key_usage = self.OnKeyUsage()
         print(key_usage)
