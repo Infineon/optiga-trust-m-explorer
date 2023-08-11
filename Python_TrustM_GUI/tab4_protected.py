@@ -26,6 +26,7 @@ step1_list = ['Step1: Set Lcso=0x03(Init) ResetType=0x01(Keep TargetData)','Step
 
 key_trust_anchor_oid_list = ['E0E8', 'E0E9', 'E0EF']
 key_target_oid_list = ['E0F1', 'E0F2','E0F3']
+pubkey_oid_list = ['F1D1' , 'F1D2' , 'F1D3']
 key_secret_oid_list = ['F1D4', 'F1D0', 'F1D6', 'F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB']
 rsa_target_oid_list = ['E0FC', 'E0FD',]
 aes_target_oid_list = ['E200',]
@@ -100,7 +101,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         text_secret1 = wx.StaticText(self, 0, "secret:")
         self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret1.SetFont(textctrlfont)
-        text_secret = wx.StaticText(self, 0, "Protected_Update:")
+        text_secret = wx.StaticText(self, 0, "protected_update:")
         self.secret = wx.ComboBox(self, 1, choices=secret_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
         text_payload_version = wx.StaticText(self, 0, "payload_version:")
@@ -799,7 +800,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
-        gdsizer1 = wx.GridSizer(rows=3, cols=3, vgap=10, hgap=5)
+        gdsizer1 = wx.GridSizer(rows=4, cols=3, vgap=10, hgap=5)
         gdsizer2 = wx.GridSizer(rows=2, cols=3, vgap=10, hgap=10)
         gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=20, hgap=10)
         step1_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -818,6 +819,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         payloadtypesizer = wx.BoxSizer(wx.VERTICAL)
         signsizer = wx.BoxSizer(wx.VERTICAL)
         keydatasizer = wx.BoxSizer(wx.VERTICAL)
+        pubkeydatasizer = wx.BoxSizer(wx.VERTICAL)
         contentsizer = wx.BoxSizer(wx.VERTICAL)
         privsizer = wx.BoxSizer(wx.VERTICAL)
         
@@ -840,13 +842,13 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         text_secret2 = wx.StaticText(self, 0, "secret:")
         self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret2.SetFont(textctrlfont)
-        text_keylength = wx.StaticText(self, 0, "Key_length:")
+        text_keylength = wx.StaticText(self, 0, "key_length:")
         self.keylength = wx.ComboBox(self, 1, choices=keylength, style=wx.CB_READONLY, size=wx.Size(178, -1))
         self.keylength.SetFont(textctrlfont)
-        text_keyusage = wx.StaticText(self, 0, "Key_usage:")
+        text_keyusage = wx.StaticText(self, 0, "key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keyusage.SetFont(textctrlfont)
-        text_secret = wx.StaticText(self, 0, "Protected_Update:")
+        text_secret = wx.StaticText(self, 0, "protected_update:")
         self.secret = wx.ComboBox(self, 1, choices=confidential_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
         text_payload_version = wx.StaticText(self, 0, "payload_version:")
@@ -860,9 +862,15 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.sign_algo.SetFont(textctrlfont)
         
         self.keypath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc_secp256r1_test.pem"
-        text_keydata = wx.StaticText(self, 0, "key_data:")
+        text_keydata = wx.StaticText(self, 0, " privkey_data:")
         self.keydata = wx.TextCtrl(self, 1, value= "ecc_secp256r1_test.pem", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keydata.SetFont(textctrlfont)
+        
+        #added a new input space to include the pub key file
+        self.pubkeypath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/client1_pubkey.der"
+        text_pubkeydata = wx.StaticText(self, 0, "pubkey_data:")
+        self.pubkeydata = wx.TextCtrl(self, 1, value= "client1_pubkey.der", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.pubkeydata.SetFont(textctrlfont)
         
         self.priv_keypath = config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem"
         text_priv_key = wx.StaticText(self, 0, "trust_anchor_privkey:")
@@ -966,6 +974,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
                 (payloadtypesizer, 0, wx.EXPAND),
                 (signsizer, 0, wx.EXPAND),
                 (keydatasizer, 0, wx.EXPAND),
+                (pubkeydatasizer, 0, wx.EXPAND),
                 (privsizer, 0, wx.EXPAND)
                 
         ])
@@ -996,6 +1005,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         signsizer.Add(self.sign_algo)
         keydatasizer.Add(text_keydata)
         keydatasizer.Add(self.keydata)
+        pubkeydatasizer.Add(text_pubkeydata)
+        pubkeydatasizer.Add(self.pubkeydata)
         keylengthsizer.Add(text_keylength)
         keylengthsizer.Add(self.keylength)
         privsizer.Add(text_priv_key)
@@ -1042,6 +1053,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.secret1.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret)
         self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret2)
         self.keydata.Bind(wx.EVT_LEFT_DOWN,self.OnClickKeydata)
+        self.pubkeydata.Bind(wx.EVT_LEFT_DOWN,self.OnClickPubKeydata)
 
         self.SetSizer(mainsizer)
         mainsizer.Fit(self)
@@ -1070,7 +1082,33 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.keydata.Clear()
         self.keydata.AppendText(os.path.basename(openFileDialog.GetPath()))
         
-        openFileDialog.Destroy()    
+        openFileDialog.Destroy()   
+        
+     #created a new pubkey data input to choose the .der file   
+    def OnClickPubKeydata(self, evt):
+        frame = wx.Frame(None, -1, '*.*')
+        frame.SetSize(0,0,200,50)
+            
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.der|Certificate|*.crt;*.der", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        
+        some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
+        
+        openFileDialog.SetDirectory(some_dir)
+        openFileDialog.SetFilename("client1_pubkey.der")
+        
+        if openFileDialog.ShowModal() ==wx.ID_CANCEL:
+            
+                return
+        print((openFileDialog.GetPath()))
+        #self.keydata.SetValue(openFileDialog.GetPath())
+        
+        self.pubkeypath = openFileDialog.GetPath()
+        
+        self.pubkeydata.Clear()
+        self.pubkeydata.AppendText(os.path.basename(openFileDialog.GetPath()))
+
+        
+        openFileDialog.Destroy()     
         
     def OnKeyUsage(self):
         
@@ -1397,8 +1435,12 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
     
     def OnProtectedUpdate(self):
         target_oid = "0x" + self.target_oid.GetValue()
+        selected_index= self.target_oid.GetSelection()
+        pubkey_oid= "0x" + pubkey_oid_list[selected_index]   #select corresponding pubkey oid based on index
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_protected_update_ecckey", "-k", target_oid, "-f", "fragment.dat", "-m", "manifest.dat",  ])
         self.text_display.AppendText(command_output)
+        command_output2 = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeydata.GetValue(), ])
+        self.text_display.AppendText(command_output2)
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
      
     
@@ -1488,13 +1530,13 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         text_secret2 = wx.StaticText(self, 0, "secret:")
         self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret2.SetFont(textctrlfont)
-        text_keyusage = wx.StaticText(self, 0, "Key_usage:")
+        text_keyusage = wx.StaticText(self, 0, "key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keyusage.SetFont(textctrlfont)
-        text_keylength = wx.StaticText(self, 0, "Key_length")
+        text_keylength = wx.StaticText(self, 0, "key_length")
         self.keylength = wx.ComboBox(self, 1, choices=keylength, style=wx.CB_READONLY, size=wx.Size(178, -1))
         self.keylength.SetFont(textctrlfont)
-        text_secret = wx.StaticText(self, 0, "Protected_Update:")
+        text_secret = wx.StaticText(self, 0, "protected_update:")
         self.secret = wx.ComboBox(self, 1, choices=confidential_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
         text_payload_version = wx.StaticText(self, 0, "payload_version:")
@@ -2124,13 +2166,13 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         keylength = ['RSA 1024', 'RSA 2048']
         
         # instantiate the objects
-        text_keyusage = wx.StaticText(self, 0, "Key_usage:")
+        text_keyusage = wx.StaticText(self, 0, "key_usage:")
         self.keyusage = wx.ComboBox(self, 1, choices=keyusage, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.keyusage.SetFont(textctrlfont)
-        text_keylength = wx.StaticText(self, 0, "Key_length:")
+        text_keylength = wx.StaticText(self, 0, "key_length:")
         self.keylength = wx.ComboBox(self, 1, choices=keylength, style=wx.CB_READONLY, size = wx.Size(178, -1))
         self.keylength.SetFont(textctrlfont)
-        text_secret = wx.StaticText(self, 0, "Protected_Update:")
+        text_secret = wx.StaticText(self, 0, "protected_update:")
         self.secret = wx.ComboBox(self, 1, choices=confidential_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
         text_payload_version = wx.StaticText(self, 0, "payload_version:")
@@ -2776,7 +2818,7 @@ class Tab_DataUpdate(wx.Panel):
         text_secret1 = wx.StaticText(self, 0, "secret:")
         self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret1.SetFont(textctrlfont)
-        text_secret = wx.StaticText(self, 0, "Protected_Update:")
+        text_secret = wx.StaticText(self, 0, "protected_update:")
         self.secret = wx.ComboBox(self, 1, choices=secret_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
         text_payload_version = wx.StaticText(self, 0, "payload_version:")
