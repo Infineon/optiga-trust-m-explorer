@@ -52,13 +52,21 @@ This document is intended for the users who wish to explore the functionalities 
 
 - [4.1 ECC (Client/Server)](#ecc-clientserver)
   - [4.1.1 ECC (Client/Server) Function Description](#ecc-clientserver-function-description)
-  - [4.1.2 Create Server Certificate](#create-server-certificate)
-  - [4.1.3 Create Client Certificate](#create-client-certificate)
-  - [4.1.4 Start an OpenSSL Server](#start-an-openssl-server)
-  - [4.1.5 Start an OpenSSL Client](#start-an-openssl-client)
+  - [4.1.2 Create Server Certificate](#ecc-create-server-certificate)
+  - [4.1.3 Create Client Certificate](#ecc-create-client-certificate)
+  - [4.1.4 Start an OpenSSL Server](#ecc-start-an-openssl-server)
+  - [4.1.5 Start an OpenSSL Client](#ecc-start-an-openssl-client)
 
-  - [4.1.6 Secure data exchange between Server and Client](#secure-data-exchange-between-server-and-client)
-- [4.2 Random Number Generator](#random-number-generator)
+  - [4.1.6 Secure data exchange between Server and Client](#ecc-secure-data-exchange-between-server-and-client)
+- [4.2 RSA (Client/Server)](#rsa-clientserver)
+  - [4.2.1 RSA (Client/Server) Function Description](#rsa-clientserver-function-description)
+  - [4.2.2 Create Server Certificate](#rsa-create-server-certificate)
+  - [4.2.3 Create Client Certificate](#rsa-create-client-certificate)
+  - [4.2.4 Start an OpenSSL Server](#rsa-start-an-openssl-server)
+  - [4.2.5 Start an OpenSSL Client](#rsa-start-an-openssl-client)
+
+  - [4.2.6 Secure data exchange between Server and Client](#rsa-secure-data-exchange-between-server-and-client)  
+- [4.3 Random Number Generator](#random-number-generator)
 
 [5. Protected Update](#protected-update)
 
@@ -123,7 +131,7 @@ The OPTIGA™ Trust M GUI-based software is for users to evaluate Infineon OPTIG
 
 Using this software customers can start evaluating the new benefits that the OPTIGA™ Trust M will bring to IoT applications such as smart home devices and network equipment.
 
-# Installation and Setup
+# Installation and Setup 
 
 For Installation and Setup, refer to the [OPTIGA™ Trust M Setup Guide](./Setup%20Guide.md) 
 
@@ -622,7 +630,7 @@ To Decrypt the message, Select "AES Decrypt" to decrypt and display the decrypte
 
 # OpenSSL Engine
 
-This section shows you the OpenSSL-Engine functions of the OPTIGA™ Trust M . The OpenSSL-Engine can be used to create an ECC(Client/Server) and can also be used for random number generation.
+This section shows you the OpenSSL-Engine functions of the OPTIGA™ Trust M . The OpenSSL-Engine can be used to create an ECC(Client/Server), RSA(Client/Server) and can also be used for random number generation.
 
 ## ECC (Client/Server)
 
@@ -646,7 +654,7 @@ ECC (Client/Server) Functions described
 
 [^Figure 50]: OpenSSL-Engine ECC (Client/Server) Function Description part 2
 
-### Create Server Certificate
+### ECC Create Server Certificate
 
 Generate ECC private key for server.
 
@@ -672,7 +680,7 @@ Generate Server Certificate using Certificate Authority
 
 [^Figure 53]: OpenSSL-Engine ECC (Client/Server) Create Server Cert
 
-### Create Client Certificate
+### ECC Create Client Certificate
 
 Generate ECC Key and CSR for client.
 
@@ -698,7 +706,7 @@ Select "Create Client Cert"
 
 [^Figure 56]: OpenSSL-Engine ECC (Client/Server) Create Client Certificate
 
-### Start an OpenSSL Server
+### ECC Start an OpenSSL Server
 
 Starting an OpenSSL server
 
@@ -708,7 +716,7 @@ Start an OpenSSL S_Server instance by selecting "Start/Stop Server"
 
 [^Figure 57]: OpenSSL-Engine ECC (Client/Server) Start Server
 
-### Start an OpenSSL Client
+### ECC Start an OpenSSL Client
 
 Start an OpenSSL Client
 
@@ -720,13 +728,118 @@ Start an OpenSSL Client and connect  with OpenSSL Server by selecting "Start/Sto
 
 
 
-### Secure data exchange between Server and Client
+### ECC Secure data exchange between Server and Client
 
 Messages can be sent from Server to Client as well as Client to Server by entering input in the boxes below and selecting "Write to Client" or "Write to Server".  The message "Hello from Server" and "Hello from Client" has been successfully sent as shown in Figure 49
 
 ![](images/OpenSSL/ECC_Client_Server/dataexchange.png)
 
 [^Figure 59]: OpenSSL-Engine ECC (Client/Server) Communication
+
+## RSA (Client/Server)
+
+The RSA(Client/Server) is a demonstration to show the use of the Trust M for secure communications between client and server.
+
+Select "RSA (Client/Server)"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_client_server_menu.png)
+
+[^Figure 48]: OpenSSL-Engine RSA (Client/Server) Menu Screen
+
+## RSA (Client/Server) Function Description
+
+RSA (Client/Server) Functions described
+
+![](images/OpenSSL/RSA_Client_Server/rsa_clientserver_function_1.png)
+
+[^Figure 49]: OpenSSL-Engine RSA (Client/Server) Function Description part 1
+
+![](images/OpenSSL/ECC_Client_Server/rsa_clientserver_function_2.png)
+
+[^Figure 50]: OpenSSL-Engine RSA (Client/Server) Function Description part 2
+
+### RSA Create Server Certificate
+
+Generate private key for server.
+
+Select "Create Server Private Key"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_privkey.png)
+
+[^Figure 51]: OpenSSL-Engine RSA (Client/Server) Create Private Key (for server)
+
+Generate Certificate Signing Request for server keys.
+
+Select "Create Server Keys CSR"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_keycsr.png)
+
+[^Figure 52]: OpenSSL-Engine RSA (Client/Server) Create CSR for Server 
+
+Generate Server Certificate using Certificate Authority
+
+ Select "Create Server Cert"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_server_cert.png)
+
+[^Figure 53]: OpenSSL-Engine RSA (Client/Server) Create Server Cert
+
+### RSA Create Client Certificate
+
+Generate RSA Key and CSR for client.
+
+Select "Create Client RSA Key and CSR"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_client_key_csr.png)
+
+[^Figure 54]: OpenSSL-Engine RSA (Client/Server) Create Client RSA key and CSR
+
+Extract Public key from CSR 
+
+Select "Extract Public Key from CSR"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_pubkey.png)
+
+[^Figure 55]: OpenSSL-Engine RSA (Client/Server) Extract Public key from CSR
+
+Generate Client Certificate using Certificate Authority
+
+Select "Create Client Cert"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_client_cert.png)
+
+[^Figure 56]: OpenSSL-Engine RSA (Client/Server) Create Client Certificate
+
+### RSA Start an OpenSSL Server
+
+Starting an OpenSSL server
+
+Start an OpenSSL S_Server instance by selecting "Start/Stop Server"  
+
+![](images/OpenSSL/RSA_Client_Server/rsa_startstop_server.png)
+
+[^Figure 57]: OpenSSL-Engine RSA (Client/Server) Start Server
+
+### RSA Start an OpenSSL Client
+
+Start an OpenSSL Client
+
+Start an OpenSSL Client and connect  with OpenSSL Server by selecting "Start/Stop Client"
+
+![](images/OpenSSL/RSA_Client_Server/rsa_startstop_client.png)
+
+[^Figure 58]: OpenSSL-Engine RSA (Client/Server) Start Client
+
+
+
+### RSA Secure data exchange between Server and Client
+
+Messages can be sent from Server to Client as well as Client to Server by entering input in the boxes below and selecting "Write to Client" or "Write to Server".  The message "Hello from Server" and "Hello from Client" has been successfully sent as shown in Figure 49
+
+![](images/OpenSSL/RSA_Client_Server/rsa_dataexchange.png)
+
+[^Figure 59]: OpenSSL-Engine RSA (Client/Server) Communication
+
 
 
 
