@@ -730,7 +730,7 @@ Start an OpenSSL Client and connect  with OpenSSL Server by selecting "Start/Sto
 
 ### ECC Secure data exchange between Server and Client
 
-Messages can be sent from Server to Client as well as Client to Server by entering input in the boxes below and selecting "Write to Client" or "Write to Server".  The message "Hello from Server" and "Hello from Client" has been successfully sent as shown in Figure 49
+Messages can be sent from Server to Client as well as Client to Server by entering input in the boxes below and selecting "Write to Client" or "Write to Server".  The message "Hello from Server" and "Hello from Client" has been successfully sent as shown in Figure 59
 
 ![](images/OpenSSL/ECC_Client_Server/dataexchange.png)
 
@@ -744,7 +744,7 @@ Select "RSA (Client/Server)"
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_client_server_menu.png)
 
-[^Figure 48]: OpenSSL-Engine RSA (Client/Server) Menu Screen
+[^Figure 60]: OpenSSL-Engine RSA (Client/Server) Menu Screen
 
 ## RSA (Client/Server) Function Description
 
@@ -752,11 +752,11 @@ RSA (Client/Server) Functions described
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_clientserver_function_1.png)
 
-[^Figure 49]: OpenSSL-Engine RSA (Client/Server) Function Description part 1
+[^Figure 61]: OpenSSL-Engine RSA (Client/Server) Function Description part 1
 
-![](images/OpenSSL/ECC_Client_Server/rsa_clientserver_function_2.png)
+![](images/OpenSSL/RSA_Client_Server/rsa_clientserver_function_2.png)
 
-[^Figure 50]: OpenSSL-Engine RSA (Client/Server) Function Description part 2
+[^Figure 62]: OpenSSL-Engine RSA (Client/Server) Function Description part 2
 
 ### RSA Create Server Certificate
 
@@ -766,7 +766,7 @@ Select "Create Server Private Key"
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_privkey.png)
 
-[^Figure 51]: OpenSSL-Engine RSA (Client/Server) Create Private Key (for server)
+[^Figure 63]: OpenSSL-Engine RSA (Client/Server) Create Private Key (for server)
 
 Generate Certificate Signing Request for server keys.
 
@@ -774,7 +774,7 @@ Select "Create Server Keys CSR"
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_keycsr.png)
 
-[^Figure 52]: OpenSSL-Engine RSA (Client/Server) Create CSR for Server 
+[^Figure 64]: OpenSSL-Engine RSA (Client/Server) Create CSR for Server 
 
 Generate Server Certificate using Certificate Authority
 
@@ -782,7 +782,7 @@ Generate Server Certificate using Certificate Authority
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_server_cert.png)
 
-[^Figure 53]: OpenSSL-Engine RSA (Client/Server) Create Server Cert
+[^Figure 65]: OpenSSL-Engine RSA (Client/Server) Create Server Cert
 
 ### RSA Create Client Certificate
 
@@ -792,7 +792,7 @@ Select "Create Client RSA Key and CSR"
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_client_key_csr.png)
 
-[^Figure 54]: OpenSSL-Engine RSA (Client/Server) Create Client RSA key and CSR
+[^Figure 66]: OpenSSL-Engine RSA (Client/Server) Create Client RSA key and CSR
 
 Extract Public key from CSR 
 
@@ -800,7 +800,7 @@ Select "Extract Public Key from CSR"
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_pubkey.png)
 
-[^Figure 55]: OpenSSL-Engine RSA (Client/Server) Extract Public key from CSR
+[^Figure 67]: OpenSSL-Engine RSA (Client/Server) Extract Public key from CSR
 
 Generate Client Certificate using Certificate Authority
 
@@ -808,7 +808,7 @@ Select "Create Client Cert"
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_client_cert.png)
 
-[^Figure 56]: OpenSSL-Engine RSA (Client/Server) Create Client Certificate
+[^Figure 68]: OpenSSL-Engine RSA (Client/Server) Create Client Certificate
 
 ### RSA Start an OpenSSL Server
 
@@ -818,7 +818,7 @@ Start an OpenSSL S_Server instance by selecting "Start/Stop Server"
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_startstop_server.png)
 
-[^Figure 57]: OpenSSL-Engine RSA (Client/Server) Start Server
+[^Figure 69]: OpenSSL-Engine RSA (Client/Server) Start Server
 
 ### RSA Start an OpenSSL Client
 
@@ -828,17 +828,17 @@ Start an OpenSSL Client and connect  with OpenSSL Server by selecting "Start/Sto
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_startstop_client.png)
 
-[^Figure 58]: OpenSSL-Engine RSA (Client/Server) Start Client
+[^Figure 70]: OpenSSL-Engine RSA (Client/Server) Start Client
 
 
 
 ### RSA Secure data exchange between Server and Client
 
-Messages can be sent from Server to Client as well as Client to Server by entering input in the boxes below and selecting "Write to Client" or "Write to Server".  The message "Hello from Server" and "Hello from Client" has been successfully sent as shown in Figure 49
+Messages can be sent from Server to Client as well as Client to Server by entering input in the boxes below and selecting "Write to Client" or "Write to Server".  The message "Hello from Server" and "Hello from Client" has been successfully sent as shown in Figure 71
 
 ![](images/OpenSSL/RSA_Client_Server/rsa_dataexchange.png)
 
-[^Figure 59]: OpenSSL-Engine RSA (Client/Server) Communication
+[^Figure 71]: OpenSSL-Engine RSA (Client/Server) Communication
 
 
 
@@ -853,7 +853,7 @@ Select "RNG".
 
 ![](images/OpenSSL/RNG/RNG_Tab.png)
 
-[^Figure 60]: OpenSSL RNG Menu Screen
+[^Figure 72]: OpenSSL RNG Menu Screen
 
 To change the bytes generated, enter the input in "No. of bytes to be generated". 
 
@@ -861,13 +861,13 @@ To generate random number, enter the "No. of bytes to be generated" and select t
 
 ![](images/OpenSSL/RNG/RNG_Selection.png)
 
-[^Figure 61]: Generate RNG
+[^Figure 73]: Generate RNG
 
 In this example, the numbers generated are 1024 bytes in base64 encoding.
 
 ![](images/OpenSSL/RNG/RNG_Generation.png)
 
-[^Figure 62]: RNG generated 
+[^Figure 74]: RNG generated 
 
 
 
@@ -877,7 +877,7 @@ This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentiall
 
 ![](images/Protected_Update/protected_update_main.png)
 
-[^Figure 63]: OPTIGA Trust M Explorer Application: Protected Update Selection
+[^Figure 75]: OPTIGA Trust M Explorer Application: Protected Update Selection
 
 # Metadata Protected Update
 
@@ -888,7 +888,7 @@ This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentiall
 
 ![](images/Protected_Update/metadata/protected_updatetab.png)
 
-[^Figure 64]: Overview of "Metadata Update" Screen
+[^Figure 76]: Overview of "Metadata Update" Screen
 
 ## Metadata Protected Update Functions
 
@@ -912,13 +912,13 @@ To Provision,  Select "Step1: Provisioning for All OIDs".
 
 ![](images/Protected_Update/metadata/Run_Step1.png)
 
-[^Figure 65]: Provision Data Objects (for Keep TargetData)
+[^Figure 77]: Provision Data Objects (for Keep TargetData)
 
 After provisioning,  we can press "Read Objects Metadata" button to read out the the metadata for all the OIDs involved.
 
 ![](images/Protected_Update/metadata/readmetadata.png)
 
-[^ Figure 66]: Read objects Metadata after provisioning
+[^ Figure 78]: Read objects Metadata after provisioning
 
 In this example, the *MUD* for target OID should be *int-0xE0E8&&Conf-0xF1D4* after provisioning. 
 
@@ -938,7 +938,7 @@ The Manifest and Fragment Generation are based on all the input inside the red b
 
 ![](images/Protected_Update/metadata/Step2.png)
 
-[^Figure 67]: Manifest and Fragment generated 
+[^Figure 79]: Manifest and Fragment generated 
 
 ### Step 3 Protected Update for the metadata of Target OID
 
@@ -948,7 +948,7 @@ To Update the metadata of the target OID, Select "Step3: Update Trust M Objects"
 
 ![](images/Protected_Update/metadata/Step3.png) 
 
-[^Figure 68]: Metadata protected update 
+[^Figure 80]: Metadata protected update 
 
 ### Read Objects Metadata
 
@@ -958,7 +958,7 @@ To read out metadata , select "Read Objects Metadata".
 
 ![](images/Protected_Update/metadata/Object_metadata.png)
 
-[^Figure 69]: Objects metadata displayed
+[^Figure 81]: Objects metadata displayed
 
 After successful metadata protected update, the Lcs0 will be brought back to 0x01, and version will be increased to 0001 from 0000.
 
@@ -968,7 +968,7 @@ Reset the Access Condition of the Target OID to *MUD:NEV* so that the Target OID
 
 ![](images/Protected_Update/metadata/reset_access.png)
 
-[^Figure 70]: Target OID access condition reset successfully
+[^Figure 82]: Target OID access condition reset successfully
 
 # ECC Key Protected Update
 
@@ -979,7 +979,7 @@ This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentiall
 
 ![](images/Protected_Update/ecc/eccmainscreen.png)
 
-[^Figure 71]: ECC key Protected Update Screen
+[^Figure 83]: ECC key Protected Update Screen
 
 ## ECC Key Protected Update Functions
 
@@ -997,13 +997,13 @@ In this example we will Provision for all OIDs. Select the "Trust anchor OID", "
 
 ![](images/Protected_Update/ecc/fileopen.png)
 
-[^Figure 72]:Selection of Trust Anchor Certificate and Input Secret file
+[^Figure 84]:Selection of Trust Anchor Certificate and Input Secret file
 
 To Provision,  Select "Step1: Provisioning for All OIDs". 
 
 ![](images/Protected_Update/ecc/provision.png)
 
-[^Figure 73]:Provisioning for ECC key Protected Update
+[^Figure 85]:Provisioning for ECC key Protected Update
 
 In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
 
@@ -1023,7 +1023,7 @@ The Manifest and Fragment Generation are based on all the input inside the box. 
 
 ![](images/Protected_Update/ecc/manifest.png)
 
-[^Figure 74]: ECC Key Manifest and Fragment generated 
+[^Figure 86]: ECC Key Manifest and Fragment generated 
 
 ### ECC: Step 3 Protected Update for the ECC Key 
 
@@ -1033,7 +1033,7 @@ To Update the ECC key into target OID, Select "Step3: Update Trust M Objects".
 
 ![](images/Protected_Update/ecc/update.png)
 
-[^Figure 75]:ECC Key Protected Update successfully
+[^Figure 87]:ECC Key Protected Update successfully
 
 ### Read ECC key Objects Metadata 
 
@@ -1043,7 +1043,7 @@ To read out metadata , select "Read Objects Metadata".
 
 ![](images/Protected_Update/ecc/metadata.png)
 
-[^Figure 76]:Read out object metadata
+[^Figure 88]:Read out object metadata
 
 ### Reset ECC Key Access Condition
 
@@ -1051,7 +1051,7 @@ Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that th
 
 ![](images/Protected_Update/ecc/reset.png)
 
-[^Figure 77]:ECC Key OID access condition reset successfully
+[^Figure 89]:ECC Key OID access condition reset successfully
 
 # AES Key Protected Update
 
@@ -1064,7 +1064,7 @@ This section shows the use of the  OPTIGA™ Trust M Integrity and Confidentiall
 
 ![](images/Protected_Update/aes/aesscreen.png)
 
-[^Figure 78]:AES Key Protected Update Screen
+[^Figure 90]:AES Key Protected Update Screen
 
 ## AES Key Protected Update Functions
 
@@ -1082,13 +1082,13 @@ In this example we will Provision for all OIDs. Select the "Trust anchor OID", "
 
 ![](images/Protected_Update/aes/fileopen.png)
 
-[^Figure 79]:Selection of Trust Anchor Certificate and Input Secret file
+[^Figure 91]:Selection of Trust Anchor Certificate and Input Secret file
 
 To Provision,  Select "Step1: Provisioning for All OIDs".
 
 ![](images/Protected_Update/aes/provision.png) 
 
-[^Figure 80]:Provisioning for AES key Protected Update
+[^Figure 92]:Provisioning for AES key Protected Update
 
 In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
 
@@ -1108,7 +1108,7 @@ The Manifest and Fragment Generation are based on all the input inside the red b
 
 ![](images/Protected_Update/aes/manifest.png)
 
-[^Figure 81]: AES Manifest and Fragment generated 
+[^Figure 93]: AES Manifest and Fragment generated 
 
 ### AES: Step 3 Protected Update for AES Key 
 
@@ -1118,7 +1118,7 @@ To Update the AES key for the target OID, Select "Step3: Update Trust M Objects"
 
 ![](images/Protected_Update/aes/update.png)
 
-[^Figure 82]:AES Key Protected Update successfully
+[^Figure 94]:AES Key Protected Update successfully
 
 ### Read AES Key Objects Metadata
 
@@ -1128,7 +1128,7 @@ To read out metadata , select "Read Objects Metadata".
 
 ![](images/Protected_Update/aes/metadata.png)
 
-[^Figure 83]:Read out objects metadata
+[^Figure 95]:Read out objects metadata
 
 ### Reset AES Key Access Condition
 
@@ -1136,7 +1136,7 @@ Resets the Access Condition  *Change* of the Target OID to *LCS <0x07* so that t
 
 ![](images/Protected_Update/aes/reset.png)
 
-[^Figure 84]:AES Target OID access condition reset successfully
+[^Figure 96]:AES Target OID access condition reset successfully
 
 # RSA Key Protected Update
 
@@ -1147,7 +1147,7 @@ This section shows the use of the  OPTIGA™ Trust M Integrity and Confidential 
 
 ![](images/Protected_Update/rsa/rsascreen.png)
 
-[^Figure 85]:RSA Key Protected Update screen
+[^Figure 97]:RSA Key Protected Update screen
 
 ## RSA Key Protected Update Functions
 
@@ -1165,13 +1165,13 @@ In this example we will Provision for all OIDs. Select the "Trust anchor OID", "
 
 ![](images/Protected_Update/rsa/fileopen.png)
 
-[^Figure 86]:Selection of Trust Anchor Certificate and Input Secret file
+[^Figure 98]:Selection of Trust Anchor Certificate and Input Secret file
 
 To Provision,  Select "Step1: Provisioning for All OIDs". 
 
 ![](images/Protected_Update/rsa/provision.png)
 
-[^Figure 87]:Provisioning for RSA Key Protected Update 
+[^Figure 99]:Provisioning for RSA Key Protected Update 
 
 In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
 
@@ -1189,7 +1189,7 @@ The Manifest and Fragment Generation are based on all the input inside the red b
 
 ![](images/Protected_Update/rsa/manifest.png)
 
-[^Figure 88]: RSA Manifest generated 
+[^Figure 100]: RSA Manifest generated 
 
 ### RSA: Step 3 Protected Update for the RSA Key 
 
@@ -1199,7 +1199,7 @@ To Update the metadata of the target OID, Select "Step3: Update Trust M Objects"
 
 ![](images/Protected_Update/rsa/update.png)
 
-[^Figure 89]:RSA Key Protected Update successful
+[^Figure 101]:RSA Key Protected Update successful
 
 ### Read RSA Key Objects Metadata
 
@@ -1209,7 +1209,7 @@ To read out metadata , select "Read Objects Metadata".
 
 ![](images/Protected_Update/rsa/metadata.png)
 
-[^Figure 90]:Read Out object metadata
+[^Figure 102]:Read Out object metadata
 
 ### Reset RSA Key Access Condition
 
@@ -1217,7 +1217,7 @@ Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that th
 
 ![](images/Protected_Update/rsa/reset.png)
 
-[^Figure 91]:RSA key Target OID access condition is reset successfully
+[^Figure 103]:RSA key Target OID access condition is reset successfully
 
 # Data Protected Update
 
@@ -1228,7 +1228,7 @@ This section shows the use of the  OPTIGA™ Trust M Integrity and Confidential 
 
 ![](images/Protected_Update/data/datascreen.png)
 
-[^Figure 92]:Data Protected Update screen
+[^Figure 104]:Data Protected Update screen
 
 ## Data Protected Update Functions
 
@@ -1246,7 +1246,7 @@ In this example we will Provision for all OIDs. Select the "Trust anchor OID", "
 
 ![](images/Protected_Update/data/fileopen.png)
 
-[^Figure 93]:Selection of Trust Anchor Certificate and Input Secret file
+[^Figure 105]:Selection of Trust Anchor Certificate and Input Secret file
 
 To Provision,  Select "Step1: Provisioning for All OIDs". 
 
@@ -1254,7 +1254,7 @@ To Provision,  Select "Step1: Provisioning for All OIDs".
 
 ![](images/Protected_Update/data/provision.png)
 
-[^Figure 94]:Provisioning for Data Protected Update 
+[^Figure 106]:Provisioning for Data Protected Update 
 
 In this example, after provisioning, the access condition *change* of target OID should be set to *Int-0xE0E8&&Conf-0xF1D4*
 
@@ -1275,7 +1275,7 @@ The Manifest and Fragment Generation are based on all the input inside the red b
 
 ![](images/Protected_Update/data/manifest.png)
 
-[^Figure 95]: Data and Manifest generated 
+[^Figure 107]: Data and Manifest generated 
 
 ### Data Update: Step 3 Protected Update for the target OID 
 
@@ -1285,7 +1285,7 @@ To Update the data of the target OID, Select "Step3: Update Trust M Objects".
 
 ![](images/Protected_Update/data/update.png)
 
-[^Figure 96]:Data Protected Update successful
+[^Figure 108]:Data Protected Update successful
 
 ### Read Data Objects Metadata
 
@@ -1295,7 +1295,7 @@ To read out metadata , select "Read Objects Metadata".
 
 ![](images/Protected_Update/data/metadata.png)
 
-[^Figure 97]:Read Out object metadata
+[^Figure 109]:Read Out object metadata
 
 ### Reset Target OID Access Condition
 
@@ -1303,7 +1303,7 @@ Resets the Access Condition of the Target OID *Change* to *LCS <0x07* so that th
 
 ![](images/Protected_Update/data/reset.png)
 
-[^Figure 98]:Target OID access condition is reset successfully
+[^Figure 110]:Target OID access condition is reset successfully
 
 
 
@@ -1315,7 +1315,7 @@ Secure Storage Functions Description
 
 ![](images/Secure_Storage/Secure_Storage_Functions.png)
 
-[^Figure 99]: Secure Storage functions described
+[^Figure 111]: Secure Storage functions described
 
 ### Provision For HMAC Authentication
 
@@ -1331,7 +1331,7 @@ To Provision , Select the "Target OID" and "Secret OID". Then select "Provision 
 
 ![](images/Secure_Storage/Provision.png)
 
-[^Figure 100]: Provisioning HMAC authentication storage
+[^Figure 112]: Provisioning HMAC authentication storage
 
 ### HMAC Verify and Write
 
@@ -1343,7 +1343,7 @@ To write the data into the "Target OID" , Select the "Target OID" and "Secret OI
 
 ![](images/Secure_Storage/Hmac_verify_write.png)
 
-[^Figure 101]: Verify and Write to Target OID 
+[^Figure 113]: Verify and Write to Target OID 
 
 ### HMAC Verify and Read
 
@@ -1355,7 +1355,7 @@ To readout the data in the Target OID, Select the "Target OID" and "Secret OID",
 
 ![](images/Secure_Storage/Hmac_verify_datareadout.png)
 
-[^Figure 102]: Verify and read Target OID
+[^Figure 114]: Verify and read Target OID
 
 ### Read Objects Metadata
 
@@ -1365,7 +1365,7 @@ To read out metadata , select "Read Object Metadata".
 
 ![](images/Secure_Storage/metadata.png)
 
-[^Figure 103]: Read Objects metadata displayed
+[^Figure 115]: Read Objects metadata displayed
 
 # Secured connection to AWS IoT core
 
@@ -1385,11 +1385,11 @@ Go back to the main screen and select "AWS:IOT Core".
 
 ![](images/AWSIOT/MainScreen.png)
 
-[^Figure 104]: OPTIGA Trust M Explorer Application: AWS:IOT Core Selection
+[^Figure 116]: OPTIGA Trust M Explorer Application: AWS:IOT Core Selection
 
 ![](images/AWSIOT/AWS_Screen.png)
 
-[^Figure 105]: AWS:IOT Core Main Screen
+[^Figure 117]: AWS:IOT Core Main Screen
 
 ## Get started with AWS IoT Core
 
@@ -1397,29 +1397,29 @@ To generate "Access Key ID" , "Secret Access Key" and "Session Token"  log in to
 
 ![](images/AWSIOT/AWS_Signin.png)
 
-[^Figure 106]: AWS IOT Login
+[^Figure 118]: AWS IOT Login
 
 Next, go to your credentials.
 
 ![](images/AWSIOT/security_cred.jpg)
 
-[^Figure 107]: AWS IOT Security Credentials
+[^Figure 119]: AWS IOT Security Credentials
 
 Download and retrieve your security credentials.
 
 ![](images/AWSIOT/download.png)
 
-[^Figure 108]: AWS IOT Download Security Credentials
+[^Figure 120]: AWS IOT Download Security Credentials
 
 ![](images/AWSIOT/Credentials1.png)
 
-[^Figure 109]: Security_Credentials.CSV
+[^Figure 121]: Security_Credentials.CSV
 
 For AWS SSO user, Go to Your own login Page through SSO. For example,
 
 ![](images/AWSIOT/AWS_Account.png)
 
-[^Figure 110]: IFXCloudUserAdministratorAccess Page 
+[^Figure 122]: IFXCloudUserAdministratorAccess Page 
 
 Click *Command line or programmatic access* button to copy out the AWS_access_key_id,AWS_secret_access_key and AWS_session_token.
 
@@ -1427,61 +1427,61 @@ Click *Command line or programmatic access* button to copy out the AWS_access_ke
 
 ![](images/AWSIOT/Credentials.png)
 
-[^Figure 111]:AWS Access credentials
+[^Figure 123]:AWS Access credentials
 
 To retrieve Endpoint, go to "Services" and select "IOT Core".
 
 ![](images/AWSIOT/Services_iotcore.jpg)
 
-[^Figure 112]: AWS IOT Core
+[^Figure 124]: AWS IOT Core
 
 Select "Settings" at the left side of the webbrowser.
 
 ![](images/AWSIOT/IOT_core_settings.jpg)
 
-[^Figure 113]: AWS IOT Core Settings
+[^Figure 125]: AWS IOT Core Settings
 
 At "Custom Endpoint", copy the endpoint.
 
 ![](images/AWSIOT/endpoint_aws.png)
 
-[^Figure 114]: AWS IOT Core Settings Endpoint
+[^Figure 126]: AWS IOT Core Settings Endpoint
 
 Input the "Access Key ID" , "Secret Access Key" and "Session Token" and choose the correct server location
 
 ![](images/AWSIOT/Credentials_entered.png)
 
-[^Figure  115]: AWS IOT Configuration
+[^Figure  127]: AWS IOT Configuration
 
 Select "Set AWS credentials".
 
 ![](images/AWSIOT/Credentials_entered2.png)
 
-[^Figure 116]: AWS IOT Set AWS Credentials Selection
+[^Figure 128]: AWS IOT Set AWS Credentials Selection
 
 Next, set Endpoint by selecting "Open config file".
 
 ![](images/AWSIOT/AWS_Main2.png)
 
-[^Figure 117]: AWS IOT Open Config File Selection
+[^Figure 129]: AWS IOT Open Config File Selection
 
 Paste the endpoint  from your AWS account and save.
 
 ![](images/AWSIOT/Endpoint_editing.png)
 
-[^Figure 118]: AWS IOT Open Config File
+[^Figure 130]: AWS IOT Open Config File
 
 **Skip this step if a policy file has already been created.** First, select "Open policy file", make no changes and save. This is a one time setting only.
 
 ![](images/AWSIOT/AWS_Create_Policy.png)
 
-[^Figure 119]: AWS IOT Open Policy File Selection
+[^Figure 131]: AWS IOT Open Policy File Selection
 
 Select "Create Policy (from policy file)". Once policy has been created, there will be no need to do this step again.
 
 ![](images/AWSIOT/policyfille.png)
 
-[^Figure 120]: AWS IOT Policy File
+[^Figure 132]: AWS IOT Policy File
 
 ## Create device certificate and assign it to Thing with policy
 
@@ -1489,7 +1489,7 @@ Once configuration is done, to provision the certificate, select "1-click provis
 
 ![](images/AWSIOT/AWS_Main3.png)
 
-[^Figure 121]:  AWS IOT 1-click provision Selection
+[^Figure 133]:  AWS IOT 1-click provision Selection
 
 The following code will be run for Step 1 to Step 6.
 
@@ -1515,17 +1515,17 @@ Step 6: The policy is attached to the received certificate
 (/'/>/>/>/', u/'aws iot attach-principal-policy --policy-name $policyname --principal $certificateArn')
 ```
 
-1-click provision is successful if no error message is seen and certificate is successfully attached as shown in the Figure 105 below. Data can now be sent to AWS web-browser.
+1-click provision is successful if no error message is seen and certificate is successfully attached as shown in the Figure 134 below. Data can now be sent to AWS web-browser.
 
 ![](images/AWSIOT/extra.png)
 
-[^Figure 122]: AWS IOT 1-click provision Succeeded
+[^Figure 134]: AWS IOT 1-click provision Succeeded
 
 To view the certificate details, go to AWS IoT / Security / Certificates
 
 ![](images/AWSIOT/aws_cert.png)
 
-[^Figure 123]: Certificate generated and registered to AWS IOT core
+[^Figure 135]: Certificate generated and registered to AWS IOT core
 
 ## Publish messages to AWS IoT core from the Raspberry Pi
 
@@ -1533,16 +1533,16 @@ After performing all the necessary preparation steps from Step 1 to Step 6, we w
 
 ![](images/AWSIOT/Subscribe.png)
 
-[^Figure 124]: AWS IOT Test
+[^Figure 136]: AWS IOT Test
 
 We can proceed with Step 7. On the OPTIGA™ Trust M Explorer AWS IOT, input the correct Topic and the intended Data. Then, select "Start Publishing". The device can continue publishing even after reboot and no further configuration will be required.
 
 ![](images/AWSIOT/publish.png)
 
-[^Figure 125]: AWS IOT Start Publishing Selection
+[^Figure 137]: AWS IOT Start Publishing Selection
 
-On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 109 . This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
+On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 137. This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
 
 ![](images/AWSIOT/publiushed.png)
 
-[^Figure 126]: AWS IOT Web-Browser Published
+[^Figure 138]: AWS IOT Web-Browser Published
