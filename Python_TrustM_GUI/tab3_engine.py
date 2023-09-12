@@ -431,6 +431,340 @@ class Tab_ECC_CS(wx.Panel):
         self.server_proc.stdin.write((write_value+"\n").encode())
         self.server_proc.stdin.flush()
 
+
+class Tab_RSA_CS(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+
+        # declare the sizers
+        mainsizer = wx.BoxSizer(wx.HORIZONTAL)
+        steps_sizer = wx.BoxSizer(wx.VERTICAL)
+        server_sizer = wx.BoxSizer(wx.VERTICAL)
+        client_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # instantiate the objects
+        button_gen_server_privkey = wx.Button(self, -1, 'Create Server Private Key', size = (-1, 48))
+        button_gen_server_key_csr = wx.Button(self, -1, 'Create Server Keys CSR', size = (-1, 48))
+        button_gen_server_cert = wx.Button(self, -1, 'Create Server Cert', size = (-1, 48))
+        
+        button_gen_client_key_csr = wx.Button(self, -1, 'Create Client RSA Key and CSR', size = (-1, 48))
+        button_extract_pubkey = wx.Button(self, -1, 'Extract Public Key from CSR', size = (-1, 48))
+        button_gen_client_cert = wx.Button(self, -1, 'Create Client Cert', size = (-1, 48))
+        
+        button_start_server = wx.Button(self, -1, 'Start/Stop Server')
+        button_start_client = wx.Button(self, -1, 'Start/Stop Client')
+        button_write_to_server = wx.Button(self, -1, 'Write to Server')
+        button_write_to_client = wx.Button(self, -1, 'Write to Client')
+        button_flush_client = wx.Button(self, -1, 'Clear Client text', size = (-1, 48))
+        button_flush_server = wx.Button(self, -1, 'Clear Server text', size = (-1, 48))
+        self.text_client = wx.TextCtrl(self, -1, style=(wx.TE_MULTILINE | wx.TE_READONLY))
+        self.text_server = wx.TextCtrl(self, -1, style=(wx.TE_MULTILINE | wx.TE_READONLY))
+        self.text_client.SetFont(wx.Font(12, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        self.text_server.SetFont(wx.Font(12, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        
+        self.input_client = wx.TextCtrl(self, -1,value="Hello from Client")
+        self.input_server = wx.TextCtrl(self, -1,value="Hello from Server")
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backbutton = wx.BitmapButton(self, -1, backimage)
+        #~ backbutton = wx.BitmapButton(self, -1, img.back.getBitmap())
+
+        # attach the objects to the sizers
+        mainsizer.Add(steps_sizer, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
+        mainsizer.Add(server_sizer, 1, wx.EXPAND | wx.ALL, 5)
+        mainsizer.Add(client_sizer, 1, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.Add(button_gen_server_privkey, 0, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.Add(button_gen_server_key_csr, 0, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.Add(button_gen_server_cert, 0, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.AddSpacer(48)
+        steps_sizer.Add(button_gen_client_key_csr, 0, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.Add(button_extract_pubkey, 0, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.Add(button_gen_client_cert, 0, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.AddSpacer(48)
+        steps_sizer.Add(button_flush_server, 0, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.Add(button_flush_client, 0, wx.EXPAND | wx.ALL, 5)
+#         steps_sizer.AddSpacer(236)
+        steps_sizer.AddSpacer(24)
+        steps_sizer.Add(backbutton, 0, wx.ALL, 5)
+        server_sizer.Add(self.text_server, 1, wx.EXPAND | wx.ALL, 5)
+        server_sizer.Add(button_start_server, 0, wx.EXPAND | wx.ALL, 5)
+        server_sizer.Add(self.input_server, 0, wx.EXPAND | wx.ALL, 5)
+        server_sizer.Add(button_write_to_client, 0, wx.EXPAND | wx.ALL, 5)
+        client_sizer.Add(self.text_client, 1, wx.EXPAND | wx.ALL, 5)
+        client_sizer.Add(button_start_client, 0, wx.EXPAND | wx.ALL, 5)
+        client_sizer.Add(self.input_client, 0, wx.EXPAND | wx.ALL, 5)
+        client_sizer.Add(button_write_to_server, 0, wx.EXPAND | wx.ALL, 5)
+
+        # Set tooltips
+        button_gen_server_privkey.SetToolTip(wx.ToolTip("Generate ECC private key using prime256v1 Elliptic Curve."))
+        button_gen_server_key_csr.SetToolTip(wx.ToolTip("Generate CSR using RSA Key."))
+        button_gen_server_cert.SetToolTip(wx.ToolTip("Create Server Certificate using Certificate Authority."))
+        
+        button_gen_client_key_csr.SetToolTip(wx.ToolTip("Create RSA 2048 key length with Auth/Enc/Sign usage and Certificate Signing Request using Trust M."))
+        button_extract_pubkey.SetToolTip(wx.ToolTip("Extract RSA Public Key from CSR."))
+        button_gen_client_cert.SetToolTip(wx.ToolTip("Create Client Certificate using Certificate Authority."))
+
+        # declare and bind events
+        self.Bind(wx.EVT_BUTTON, self.OnFlushClient, button_flush_client)
+        self.Bind(wx.EVT_BUTTON, self.OnFlushServer, button_flush_server)
+        
+        self.Bind(wx.EVT_BUTTON, self.OnGenServerPrivateKey, button_gen_server_privkey)
+        self.Bind(wx.EVT_BUTTON, self.OnGenServerKeyCSR, button_gen_server_key_csr)
+        self.Bind(wx.EVT_BUTTON, self.OnGenServerCert, button_gen_server_cert)
+        
+        self.Bind(wx.EVT_BUTTON, self.OnGenClientKeyCSR1, button_gen_client_key_csr)
+        self.Bind(wx.EVT_BUTTON, self.OnExtractPublicKey, button_extract_pubkey)
+        self.Bind(wx.EVT_BUTTON, self.OnGenClientCert, button_gen_client_cert)
+        
+        self.Bind(wx.EVT_BUTTON, self.OnStartServer, button_start_server)
+        self.Bind(wx.EVT_BUTTON, self.OnStartClient, button_start_client)
+        self.Bind(wx.EVT_BUTTON, self.OnWriteToServer, button_write_to_server)
+        self.Bind(wx.EVT_BUTTON, self.OnWriteToClient, button_write_to_client)
+        self.Bind(wx.EVT_BUTTON, self.OnBack, backbutton)
+        
+        # Setup Publisher for text field update
+        Publisher.subscribe(self.Upd_Server_Status, "RSA_Server_Text")
+        Publisher.subscribe(self.Upd_Client_Status, "RSA_Client_Text")
+
+        self.SetSizer(mainsizer)
+        # declare threads related parameters
+        self.Server_thread_active_flag=0
+        self.Client_thread_active_flag=0
+        self.server_proc=None
+        self.client_proc=None
+        
+    #read each line from stdout and publishes it 
+    def server_thread(self):
+        try:    
+            while self.Server_thread_active_flag==1 :
+                line = self.server_proc.stdout.readline()
+                if line != '':
+                    wx.CallAfter(Publisher.sendMessage, "RSA_Server_Text", msg=line)
+        finally:
+            self.Server_thread_active_flag=0
+            print("Exit RSA server Thread\n")
+            wx.CallAfter(Publisher.sendMessage, "RSA_Server_Text", msg="Server Stopped..\n")
+
+    def client_thread(self):
+        while self.Client_thread_active_flag==1 :
+            line = self.client_proc.stdout.readline()
+            
+            if line != '':
+                wx.CallAfter(Publisher.sendMessage, "RSA_Client_Text", msg=line)
+            
+        self.Client_thread_active_flag=0
+        print("Exit RSA client Thread\n")
+        wx.CallAfter(Publisher.sendMessage, "RSA_Client_Text", msg="Client Stopped..\n")    
+                
+    def Upd_Server_Status(self,msg):
+        self.text_server.AppendText(msg)
+        
+    def Upd_Client_Status(self,msg):
+        self.text_client.AppendText(msg)                
+        
+    def OnBack(self, evt):
+        self.Parent.Parent.OnCloseWindow(None)
+        
+    def Destroy(self):
+        if (self.server_proc is not None):
+            self.Server_thread_active_flag=0
+
+            if (self.client_proc is not None):
+                self.Client_thread_active_flag=0
+                print("Client Thread Active..killing it: %d \n" % self.client_proc.pid)
+                kill_child_processes(self.client_proc.pid)
+                self.client_proc.terminate()
+                self.client_proc.wait()
+                self.client_proc = None                
+
+            print("Server Thread Active..killing it: %d \n" % self.server_proc.pid)
+            kill_child_processes(self.server_proc.pid)
+            
+            self.server_proc.terminate()
+            self.server_proc.wait()
+            self.server_proc = None        
+    
+    def OnFlushClient(self, evt):
+        self.text_client.Clear()
+
+    def OnFlushServer(self, evt):
+        self.text_server.Clear()
+
+    def OnGenServerPrivateKey(self, evt):      
+        self.text_server.AppendText("Creating Server ECC Private Key... \n")
+        command_output = exec_cmd.execCLI([
+                             "openssl", "ecparam",
+                             "-out", "server1_privkey.pem",
+                             "-name", "prime256v1",
+                             "-genkey"         
+                         ])
+        self.text_server.AppendText(command_output)
+        self.text_server.AppendText("'openssl ecparam -out server1_privkey.pem -name prime256v1 -genkey' executed \n")
+        self.text_server.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+        
+    def OnGenServerKeyCSR(self, evt):
+        self.text_server.AppendText("Creating Server ECC Keys CSR... \n")
+        command_output = exec_cmd.execCLI([
+                             "openssl", "req",
+                             "-new", 
+                             "-key", "server1_privkey.pem",
+                             "-subj", "/CN=Server1/O=Infineon/C=SG",
+                             "-out", "server1.csr",
+                         ])
+        self.text_server.AppendText(command_output)
+        self.text_server.AppendText("'openssl req -new -key server1_privkey.pem -subj /CN=Server1/O=Infineon/C=SG -out server1.csr' executed \n")
+        self.text_server.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+        
+    def OnGenServerCert(self, evt):
+        self.text_server.AppendText("Creating Server Certificate by using CA...\n")
+        command_output = exec_cmd.execCLI([
+                             "openssl", "x509",
+                             "-req",
+                             "-in", "server1.csr",
+                             "-CA", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem",
+                             "-CAkey", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA_Key.pem",
+                             "-CAcreateserial",
+                             "-out", "server1.crt",
+                             "-days", "365",
+                             "-sha256",
+                             "-extfile", "openssl.cnf",
+                             "-extensions", "cert_ext",
+                         ])
+        self.text_server.AppendText(command_output)
+        self.text_server.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+
+    def OnGenClientKeyCSR1(self, evt):
+        wx.CallAfter(self.OnGenClientKeyCSR)
+        self.text_client.AppendText("Creating new RSA 2048 key length with Auth/Enc/Sign usage and creating a certificate request...\n")
+    
+    def OnGenClientKeyCSR(self):
+        command_output = exec_cmd.execCLI([
+                             "openssl", "req",
+                             "-keyform", "engine",
+                             "-engine", "trustm_engine",
+                             "-key", "0xe0fd:^:NEW:0x42:0x13",
+                             "-new", 
+                             "-out", "client1_rsa.csr",
+                             "-subj", "/CN=TrustM/O=Infineon/C=SG",
+                         ])
+        self.text_client.AppendText(command_output)
+        self.text_client.AppendText("'openssl req -keyform engine -engine trustm_engine -key 0xe0fd:^:NEW:0x42:0x13 -new -out client1_rsa.csr -subj /CN=TrustM/O=Infineon/C=SG' executed \n")
+        command_output = exec_cmd.execCLI([
+                             "openssl", "req",
+                             "-in", "client1_rsa.csr",
+                             "-text",
+                         ])
+        self.text_client.AppendText(command_output)
+        self.text_client.AppendText("'openssl req -in client1_rsa.csr -text' executed \n")
+        self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+        
+    def OnExtractPublicKey(self, evt):
+        self.text_client.AppendText("Extracting Public Key from CSR...\n")
+        command_output = exec_cmd.execCLI([
+                             "openssl",
+                             "req",
+                             "-in", "client1_rsa.csr",
+                             "-out", "client1_rsa.pub",
+                             "-pubkey",
+                         ])
+        self.text_client.AppendText(command_output)
+        self.text_client.AppendText("'openssl req -in client1_rsa.csr -out client1_rsa.pub -pubkey' executed \n")
+        self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+    
+    def OnGenClientCert(self, evt):
+        self.text_client.AppendText("Creating Client Certificate by using CA...\n")
+        command_output = exec_cmd.execCLI([
+                             "openssl", "x509",
+                             "-req",
+                             "-in", "client1_rsa.csr",
+                             "-CA", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem",
+                             "-CAkey", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA_Key.pem",
+                             "-CAcreateserial",
+                             "-out", "client1_rsa.crt",
+                             "-days", "365",
+                             "-sha256",
+                             "-extfile", "openssl.cnf",
+                             "-extensions", "cert_ext1",
+                         ])
+        self.text_client.AppendText(command_output)
+        self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+            
+    def OnStartServer(self, evt):
+        #if server thread is still running, terminate it
+        if (self.server_proc is not None):
+            self.Server_thread_active_flag=0
+            #if client thread is still running, terminate it
+            if (self.client_proc is not None):
+                self.Client_thread_active_flag=0
+                print("Client Thread Active..killing it: %d \n" % self.client_proc.pid)
+                kill_child_processes(self.client_proc.pid)
+                self.client_proc.terminate()
+                self.client_proc.wait()
+                self.client_proc = None
+                
+            print("Server Thread Active..killing it: %d \n" % self.server_proc.pid)
+            kill_child_processes(self.server_proc.pid)
+            self.server_proc.terminate()
+            self.server_proc.wait()
+            self.server_proc = None
+
+        #if server thread is not running
+        else: 
+            openssl_cmd="openssl s_server -cert server1.crt -key server1_privkey.pem -accept 5000 -verify_return_error -Verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
+#             openssl_cmd="echo Hello World!"
+            self.server_proc = exec_cmd.createProcess(openssl_cmd, None)
+            self.Server_thread_active_flag=1
+            #start a server daemon thread and run server_thread function
+            s_thread = threading.Thread(name='Server-daemon', target=self.server_thread)
+            s_thread.setDaemon(True)
+            s_thread.start()
+            #this message is sent first
+            wx.CallAfter(Publisher.sendMessage, "RSA_Server_Text", msg="\n\n" + openssl_cmd +"\n\n")     
+    
+    def OnStartClient(self, evt):
+        if (self.client_proc is not None):
+            self.Client_thread_active_flag=0
+            print("Client Thread Active..killing it: %d \n" % self.client_proc.pid)
+            kill_child_processes(self.client_proc.pid)
+            self.client_proc.terminate()
+            self.client_proc.wait()
+            self.client_proc = None
+        else:
+            openssl_cmd="openssl s_client -connect localhost:5000 -client_sigalgs RSA+SHA256 -keyform engine -engine trustm_engine -cert client1_rsa.crt -key 0xe0fd:^ -tls1_2 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
+            if (self.server_proc is not None):
+                self.client_proc = exec_cmd.createProcess(openssl_cmd, None)
+
+                self.Client_thread_active_flag=1
+                c_thread = threading.Thread(name='Client-daemon', target=self.client_thread)
+                c_thread.setDaemon(True)
+                c_thread.start()                
+                wx.CallAfter(Publisher.sendMessage, "RSA_Client_Text", msg="\n\n" +openssl_cmd+"\n\n")
+            else:
+                wx.CallAfter(Publisher.sendMessage, "RSA_Client_Text",msg="Server is not active..\n")   
+    
+    def OnWriteToServer(self, evt):
+        global server_proc
+        if (self.server_proc is None):
+            self.text_server.AppendText("Server is not running!\n")
+            return
+        write_value = self.input_client.GetValue()
+        if (write_value == ""):
+            self.text_server.AppendText("I need something to write!\n")
+            return
+        self.client_proc.stdin.write((write_value+"\n").encode())
+        self.client_proc.stdin.flush()
+
+    def OnWriteToClient(self, evt):
+        if (self.client_proc is None):
+            self.text_client.AppendText("Client is not running!\n")
+            return
+        write_value = self.input_server.GetValue()
+        if (write_value == ""):
+            self.text_client.AppendText("I need something to write!\n")
+            return
+        self.server_proc.stdin.write((write_value+"\n").encode())
+        self.server_proc.stdin.flush()
+
+
 class Tab_RNG(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
@@ -607,11 +941,13 @@ class Tab3Frame(wx.Frame):
         # Instantiate all objects
         self.tab_base = wx.Notebook(self, id=wx.ID_ANY, style=wx.NB_TOP)
         self.tab2_ecc_cs = Tab_ECC_CS(self.tab_base)
+        self.tab2_rsa_cs = Tab_RSA_CS(self.tab_base)        
         self.tab4_rng = Tab_RNG(self.tab_base)
         
 
         # Add tabs
         self.tab_base.AddPage(self.tab2_ecc_cs, 'ECC (Client/Server)')
+        self.tab_base.AddPage(self.tab2_rsa_cs, 'RSA (Client/Server)')        
         self.tab_base.AddPage(self.tab4_rng, 'RNG')
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
@@ -623,5 +959,6 @@ class Tab3Frame(wx.Frame):
     def OnCloseWindow(self, evt):
         #checkProcesses()
         self.tab2_ecc_cs.Destroy()
+        self.tab2_rsa_cs.Destroy()        
         self.Parent.Show()
         self.Destroy()
