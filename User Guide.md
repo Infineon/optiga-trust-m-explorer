@@ -1011,13 +1011,13 @@ In this example, after provisioning, the access condition *change* of target OID
 
 Generate the manifest and fragment for the ECC key Protected Update.
 
-To generate the Manifest and fragment, Enter the "payload version" and select the "key_data" you want to store into OPTIGA™ Trust M.
+To generate the Manifest and fragment, Enter the "payload version" and select the "privkey_data" and "pubkey_data" file you want to store into OPTIGA™ Trust M.
 
 Choose the trust_anchor_privkey (Corresponding to trust_anchor_cert)and also the secret file (same with the secret stored inside  "Secret OID")
 
 Select the "Step2 : Generate Manifest" button.  
 
-In this example the "payload version" is set to 1 and the payload_type is  key and key data used is the ecc_secp256r1_test.pem file and the private key used is sample_ec_256_priv.pem file and the secret used is secret.txt file.
+In this example the "payload version" is set to 1 and the payload_type is  key. The private key data used is the ecc256test_priv.pem file and the corresponding public key data is stored in the ecc256test_pub.der file. The private key used is sample_ec_256_priv.pem file and the secret used is secret.txt file.
 
 The Manifest and Fragment Generation are based on all the input inside the box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
 
@@ -1179,11 +1179,11 @@ In this example, after provisioning, the access condition *change* of target OID
 
 Generate the manifest and fragment for the RSA key Protected Update.
 
-To generate the Manifest and fragment, Enter the "payload version" and select the "keydata" you want to import into OPTIGA™ Trust M
+To generate the Manifest and fragment, Enter the "payload version" and select the "privkey_data" and "pubkey_data" you want to import into OPTIGA™ Trust M
 
 Choose the trust_anchor_privkey (Corresponding to trust_anchor_cert)and also the secret file (same with the secret stored inside  "Secret OID")
 
-Select the "Step2 : Generate Manifest" button.  In this example the "payload version" is set to 1 and the payload_type is set to key and key data used is the rsa_1024_test.pem file and the secret used is secret.txt file. 
+Select the "Step2 : Generate Manifest" button.  In this example the "payload version" is set to 1 and the payload_type is set to key. The private key data used is the rsa2048test_priv.pem file and the corresponding public key data is stored in the rsa2048test_pub.der file.The secret used is secret.txt file. 
 
 The Manifest and Fragment Generation are based on all the input inside the red box. For more information for this part, refer to  [protected update data set](https://github.com/Infineon/linux-optiga-trust-m/tree/development_v3/ex_protected_update_data_set) 
 
