@@ -26,6 +26,7 @@ step1_list = ['Step1: Set Lcso=0x03(Init) ResetType=0x01(Keep TargetData)','Step
 
 key_trust_anchor_oid_list = ['E0E8', 'E0E9', 'E0EF']
 key_target_oid_list = ['E0F1', 'E0F2','E0F3']
+key_target_oid_list2 = ['E0F1', 'E0F2']
 pubkey_oid_list = ['F1D1' , 'F1D2' , 'F1D3']
 ext_pubkey_oid_list = ['F1E0' , 'F1E1']
 key_secret_oid_list = ['F1D4', 'F1D0', 'F1D6', 'F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB']
@@ -884,9 +885,11 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         text_trust_anchor_oid = wx.StaticText(self, -1, "trust_anchor_oid:")
         self.trust_anchor_oid = wx.ComboBox(self, 1, choices=key_trust_anchor_oid_list, style=wx.CB_READONLY, size = wx.Size(178, -1))
         self.trust_anchor_oid.SetFont(textctrlfont)
-        text_target_oid = wx.StaticText(self, -1, "target_oid_ECC:")
+        
+        text_target_oid = wx.StaticText(self, -1, "target_oid_ECC:")			
         self.target_oid = wx.ComboBox(self, 1, choices =key_target_oid_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.target_oid.SetFont(textctrlfont)
+        
         text_secret_oid = wx.StaticText(self, -1, "secret_oid:")
         self.secret_oid = wx.ComboBox(self, 1, choices=key_secret_oid_list, style=(wx.TE_CHARWRAP|wx.TE_MULTILINE), size=(178, 30))
         self.secret_oid.SetFont(textctrlfont)
@@ -1058,6 +1061,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.secret2.Bind(wx.EVT_LEFT_DOWN,self.OnClickSecret2)
         self.keydata.Bind(wx.EVT_LEFT_DOWN,self.OnClickKeydata)
         self.pubkeydata.Bind(wx.EVT_LEFT_DOWN,self.OnClickPubKeydata)
+        self.keylength.Bind(wx.EVT_COMBOBOX, self.OnKeyLength2)
 
         self.SetSizer(mainsizer)
         mainsizer.Fit(self)
@@ -1139,7 +1143,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
             return (value)
             
         elif (self.keylength.GetSelection() == 1):
-            value = "key_algo=4"
+            value = "key_algo=4"          
             return (value)
         
         elif (self.keylength.GetSelection() == 2):
@@ -1147,16 +1151,30 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
             return (value)
         
         elif (self.keylength.GetSelection() == 3):
-            value = "key_algo=19"
+            value = "key_algo=19"        
             return (value)
         
         elif (self.keylength.GetSelection() == 4):
-            value = "key_algo=21"
+            value = "key_algo=21"            
             return (value)
             
         else:
             value = "key_algo=22"
             return (value)
+           
+        
+    def OnKeyLength2(self, event):
+        
+        if (self.keylength.GetSelection() == 2 or self.keylength.GetSelection() == 5):
+            self.target_oid.SetItems(key_target_oid_list2)
+            self.target_oid.SetSelection(0)
+            
+            
+        else:
+            self.target_oid.SetItems(key_target_oid_list)
+            self.target_oid.SetSelection(0)
+           
+        event.Skip()        
             
         
     def OnClickFileName(self, evt):
@@ -1445,7 +1463,6 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         selected_index= self.target_oid.GetSelection()
         if(self.keylength.GetSelection()== 2 or self.keylength.GetSelection()== 5):
             pubkey_oid= "0x" + ext_pubkey_oid_list[selected_index]   #select corresponding pubkey oid based on index
-
 			
         else:
             pubkey_oid= "0x" + pubkey_oid_list[selected_index]	
@@ -1453,9 +1470,9 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_protected_update_ecckey", "-k", target_oid, "-f", "fragment.dat", "-m", "manifest.dat",  ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("'trustm_protected_update_ecckey -k " + target_oid + " -m manifest.dat -f fragment.dat' executed \n")        
-        command_output2 = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeypath, ])
-        print(config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeydata.GetValue())
-        self.text_display.AppendText("'trustm_data -w " + pubkey_oid + " -i " + self.pubkeydata.GetValue() + "' executed \n")          
+        command_output2 = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeypath, "-e", ])
+        print(config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeydata.GetValue(), "-e")
+        self.text_display.AppendText("'trustm_data -w " + pubkey_oid + " -i " + self.pubkeydata.GetValue() + " -e' executed \n")          
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
      
     
@@ -2780,9 +2797,9 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_protected_update_rsakey", "-k", target_oid, "-f", "fragment.dat", "-m", "manifest.dat", "-X", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("'trustm_protected_update_rsakey -k " + target_oid + " -m manifest.dat -f fragment.dat' executed \n")
-        command_output2 = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeypath, ])
-        print(config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeydata.GetValue())
-        self.text_display.AppendText("'trustm_data -w " + pubkey_oid + " -i " + self.pubkeydata.GetValue() + "' executed \n")                
+        command_output2 = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeypath, "-e", ])
+        print(config.EXEPATH + "/bin/trustm_data", "-w", pubkey_oid, "-i", self.pubkeydata.GetValue(), "-e")
+        self.text_display.AppendText("'trustm_data -w " + pubkey_oid + " -i " + self.pubkeydata.GetValue() + " -e' executed \n")                
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
     
     def OnResetAccess1(self, evt):
