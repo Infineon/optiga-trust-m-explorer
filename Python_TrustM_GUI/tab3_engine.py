@@ -98,7 +98,7 @@ def kill_child_processes(parent_pid, sig=signal.SIGTERM):
         else:
             print("ps command returned %d" % retcode)
 
-
+'''
 class Tab_ECC_CS(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
@@ -306,15 +306,14 @@ class Tab_ECC_CS(wx.Panel):
     def OnGenClientKeyCSR(self):
         command_output = exec_cmd.execCLI([
                              "openssl", "req",
-                             "-keyform", "engine",
-                             "-engine", "trustm_engine",
-                             "-key", "0xe0f3:^:NEW:0x03:0x13",
+                             "-provider", "trustm_provider",
+                             "-key", "0xe0f3:*:NEW:0x03:0x13",
                              "-new", 
                              "-out", "client1_e0f3.csr",
                              "-subj", "/CN=Client1",
                          ])
         self.text_client.AppendText(command_output)
-        self.text_client.AppendText("'openssl req -keyform engine -engine trustm_engine -key 0xe0f3:^:NEW:0x03:0x13 -new -out client1_e0f3.csr -subj /CN=Client1' executed \n")
+        self.text_client.AppendText("'openssl req -provider trustm_provider -key 0xe0f3:*:NEW:0x03:0x13 -new -out client1_e0f3.csr -subj /CN=Client1' executed \n")
         command_output = exec_cmd.execCLI([
                              "openssl", "req",
                              "-in", "client1_e0f3.csr",
@@ -396,7 +395,7 @@ class Tab_ECC_CS(wx.Panel):
             self.client_proc.wait()
             self.client_proc = None
         else:
-            openssl_cmd="openssl s_client -connect localhost:5000 -client_sigalgs ECDSA+SHA256 -keyform engine -engine trustm_engine -cert client1_e0f3.crt -key 0xe0f3:^ -tls1_2 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
+            openssl_cmd="openssl s_client -connect localhost:5000 -client_sigalgs ECDSA+SHA256 -provider trustm_provider -provider default -cert client1_e0f3.crt -key 0xe0f3:^ -tls1_2 -verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
             if (self.server_proc is not None):
                 self.client_proc = exec_cmd.createProcess(openssl_cmd, None)
 
@@ -430,7 +429,7 @@ class Tab_ECC_CS(wx.Panel):
             return
         self.server_proc.stdin.write((write_value+"\n").encode())
         self.server_proc.stdin.flush()
-
+'''
 
 class Tab_RSA_CS(wx.Panel):
     def __init__(self, parent):
@@ -440,15 +439,15 @@ class Tab_RSA_CS(wx.Panel):
         mainsizer = wx.BoxSizer(wx.HORIZONTAL)
         steps_sizer = wx.BoxSizer(wx.VERTICAL)
         server_sizer = wx.BoxSizer(wx.VERTICAL)
-        client_sizer = wx.BoxSizer(wx.VERTICAL)
+        client_sizer = wx.BoxSizer(wx.VERTICAL)        
 
         # instantiate the objects
-        button_gen_server_privkey = wx.Button(self, -1, 'Create Server Private Key', size = (-1, 48))
-        button_gen_server_key_csr = wx.Button(self, -1, 'Create Server Keys CSR', size = (-1, 48))
+        button_gen_server_privkey = wx.Button(self, -1, 'Create Server Private Key and CSR', size = (-1, 48))
+        #button_gen_server_key_csr = wx.Button(self, -1, 'Create Server Keys CSR', size = (-1, 48))
         button_gen_server_cert = wx.Button(self, -1, 'Create Server Cert', size = (-1, 48))
         
         button_gen_client_key_csr = wx.Button(self, -1, 'Create Client RSA Key and CSR', size = (-1, 48))
-        button_extract_pubkey = wx.Button(self, -1, 'Extract Public Key from CSR', size = (-1, 48))
+        #button_extract_pubkey = wx.Button(self, -1, 'Extract Public Key from CSR', size = (-1, 48))
         button_gen_client_cert = wx.Button(self, -1, 'Create Client Cert', size = (-1, 48))
         
         button_start_server = wx.Button(self, -1, 'Start/Stop Server')
@@ -469,22 +468,24 @@ class Tab_RSA_CS(wx.Panel):
         #~ backbutton = wx.BitmapButton(self, -1, img.back.getBitmap())
 
         # attach the objects to the sizers
-        mainsizer.Add(steps_sizer, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
+        
+        mainsizer.Add(steps_sizer, 1, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
         mainsizer.Add(server_sizer, 1, wx.EXPAND | wx.ALL, 5)
         mainsizer.Add(client_sizer, 1, wx.EXPAND | wx.ALL, 5)
+        steps_sizer.AddSpacer(48)
         steps_sizer.Add(button_gen_server_privkey, 0, wx.EXPAND | wx.ALL, 5)
-        steps_sizer.Add(button_gen_server_key_csr, 0, wx.EXPAND | wx.ALL, 5)
+        #steps_sizer.Add(button_gen_server_key_csr, 0, wx.EXPAND | wx.ALL, 5)
         steps_sizer.Add(button_gen_server_cert, 0, wx.EXPAND | wx.ALL, 5)
         steps_sizer.AddSpacer(48)
         steps_sizer.Add(button_gen_client_key_csr, 0, wx.EXPAND | wx.ALL, 5)
-        steps_sizer.Add(button_extract_pubkey, 0, wx.EXPAND | wx.ALL, 5)
+        #steps_sizer.Add(button_extract_pubkey, 0, wx.EXPAND | wx.ALL, 5)
         steps_sizer.Add(button_gen_client_cert, 0, wx.EXPAND | wx.ALL, 5)
         steps_sizer.AddSpacer(48)
         steps_sizer.Add(button_flush_server, 0, wx.EXPAND | wx.ALL, 5)
         steps_sizer.Add(button_flush_client, 0, wx.EXPAND | wx.ALL, 5)
 #         steps_sizer.AddSpacer(236)
-        steps_sizer.AddSpacer(24)
-        steps_sizer.Add(backbutton, 0, wx.ALL, 5)
+        steps_sizer.AddSpacer(100)
+        steps_sizer.Add(backbutton, 0, wx.LEFT | wx.BOTTOM, 0)      
         server_sizer.Add(self.text_server, 1, wx.EXPAND | wx.ALL, 5)
         server_sizer.Add(button_start_server, 0, wx.EXPAND | wx.ALL, 5)
         server_sizer.Add(self.input_server, 0, wx.EXPAND | wx.ALL, 5)
@@ -496,11 +497,11 @@ class Tab_RSA_CS(wx.Panel):
 
         # Set tooltips
         button_gen_server_privkey.SetToolTip(wx.ToolTip("Generate ECC private key using prime256v1 Elliptic Curve."))
-        button_gen_server_key_csr.SetToolTip(wx.ToolTip("Generate CSR using RSA Key."))
+        #button_gen_server_key_csr.SetToolTip(wx.ToolTip("Generate CSR using RSA Key."))
         button_gen_server_cert.SetToolTip(wx.ToolTip("Create Server Certificate using Certificate Authority."))
         
         button_gen_client_key_csr.SetToolTip(wx.ToolTip("Create RSA 2048 key length with Auth/Enc/Sign usage and Certificate Signing Request using Trust M."))
-        button_extract_pubkey.SetToolTip(wx.ToolTip("Extract RSA Public Key from CSR."))
+        #button_extract_pubkey.SetToolTip(wx.ToolTip("Extract RSA Public Key from CSR."))
         button_gen_client_cert.SetToolTip(wx.ToolTip("Create Client Certificate using Certificate Authority."))
 
         # declare and bind events
@@ -508,11 +509,11 @@ class Tab_RSA_CS(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnFlushServer, button_flush_server)
         
         self.Bind(wx.EVT_BUTTON, self.OnGenServerPrivateKey, button_gen_server_privkey)
-        self.Bind(wx.EVT_BUTTON, self.OnGenServerKeyCSR, button_gen_server_key_csr)
+        #self.Bind(wx.EVT_BUTTON, self.OnGenServerKeyCSR, button_gen_server_key_csr)
         self.Bind(wx.EVT_BUTTON, self.OnGenServerCert, button_gen_server_cert)
         
         self.Bind(wx.EVT_BUTTON, self.OnGenClientKeyCSR1, button_gen_client_key_csr)
-        self.Bind(wx.EVT_BUTTON, self.OnExtractPublicKey, button_extract_pubkey)
+        #self.Bind(wx.EVT_BUTTON, self.OnExtractPublicKey, button_extract_pubkey)
         self.Bind(wx.EVT_BUTTON, self.OnGenClientCert, button_gen_client_cert)
         
         self.Bind(wx.EVT_BUTTON, self.OnStartServer, button_start_server)
@@ -590,29 +591,25 @@ class Tab_RSA_CS(wx.Panel):
         self.text_server.Clear()
 
     def OnGenServerPrivateKey(self, evt):      
-        self.text_server.AppendText("Creating Server ECC Private Key... \n")
+        self.text_server.AppendText("Creating Server RSA Private Key and CSR \n")
         command_output = exec_cmd.execCLI([
-                             "openssl", "ecparam",
-                             "-out", "server1_privkey.pem",
-                             "-name", "prime256v1",
-                             "-genkey"         
+                             "openssl", "req", 
+                             "-new", 
+                             "-nodes", 
+                             "-subj", "/CN=Server1/O=Infineon/C=SG", 
+                             "-out", "server1.csr",
+        
                          ])
         self.text_server.AppendText(command_output)
-        self.text_server.AppendText("'openssl ecparam -out server1_privkey.pem -name prime256v1 -genkey' executed \n")
+        self.text_server.AppendText("'openssl req -new -nodes -subj /CN=Server1/O=Infineon/C=SG -out server1.csr' executed \n")        
+        command_output = exec_cmd.execCLI([
+                             "openssl", "rsa", "-in", "privkey.pem", "-out", "server1_privkey.pem"
+        
+                         ])                         
+        self.text_server.AppendText(command_output)
+        self.text_server.AppendText("'openssl rsa -in privkey.pem -out server1_privkey.pem' executed \n")        
         self.text_server.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
         
-    def OnGenServerKeyCSR(self, evt):
-        self.text_server.AppendText("Creating Server ECC Keys CSR... \n")
-        command_output = exec_cmd.execCLI([
-                             "openssl", "req",
-                             "-new", 
-                             "-key", "server1_privkey.pem",
-                             "-subj", "/CN=Server1/O=Infineon/C=SG",
-                             "-out", "server1.csr",
-                         ])
-        self.text_server.AppendText(command_output)
-        self.text_server.AppendText("'openssl req -new -key server1_privkey.pem -subj /CN=Server1/O=Infineon/C=SG -out server1.csr' executed \n")
-        self.text_server.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
         
     def OnGenServerCert(self, evt):
         self.text_server.AppendText("Creating Server Certificate by using CA...\n")
@@ -627,7 +624,7 @@ class Tab_RSA_CS(wx.Panel):
                              "-days", "365",
                              "-sha256",
                              "-extfile", "openssl.cnf",
-                             "-extensions", "cert_ext",
+                             "-extensions", "cert_ext2",
                          ])
         self.text_server.AppendText(command_output)
         self.text_server.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
@@ -639,36 +636,17 @@ class Tab_RSA_CS(wx.Panel):
     def OnGenClientKeyCSR(self):
         command_output = exec_cmd.execCLI([
                              "openssl", "req",
-                             "-keyform", "engine",
-                             "-engine", "trustm_engine",
-                             "-key", "0xe0fd:^:NEW:0x42:0x13",
+                             "-provider", "trustm_provider",
+                             "-key", "0xe0fc:*:NEW:0x42:0x13",
                              "-new", 
                              "-out", "client1_rsa.csr",
                              "-subj", "/CN=TrustM/O=Infineon/C=SG",
                          ])
         self.text_client.AppendText(command_output)
-        self.text_client.AppendText("'openssl req -keyform engine -engine trustm_engine -key 0xe0fd:^:NEW:0x42:0x13 -new -out client1_rsa.csr -subj /CN=TrustM/O=Infineon/C=SG' executed \n")
-        command_output = exec_cmd.execCLI([
-                             "openssl", "req",
-                             "-in", "client1_rsa.csr",
-                             "-text",
-                         ])
-        self.text_client.AppendText(command_output)
-        self.text_client.AppendText("'openssl req -in client1_rsa.csr -text' executed \n")
+        self.text_client.AppendText("'openssl req -provider trustm_provider -key 0xe0fc:*:NEW:0x42:0x13 -new -out client1_rsa.csr -subj /CN=TrustM/O=Infineon/C=SG' executed \n")
+
         self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
         
-    def OnExtractPublicKey(self, evt):
-        self.text_client.AppendText("Extracting Public Key from CSR...\n")
-        command_output = exec_cmd.execCLI([
-                             "openssl",
-                             "req",
-                             "-in", "client1_rsa.csr",
-                             "-out", "client1_rsa.pub",
-                             "-pubkey",
-                         ])
-        self.text_client.AppendText(command_output)
-        self.text_client.AppendText("'openssl req -in client1_rsa.csr -out client1_rsa.pub -pubkey' executed \n")
-        self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
     
     def OnGenClientCert(self, evt):
         self.text_client.AppendText("Creating Client Certificate by using CA...\n")
@@ -709,7 +687,7 @@ class Tab_RSA_CS(wx.Panel):
 
         #if server thread is not running
         else: 
-            openssl_cmd="openssl s_server -cert server1.crt -key server1_privkey.pem -accept 5000 -verify_return_error -Verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
+            openssl_cmd="openssl s_server -cert server1.crt -key server1_privkey.pem -accept 5000 -verify_return_error -Verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem -sigalgs RSA+SHA256"
 #             openssl_cmd="echo Hello World!"
             self.server_proc = exec_cmd.createProcess(openssl_cmd, None)
             self.Server_thread_active_flag=1
@@ -729,7 +707,7 @@ class Tab_RSA_CS(wx.Panel):
             self.client_proc.wait()
             self.client_proc = None
         else:
-            openssl_cmd="openssl s_client -connect localhost:5000 -client_sigalgs RSA+SHA256 -keyform engine -engine trustm_engine -cert client1_rsa.crt -key 0xe0fd:^ -tls1_2 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
+            openssl_cmd="openssl s_client -connect localhost:5000 -client_sigalgs RSA+SHA256 -provider trustm_provider -provider default -cert client1_rsa.crt -key 0xe0fc:^ -tls1_2 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem -verify 1"
             if (self.server_proc is not None):
                 self.client_proc = exec_cmd.createProcess(openssl_cmd, None)
 
@@ -795,7 +773,8 @@ class Tab_RNG(wx.Panel):
         enctypesizer = wx.BoxSizer(wx.VERTICAL)
         
         # instantiate the objects
-        inputtext = wx.StaticText(self, 1, "No. of bytes to be generated :")
+        inputtext = wx.StaticText(self, 1, "No. of bytes to be generated:")
+        inputtext.SetMinSize((300, -1))        
         self.input_display = wx.TextCtrl(self, 1 , value="1024", size = wx.Size(170,30))
         inputtext.SetFont(textfont)
         self.input_display.SetFont(textctrlfont)
@@ -803,7 +782,8 @@ class Tab_RNG(wx.Panel):
         self.button_genkey = wx.Button(self, 1, 'Generate RNG', size = wx.Size(300, 50))
         self.button_genkey.SetFont(buttonfont)
         
-        text_enctype = wx.StaticText(self, 1, "Encoding type :")
+        text_enctype = wx.StaticText(self, 1, "Encoding type:")
+        text_enctype.SetMinSize((150, -1))        
         self.enctype = wx.ComboBox(self, 1 ,choices=enctypelist ,size = wx.Size(170, 30) ,style=wx.CB_READONLY)
         text_enctype.SetFont(textfont)
         self.enctype.SetFont(textctrlfont)
@@ -828,9 +808,9 @@ class Tab_RNG(wx.Panel):
         mainhorisizer.Add(midsizer, 1, wx.EXPAND)
         mainhorisizer.Add(self.command_display, 2, wx.EXPAND | wx.ALL, 5)
       
-        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT, 0)
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
         backbuttonsizer.AddSpacer(10)
-        backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
+        backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
         midsizer.AddSpacer(30)
@@ -843,8 +823,8 @@ class Tab_RNG(wx.Panel):
         midsizer.AddSpacer(30)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(120)
-        midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
+        midsizer.AddSpacer(100)
+        midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         
         #add buttons into gdsizer3
@@ -922,31 +902,31 @@ class Tab_RNG(wx.Panel):
         else :
             command_output = exec_cmd.execCLI([
                 "openssl", "rand",
-                "-engine", "trustm_engine",
+                "-provider", "trustm_provider",
                 "-" + enctype, str(no_bytes),
             ])
             self.command_display.AppendText("=========================================================================\n")
             self.command_display.AppendText(command_output)
             self.command_display.AppendText("\n=========================================================================")
-            self.command_display.AppendText("\n'openssl rand -engine trustm_engine -" + enctype + " " + str(no_bytes) + " executed'\n")
+            self.command_display.AppendText("\n'openssl rand -provider -trustm_provider -" + enctype + " " + str(no_bytes) + " executed'\n")
             self.command_display.AppendText("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n")      
 
 class Tab3Frame(wx.Frame):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, title="OpenSSL Engine", size=(1280, 720), style=(wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX)))
+        wx.Frame.__init__(self, parent, title="OpenSSL Provider", size=(1280, 720), style=(wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX)))
         self.Centre(wx.BOTH)
         main_menu_font = wx.Font(14, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
         self.SetFont(main_menu_font)
 
         # Instantiate all objects
         self.tab_base = wx.Notebook(self, id=wx.ID_ANY, style=wx.NB_TOP)
-        self.tab2_ecc_cs = Tab_ECC_CS(self.tab_base)
+        #self.tab2_ecc_cs = Tab_ECC_CS(self.tab_base)
         self.tab2_rsa_cs = Tab_RSA_CS(self.tab_base)        
         self.tab4_rng = Tab_RNG(self.tab_base)
         
 
         # Add tabs
-        self.tab_base.AddPage(self.tab2_ecc_cs, 'ECC (Client/Server)')
+        #self.tab_base.AddPage(self.tab2_ecc_cs, 'ECC (Client/Server)')
         self.tab_base.AddPage(self.tab2_rsa_cs, 'RSA (Client/Server)')        
         self.tab_base.AddPage(self.tab4_rng, 'RNG')
 
@@ -958,7 +938,7 @@ class Tab3Frame(wx.Frame):
 
     def OnCloseWindow(self, evt):
         #checkProcesses()
-        self.tab2_ecc_cs.Destroy()
+        #self.tab2_ecc_cs.Destroy()
         self.tab2_rsa_cs.Destroy()        
         self.Parent.Show()
         self.Destroy()

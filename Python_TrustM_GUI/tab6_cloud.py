@@ -166,7 +166,7 @@ class tab6Frame(wx.Frame):
         aws_region_sizer.Add(self.aws_region_box, 0, wx.EXPAND | wx.ALL, 5)
         aws_region_sizer.Add(button_configureAWS, 1, wx.EXPAND | wx.ALL, 5)
         
-        setawssizer.Add(button_startconnection, 1, wx.EXPAND | wx.ALL, 0)
+        aws_region_sizer.Add(button_startconnection, 1, wx.EXPAND | wx.ALL, 5)
         
         aws_sizer.Add(self.aws_key_input, 2, wx.EXPAND | wx.ALL, 5)
         aws_sizer.AddSpacer(2)

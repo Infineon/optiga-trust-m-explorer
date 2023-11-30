@@ -64,7 +64,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         midsizer = wx.BoxSizer(wx.VERTICAL)
         gdsizer1 = wx.GridSizer(rows=3, cols=3, vgap=10, hgap=10)
         gdsizer2 = wx.GridSizer(rows=2, cols=3, vgap=10, hgap=10)
-        gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=20, hgap=10)
+        gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=10, hgap=10)
         step1_sizer = wx.BoxSizer(wx.HORIZONTAL)
         
         titlesizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -96,21 +96,21 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         # instantiate the objects
         self.secret2path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret2 = wx.StaticText(self, 0, "secret:")
-        self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret2 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, 30))
         self.secret2.SetFont(textctrlfont)
         
         self.secret1path = config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/secret.txt"
         text_secret1 = wx.StaticText(self, 0, "secret:")
-        self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.secret1 = wx.TextCtrl(self, 1, value= "secret.txt", style=wx.CB_READONLY,  size = wx.Size(178, 30))
         self.secret1.SetFont(textctrlfont)
         text_secret = wx.StaticText(self, 0, "protected_update:")
         self.secret = wx.ComboBox(self, 1, choices=secret_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
         self.secret.SetFont(textctrlfont)
         text_payload_version = wx.StaticText(self, 0, "payload_version:")
-        self.payload_version = wx.TextCtrl(self, 1, value="1",  size = wx.Size(178, -1))
+        self.payload_version = wx.TextCtrl(self, 1, value="1",  size = wx.Size(178, 30))
         self.payload_version.SetFont(textctrlfont)
         text_payload_type = wx.StaticText(self, 0, "payload_type:")
-        self.payload_type = wx.TextCtrl(self, 1, value="metadata",  size = wx.Size(178, -1))
+        self.payload_type = wx.TextCtrl(self, 1, value="metadata",  size = wx.Size(178, 30))
         self.payload_type.SetFont(textctrlfont)
         text_sign_algo = wx.StaticText(self, 0, "sign_algo:")
         self.sign_algo = wx.ComboBox(self, 1, choices=sign_algo_list, style=wx.CB_READONLY,  size = wx.Size(178, -1))
@@ -118,7 +118,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         
         self.metapath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/metadata/metadata.txt"
         text_metadata = wx.StaticText(self, 0, "metadata:")
-        self.metadata = wx.TextCtrl(self, 1, value= "metadata.txt", style=wx.CB_READONLY,  size = wx.Size(178, -1))
+        self.metadata = wx.TextCtrl(self, 1, value= "metadata.txt", style=wx.CB_READONLY,  size = wx.Size(178, 30))
         self.metadata.SetFont(textctrlfont)
         
         self.priv_keypath = config.EXEPATH + "/scripts/certificates/sample_ec_256_priv.pem"
@@ -182,16 +182,16 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         
         # Add Objects to leftsizer
         leftsizer.Add(picturesizer, 0, wx.TOP, 65)
-        leftsizer.AddSpacer(115)
-        leftsizer.Add(backbuttonsizer, 0, wx.LEFT | wx.BOTTOM, 10)
+        leftsizer.AddSpacer(90)
+        leftsizer.Add(backbuttonsizer, 1, wx.LEFT | wx.BOTTOM, 10)
         picturesizer.Add(serverimage, 0 , wx.ALIGN_CENTER, 0 )
         picturesizer.AddSpacer(30)
         picturesizer.Add(lockedarrowimage, 0, wx.ALIGN_CENTER, 0)
         picturesizer.AddSpacer(20)
         picturesizer.Add(chipimage, 0, wx.ALIGN_CENTER, 0)
-        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT, 0)
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
         backbuttonsizer.AddSpacer(10)
-        backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
+        backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
         midsizer.AddSpacer(10)
@@ -201,7 +201,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         midsizer.AddSpacer(5)
         midsizer.AddSpacer(20)
         midsizer.Add(gdsizer2, 0, wx.EXPAND | wx.ALL, 5)
-        midsizer.AddSpacer(5)
+        midsizer.AddSpacer(10)
         midsizer.Add(step1_sizer)
         midsizer.AddSpacer(5)
         midsizer.Add(gdsizer3, 0, wx.EXPAND | wx.ALL, 5)
@@ -792,9 +792,9 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         title.SetFont(font)
         
         textctrlfont = wx.Font()
-        textctrlfont.SetPointSize(10)
+        textctrlfont.SetPointSize(11)
         
-        textctrlfont1 = wx.Font(13, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
+        textctrlfont1 = wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
         buttonfont = wx.Font(12, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         
         # declare the sizers
@@ -802,9 +802,9 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
-        gdsizer1 = wx.GridSizer(rows=4, cols=3, vgap=10, hgap=5)
-        gdsizer2 = wx.GridSizer(rows=2, cols=3, vgap=10, hgap=10)
-        gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=20, hgap=10)
+        gdsizer1 = wx.GridSizer(rows=4, cols=3, vgap=5, hgap=10)
+        gdsizer2 = wx.GridSizer(rows=2, cols=3, vgap=5, hgap=10)
+        gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=10, hgap=10)
         step1_sizer = wx.BoxSizer(wx.HORIZONTAL)
         
         titlesizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -869,7 +869,6 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.keydata.SetFont(textctrlfont)
         
         #added a new input space to include the pub key file
-
         self.pubkeypath = config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/ecc256test_pub.der"
         pubkey_filename= os.path.basename(self.pubkeypath)
         text_pubkeydata = wx.StaticText(self, 0, "pubkey_data:")
@@ -934,7 +933,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer
-        mainsizer.Add(title, 0, wx.CENTRE | wx.ALL, 5)
+        mainsizer.Add(title, 1, wx.CENTRE | wx.EXPAND)
         mainsizer.Add(mainhorisizer, 1, wx.EXPAND)
        
         # Add Sub Sizers to the mainhorisizer
@@ -944,7 +943,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         
         # Add Objects to leftsizer
         leftsizer.Add(picturesizer, 0, wx.TOP, 65)
-        leftsizer.AddSpacer(110)
+        leftsizer.AddSpacer(100)
         leftsizer.Add(backbuttonsizer, 0, wx.LEFT | wx.BOTTOM, 10)
         picturesizer.Add(serverimage, 0 , wx.ALIGN_CENTER, 0 )
         picturesizer.AddSpacer(30)
@@ -956,11 +955,11 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
 
         # Add sizers to midsizer
-        midsizer.AddSpacer(20)
-        midsizer.Add(gdsizer1, 0, wx.EXPAND | wx.ALL, 5)
         midsizer.AddSpacer(10)
+        midsizer.Add(gdsizer1, 0, wx.EXPAND | wx.ALL, 5)
+        midsizer.AddSpacer(5)
         midsizer.Add(button_step2, 0, wx.ALL, 5)
-        midsizer.AddSpacer(30)
+        midsizer.AddSpacer(15)
         midsizer.Add(gdsizer2, 0, wx.EXPAND | wx.ALL, 5)
         midsizer.AddSpacer(10)
         midsizer.Add(gdsizer3, 0, wx.EXPAND | wx.ALL, 5)
@@ -982,14 +981,13 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
                 (signsizer, 0, wx.EXPAND),
                 (keydatasizer, 0, wx.EXPAND),
                 (pubkeydatasizer, 0, wx.EXPAND),
-                (privsizer, 0, wx.EXPAND)
-                
+                (privsizer, 0, wx.EXPAND),
+                (keylengthsizer, 0, wx.EXPAND),
+                (keyusagesizer, 0, wx.EXPAND),
+                (secret2sizer, 0, wx.EXPAND)
         ])
         
-        gdsizer1.Add(keylengthsizer, 0, wx.EXPAND)
-        gdsizer1.Add(keyusagesizer, 0, wx.EXPAND)
-        gdsizer1.Add(secret2sizer, 0, wx.EXPAND)
-        
+        gdsizer1.AddSpacer(20)        
         #add sizers to gdsizer2
         gdsizer2.AddMany([
                 (trustoidsizer, 0, wx.EXPAND),
@@ -1002,37 +1000,37 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         gdsizer2.Add(secret1sizer, 0, wx.EXPAND)
                 
         #add objects into sizers in gdsizer1
-        secretsizer.Add(text_secret)
+        secretsizer.Add(text_secret, 1, wx.EXPAND)
         secretsizer.Add(self.secret)
-        payloadversizer.Add(text_payload_version)
+        payloadversizer.Add(text_payload_version, 1, wx.EXPAND)
         payloadversizer.Add(self.payload_version)
-        payloadtypesizer.Add(text_payload_type)
+        payloadtypesizer.Add(text_payload_type, 1, wx.EXPAND)
         payloadtypesizer.Add(self.payload_type)
-        signsizer.Add(text_sign_algo)
+        signsizer.Add(text_sign_algo, 1, wx.EXPAND)
         signsizer.Add(self.sign_algo)
-        keydatasizer.Add(text_keydata)
+        keydatasizer.Add(text_keydata, 1, wx.EXPAND)
         keydatasizer.Add(self.keydata)
-        pubkeydatasizer.Add(text_pubkeydata)
+        pubkeydatasizer.Add(text_pubkeydata, 1, wx.EXPAND)
         pubkeydatasizer.Add(self.pubkeydata)
-        keylengthsizer.Add(text_keylength)
+        keylengthsizer.Add(text_keylength, 1, wx.EXPAND)
         keylengthsizer.Add(self.keylength)
-        privsizer.Add(text_priv_key)
+        privsizer.Add(text_priv_key, 1, wx.EXPAND)
         privsizer.Add(self.priv_key)
-        keyusagesizer.Add(text_keyusage)
+        keyusagesizer.Add(text_keyusage, 1, wx.EXPAND)
         keyusagesizer.Add(self.keyusage)
-        secret2sizer.Add(text_secret2)
+        secret2sizer.Add(text_secret2, 1, wx.EXPAND)
         secret2sizer.Add(self.secret2)
 
         #add objects into sizers in gdsizer2
-        trustoidsizer.Add(text_trust_anchor_oid)
+        trustoidsizer.Add(text_trust_anchor_oid, 1, wx.EXPAND)
         trustoidsizer.Add(self.trust_anchor_oid)
-        targetoidsizer.Add(text_target_oid)
+        targetoidsizer.Add(text_target_oid, 1, wx.EXPAND)
         targetoidsizer.Add(self.target_oid)
-        secretoidsizer.Add(text_secret_oid)
+        secretoidsizer.Add(text_secret_oid, 1, wx.EXPAND)
         secretoidsizer.Add(self.secret_oid)
-        trustcertsizer.Add(text_trust_anchor_cert)
+        trustcertsizer.Add(text_trust_anchor_cert, 1, wx.EXPAND)
         trustcertsizer.Add(self.trust_anchor_cert)
-        secret1sizer.Add(text_secret1)
+        secret1sizer.Add(text_secret1, 1, wx.EXPAND)
         secret1sizer.Add(self.secret1)
         
         # Set Default inputs for Text Boxes      
@@ -1512,7 +1510,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         textctrlfont = wx.Font()
         textctrlfont.SetPointSize(10)
         
-        textctrlfont1 = wx.Font(13, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
+        textctrlfont1 = wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
         
         buttonfont = wx.Font(12, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         
@@ -1526,7 +1524,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=20, hgap=10)
         step1_sizer = wx.BoxSizer(wx.HORIZONTAL)
         
-        titlesizer = wx.BoxSizer(wx.HORIZONTAL)
+        #titlesizer = wx.BoxSizer(wx.HORIZONTAL)
         
         leftsizer = wx.BoxSizer(wx.VERTICAL)
         picturesizer = wx.BoxSizer(wx.VERTICAL)
@@ -1642,7 +1640,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer
-        mainsizer.Add(title, 0, wx.CENTRE | wx.ALL, 5)
+        mainsizer.Add(title, 1, wx.CENTRE | wx.EXPAND)
         mainsizer.Add(mainhorisizer, 1, wx.EXPAND)
        
         # Add Sub Sizers to the mainhorisizer
@@ -1652,7 +1650,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         
         # Add Objects to leftsizer
         leftsizer.Add(picturesizer, 0, wx.TOP, 65)
-        leftsizer.AddSpacer(110)
+        leftsizer.AddSpacer(100)
         leftsizer.Add(backbuttonsizer, 0, wx.LEFT | wx.BOTTOM, 10)
         picturesizer.Add(serverimage, 0 , wx.ALIGN_CENTER, 0 )
         picturesizer.AddSpacer(30)
@@ -1709,35 +1707,35 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         gdsizer2.Add(secret1sizer, 0, wx.EXPAND)
                 
         #add objects into sizers in gdsizer1
-        secretsizer.Add(text_secret)
+        secretsizer.Add(text_secret, 1, wx.EXPAND)
         secretsizer.Add(self.secret)
-        payloadversizer.Add(text_payload_version)
+        payloadversizer.Add(text_payload_version, 1, wx.EXPAND)
         payloadversizer.Add(self.payload_version)
-        payloadtypesizer.Add(text_payload_type)
+        payloadtypesizer.Add(text_payload_type, 1, wx.EXPAND)
         payloadtypesizer.Add(self.payload_type)
-        signsizer.Add(text_sign_algo)
+        signsizer.Add(text_sign_algo, 1, wx.EXPAND)
         signsizer.Add(self.sign_algo)
-        keydatasizer.Add(text_keydata)
+        keydatasizer.Add(text_keydata, 1, wx.EXPAND)
         keydatasizer.Add(self.keydata)
-        privsizer.Add(text_priv_key)
+        privsizer.Add(text_priv_key, 1, wx.EXPAND)
         privsizer.Add(self.priv_key)
-        secret2sizer.Add(text_secret2)
+        secret2sizer.Add(text_secret2, 1, wx.EXPAND)
         secret2sizer.Add(self.secret2)
-        keyusagesizer.Add(text_keyusage)
+        keyusagesizer.Add(text_keyusage, 1, wx.EXPAND)
         keyusagesizer.Add(self.keyusage)
-        keylengthsizer.Add(text_keylength)
+        keylengthsizer.Add(text_keylength, 1, wx.EXPAND)
         keylengthsizer.Add(self.keylength)
         
         #add objects into sizers in gdsizer2
-        trustoidsizer.Add(text_trust_anchor_oid)
+        trustoidsizer.Add(text_trust_anchor_oid, 1, wx.EXPAND)
         trustoidsizer.Add(self.trust_anchor_oid)
-        targetoidsizer.Add(text_target_oid)
+        targetoidsizer.Add(text_target_oid, 1, wx.EXPAND)
         targetoidsizer.Add(self.target_oid)
-        secretoidsizer.Add(text_secret_oid)
+        secretoidsizer.Add(text_secret_oid, 1, wx.EXPAND)
         secretoidsizer.Add(self.secret_oid)
-        trustcertsizer.Add(text_trust_anchor_cert)
+        trustcertsizer.Add(text_trust_anchor_cert, 1, wx.EXPAND)
         trustcertsizer.Add(self.trust_anchor_cert)
-        secret1sizer.Add(text_secret1)
+        secret1sizer.Add(text_secret1, 1, wx.EXPAND)
         secret1sizer.Add(self.secret1)
         
         # Set Default inputs for Text Boxes      
@@ -2150,9 +2148,9 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         title.SetFont(font)
         
         textctrlfont = wx.Font()
-        textctrlfont.SetPointSize(10)
+        textctrlfont.SetPointSize(11)
         
-        textctrlfont1 = wx.Font(13, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
+        textctrlfont1 = wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
         
         buttonfont = wx.Font(12, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         
@@ -2161,9 +2159,9 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
-        gdsizer1 = wx.GridSizer(rows=4, cols=3, vgap=10, hgap= 5)
-        gdsizer2 = wx.GridSizer(rows=2, cols=3, vgap=10, hgap=10)
-        gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=20, hgap=10)
+        gdsizer1 = wx.GridSizer(rows=4, cols=3, vgap=5, hgap= 10)
+        gdsizer2 = wx.GridSizer(rows=2, cols=3, vgap=5, hgap=10)
+        gdsizer3 = wx.GridSizer(rows=2, cols=2, vgap=10, hgap=10)
         step1_sizer = wx.BoxSizer(wx.HORIZONTAL)
         
         titlesizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -2289,7 +2287,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer
-        mainsizer.Add(title, 0, wx.CENTRE | wx.ALL, 5)
+        mainsizer.Add(title, 1, wx.CENTRE | wx.EXPAND)
         mainsizer.Add(mainhorisizer, 1, wx.EXPAND)
        
         # Add Sub Sizers to the mainhorisizer
@@ -2299,7 +2297,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         
         # Add Objects to leftsizer
         leftsizer.Add(picturesizer, 0, wx.TOP, 65)
-        leftsizer.AddSpacer(110)
+        leftsizer.AddSpacer(100)
         leftsizer.Add(backbuttonsizer, 0, wx.LEFT | wx.BOTTOM, 10)
         picturesizer.Add(serverimage, 0 , wx.ALIGN_CENTER, 0 )
         picturesizer.AddSpacer(30)
@@ -2315,7 +2313,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         midsizer.Add(gdsizer1, 0, wx.EXPAND | wx.ALL, 5)
         midsizer.AddSpacer(10)
         midsizer.Add(button_step2, 0, wx.ALL, 5)
-        midsizer.AddSpacer(30)
+        midsizer.AddSpacer(10)
         midsizer.Add(gdsizer2, 0, wx.EXPAND | wx.ALL, 5)
         midsizer.AddSpacer(10)
         midsizer.Add(gdsizer3, 0, wx.EXPAND | wx.ALL, 5)
@@ -2357,37 +2355,37 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         gdsizer2.Add(secret1sizer, 0, wx.EXPAND)
                 
         #add objects into sizers in gdsizer1
-        secretsizer.Add(text_secret)
+        secretsizer.Add(text_secret, 1, wx.EXPAND)
         secretsizer.Add(self.secret)
-        payloadversizer.Add(text_payload_version)
+        payloadversizer.Add(text_payload_version, 1, wx.EXPAND)
         payloadversizer.Add(self.payload_version)
-        payloadtypesizer.Add(text_payload_type)
+        payloadtypesizer.Add(text_payload_type, 1, wx.EXPAND)
         payloadtypesizer.Add(self.payload_type)
-        signsizer.Add(text_sign_algo)
+        signsizer.Add(text_sign_algo, 1, wx.EXPAND)
         signsizer.Add(self.sign_algo)
-        keydatasizer.Add(text_keydata)
+        keydatasizer.Add(text_keydata, 1, wx.EXPAND)
         keydatasizer.Add(self.keydata)
-        pubkeydatasizer.Add(text_pubkeydata)
+        pubkeydatasizer.Add(text_pubkeydata, 1, wx.EXPAND)
         pubkeydatasizer.Add(self.pubkeydata)        
-        privsizer.Add(text_priv_key)
+        privsizer.Add(text_priv_key, 1, wx.EXPAND)
         privsizer.Add(self.priv_key)
-        keyusagesizer.Add(text_keyusage)
+        keyusagesizer.Add(text_keyusage, 1, wx.EXPAND)
         keyusagesizer.Add(self.keyusage)
-        keylengthsizer.Add(text_keylength)
+        keylengthsizer.Add(text_keylength, 1, wx.EXPAND)
         keylengthsizer.Add(self.keylength)
-        secret2sizer.Add(text_secret2)
+        secret2sizer.Add(text_secret2, 1, wx.EXPAND)
         secret2sizer.Add(self.secret2)
 
         #add objects into sizers in gdsizer2
-        trustoidsizer.Add(text_trust_anchor_oid)
+        trustoidsizer.Add(text_trust_anchor_oid, 1, wx.EXPAND)
         trustoidsizer.Add(self.trust_anchor_oid)
-        targetoidsizer.Add(text_target_oid)
+        targetoidsizer.Add(text_target_oid, 1, wx.EXPAND)
         targetoidsizer.Add(self.target_oid)
-        secretoidsizer.Add(text_secret_oid)
+        secretoidsizer.Add(text_secret_oid, 1, wx.EXPAND)
         secretoidsizer.Add(self.secret_oid)
-        trustcertsizer.Add(text_trust_anchor_cert)
+        trustcertsizer.Add(text_trust_anchor_cert, 1, wx.EXPAND)
         trustcertsizer.Add(self.trust_anchor_cert)
-        secret1sizer.Add(text_secret1)
+        secret1sizer.Add(text_secret1, 1, wx.EXPAND)
         secret1sizer.Add(self.secret1)
         
         # Set Default inputs for Text Boxes      
@@ -2969,7 +2967,7 @@ class Tab_DataUpdate(wx.Panel):
         backbutton = wx.BitmapButton(self, -1, backimage)
        
         #Add mainhorisizer and title to mainsizer
-        mainsizer.Add(title, 0, wx.CENTRE | wx.ALL, 5)
+        mainsizer.Add(title, 1, wx.CENTRE | wx.EXPAND)
         mainsizer.Add(mainhorisizer, 1, wx.EXPAND)
        
         # Add Sub Sizers to the mainhorisizer
@@ -2979,7 +2977,7 @@ class Tab_DataUpdate(wx.Panel):
         
         # Add Objects to leftsizer
         leftsizer.Add(picturesizer, 0, wx.TOP, 65)
-        leftsizer.AddSpacer(115)
+        leftsizer.AddSpacer(100)
         leftsizer.Add(backbuttonsizer, 0, wx.LEFT | wx.BOTTOM, 10)
         picturesizer.Add(serverimage, 0 , wx.ALIGN_CENTER, 0 )
         picturesizer.AddSpacer(30)
@@ -3046,33 +3044,33 @@ class Tab_DataUpdate(wx.Panel):
         #gdsizer2.Add(secret2sizer, 0, wx.EXPAND)
                 
         #add objects into sizers in gdsizer1
-        secretsizer.Add(text_secret)
+        secretsizer.Add(text_secret, 1, wx.EXPAND)
         secretsizer.Add(self.secret)
-        payloadversizer.Add(text_payload_version)
+        payloadversizer.Add(text_payload_version, 1, wx.EXPAND)
         payloadversizer.Add(self.payload_version)
-        payloadtypesizer.Add(text_payload_type)
+        payloadtypesizer.Add(text_payload_type, 1, wx.EXPAND)
         payloadtypesizer.Add(self.payload_type)
-        signsizer.Add(text_sign_algo)
+        signsizer.Add(text_sign_algo, 1, wx.EXPAND)
         signsizer.Add(self.sign_algo)
-        metasizer.Add(text_data)
+        metasizer.Add(text_data, 1, wx.EXPAND)
         metasizer.Add(self.data)
-        privsizer.Add(text_priv_key)
+        privsizer.Add(text_priv_key, 1, wx.EXPAND)
         privsizer.Add(self.priv_key)
-        secret1sizer.Add(text_secret1)
+        secret1sizer.Add(text_secret1, 1, wx.EXPAND)
         secret1sizer.Add(self.secret1)
-        datatypesizer.Add(datatype_text)
+        datatypesizer.Add(datatype_text, 1, wx.EXPAND)
         datatypesizer.Add(self.datatype)
         
         #add objects into sizers in gdsizer2
-        trustoidsizer.Add(text_trust_anchor_oid)
+        trustoidsizer.Add(text_trust_anchor_oid, 1, wx.EXPAND)
         trustoidsizer.Add(self.trust_anchor_oid)
-        targetoidsizer.Add(text_target_oid)
+        targetoidsizer.Add(text_target_oid, 1, wx.EXPAND)
         targetoidsizer.Add(self.target_oid)
-        secretoidsizer.Add(text_secret_oid)
+        secretoidsizer.Add(text_secret_oid, 1, wx.EXPAND)
         secretoidsizer.Add(self.secret_oid)
-        trustcertsizer.Add(text_trust_anchor_cert)
+        trustcertsizer.Add(text_trust_anchor_cert, 1, wx.EXPAND)
         trustcertsizer.Add(self.trust_anchor_cert)
-        secret2sizer.Add(text_secret2)
+        secret2sizer.Add(text_secret2, 1, wx.EXPAND)
         secret2sizer.Add(self.secret2)
         readdatasizer.AddSpacer(23)
         readdatasizer.Add(button_read_data)

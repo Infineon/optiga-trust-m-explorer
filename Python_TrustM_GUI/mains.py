@@ -24,7 +24,7 @@ class MainFrame(wx.Frame):
         # Create all the button widgets first
         self.button1 = wx.Button(self, -1, 'General Features')
         self.button2 = wx.Button(self, -1, 'Cryptographic Functions')
-        self.button3 = wx.Button(self, -1, 'OpenSSL-Engine')
+        self.button3 = wx.Button(self, -1, 'OpenSSL-Provider')
         self.button4 = wx.Button(self, -1, 'Protected Update', size = wx.Size(367, -1))
         self.button5 = wx.Button(self, -1, 'Secure Storage', size = wx.Size(367, -1))
         self.button6 = wx.Button(self, -1, 'AWS: IOT Core', size = wx.Size(367, -1))
@@ -147,8 +147,8 @@ class MainFrame(wx.Frame):
             self.activetab = t1.Tab1Frame(self, "General")
         elif (event_obj == self.FindWindowByLabel(label='Cryptographic Functions')):
             self.activetab = t2.Tab2Frame(self, "Crypto")
-        elif (event_obj == self.FindWindowByLabel(label='OpenSSL-Engine')):
-            self.activetab = t3.Tab3Frame(self, "Engine")
+        elif (event_obj == self.FindWindowByLabel(label='OpenSSL-Provider')):
+            self.activetab = t3.Tab3Frame(self, "Provider")
         elif (event_obj == self.FindWindowByLabel(label='Protected Update')):
             self.activetab = t4.Tab4Frame(self, "Protected Update")
         elif (event_obj == self.FindWindowByLabel(label='Secure Storage')):

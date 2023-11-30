@@ -31,7 +31,7 @@ class Tab_GEN(wx.Panel):
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
-        gdsizer3 = wx.GridSizer(rows=7, cols=1, vgap=30, hgap=10)
+        gdsizer3 = wx.GridSizer(rows=7, cols=1, vgap=25, hgap=10)
         
         backbuttonsizer = wx.BoxSizer(wx.HORIZONTAL)
         
@@ -79,16 +79,16 @@ class Tab_GEN(wx.Panel):
         mainhorisizer.Add(midsizer, 1, wx.EXPAND)
         mainhorisizer.Add(self.text_display, 2, wx.EXPAND | wx.ALL, 5)
         
-        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT, 0)
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
         backbuttonsizer.AddSpacer(10)
-        backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
+        backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
         midsizer.AddSpacer(20)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(23)
-        midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
+        midsizer.AddSpacer(33)
+        midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         #add buttons into gdsizer3
         gdsizer3.AddMany([
@@ -1071,7 +1071,7 @@ class Tab_KEY(wx.Panel):
         textctrlfont = wx.Font()
         textctrlfont.SetPointSize(11)
         
-        textctrlfont1 = wx.Font(11, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
+        textctrlfont1 = wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD,)
         
         keyslot_list = ['E0F0', 'E0F1','E0F2','E0F3','E0FC', 'E0FD','E200']
         pubkey_list = ['E0E0-PreProvisioned', 'E0E1', 'E0E2','E0E3', 'E0E8-TrustAnchor','E0E9-TrustAnchor',]
@@ -1103,11 +1103,12 @@ class Tab_KEY(wx.Panel):
        
         
         # instantiate the objects
-        text_pubkey = wx.StaticText(self, 0, "Public Key Certificate:")
+        text_pubkey = wx.StaticText(self, 0, "Public Key Certificate")
+        
         self.pubkey = wx.ComboBox(self, 1, choices=pubkey_list, style=wx.CB_READONLY,  size = wx.Size(180, 30))
         self.pubkey.SetFont(textctrlfont)
         
-        text_keyslot = wx.StaticText(self, 0, "Key Slot:")
+        text_keyslot = wx.StaticText(self, 0, "Key Slot")
         self.keyslot = wx.ComboBox(self, 1, choices=keyslot_list, style=wx.CB_READONLY,  size = wx.Size(170, 30))
         self.keyslot.SetFont(textctrlfont)
         
@@ -1166,9 +1167,9 @@ class Tab_KEY(wx.Panel):
         
         # Add Objects to leftsizer
         
-        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT, 0)
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
         backbuttonsizer.AddSpacer(10)
-        backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
+        backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
         midsizer.AddSpacer(15)
@@ -1190,8 +1191,8 @@ class Tab_KEY(wx.Panel):
         midsizer.AddSpacer(5)
         midsizer.Add(button_secret, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
-        midsizer.AddSpacer(50)
-        midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
+        midsizer.AddSpacer(10)
+        midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         
         #add buttons into gdsizer3
@@ -1227,22 +1228,22 @@ class Tab_KEY(wx.Panel):
        ])
  
         #add objects into sizers in gdsizer2
-        keyslotsizer.Add(text_keyslot)
+        keyslotsizer.Add(text_keyslot, 1, wx.EXPAND)
         keyslotsizer.Add(self.keyslot)
         
-        pubkeysizer.Add(text_pubkey)
+        pubkeysizer.Add(text_pubkey, 1, wx.EXPAND)
         pubkeysizer.Add(self.pubkey)
         
-        trustancsizer.Add(text_trustanc)
+        trustancsizer.Add(text_trustanc, 1, wx.EXPAND)
         trustancsizer.Add(self.trustanc)
         
-        fileinputsizer.Add(text_filename_input)
+        fileinputsizer.Add(text_filename_input, 1, wx.EXPAND)
         fileinputsizer.Add(self.filename_input)
         
-        secretfilesizer.Add(text_secretfile)
+        secretfilesizer.Add(text_secretfile, 1, wx.EXPAND)
         secretfilesizer.Add(self.secretfile)
         
-        bindsizer.Add(text_bindsecret)
+        bindsizer.Add(text_bindsecret, 1, wx.EXPAND)
         bindsizer.Add(self.bindsecret)
  
         # Set Default inputs for Combo Boxes      
@@ -1499,8 +1500,10 @@ class Tab_APP(wx.Panel):
         self.button_writedata.SetFont(buttonfont)
         
         inputtext = wx.StaticText(self, -1, label="Data Input:")
+        inputtext.SetMinSize((100, -1))
         self.input_display = wx.TextCtrl(self,value="1234")
         self.input_display.SetFont(textctrlfont)
+        self.input_display.SetMaxSize((-1, 30))
         
         
         self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
@@ -1516,20 +1519,20 @@ class Tab_APP(wx.Panel):
        
         #Add mainhorisizer to mainsizer
         mainsizer.AddSpacer(2)
-        mainsizer.Add(input_sizer, 0, wx.EXPAND | wx.TOP, 5)
+        mainsizer.Add(input_sizer, 1, wx.EXPAND | wx.TOP, 5)
         mainsizer.Add(mainhorisizer, 1, wx.EXPAND)
-       
-        input_sizer.Add(inputtext, 0, wx.ALIGN_CENTRE | wx.ALL , 3)
-        input_sizer.Add(self.input_display, 1 ,wx.ALIGN_CENTRE | wx.ALL, 2)
+        input_sizer.AddSpacer(20)
+        input_sizer.Add(inputtext, 0, wx.EXPAND  | wx.TOP, 10)
+        input_sizer.Add(self.input_display, 1 ,wx.EXPAND | wx.TOP, 5)
         
        
         # Add Sub Sizers to the mainhorisizer
         mainhorisizer.Add(midsizer, 1, wx.EXPAND )
         mainhorisizer.Add(self.text_display, 2, wx.EXPAND | wx.ALL, 5)
       
-        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT, 0)
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
         backbuttonsizer.AddSpacer(10)
-        backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
+        backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
         midsizer.AddSpacer(10)
@@ -1542,8 +1545,8 @@ class Tab_APP(wx.Panel):
         midsizer.AddSpacer(30)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(130)
-        midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
+        midsizer.AddSpacer(100)
+        midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         
         #add buttons into gdsizer3
@@ -1562,7 +1565,7 @@ class Tab_APP(wx.Panel):
          
         
         #add objects into sizers in gdsizer2        
-        datasizer.Add(text_data)
+        datasizer.Add(text_data, 1, wx.EXPAND)
         datasizer.Add(self.data)
 
        
@@ -1646,16 +1649,16 @@ class Tab_META(wx.Panel):
         mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
         
         midsizer = wx.BoxSizer(wx.VERTICAL)
-        gdsizer1 = wx.GridSizer(rows=3, cols=2, vgap=10, hgap=20)
+        gdsizer1 = wx.GridSizer(rows=3, cols=2, vgap=5, hgap=20)
         #gdsizer2 = wx.GridSizer(rows=3, cols=2, vgap=10, hgap=20)
-        gdsizer2 = wx.GridSizer(cols=2, vgap=10, hgap=20)
+        gdsizer2 = wx.GridSizer(cols=2, vgap=5, hgap=20)
         
         gdsizer3 = wx.GridSizer(rows=1, cols=1, vgap=5, hgap=20)
         gdsizer4 = wx.GridSizer(rows = 1, cols = 1, vgap = 5, hgap = 20)
         gdsizer5 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=20)
         gdsizer6 = wx.GridSizer(rows=1, cols=1, vgap=0, hgap=20)
         gdsizer7 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=20)
-        gdsizer8 = wx.GridSizer(rows=1, cols=2, vgap=5, hgap=20)
+        gdsizer8 = wx.GridSizer(rows=1, cols=2, vgap=2, hgap=20)
         #gdsizer8 = wx.GridSizer(rows=1, cols=2, vgap = 5, hgap=20 )
         
         file_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -1812,37 +1815,38 @@ class Tab_META(wx.Panel):
         mainhorisizer.Add(midsizer, 1, wx.EXPAND)
         mainhorisizer.Add(self.text_display, 2, wx.EXPAND | wx.ALL, 5)
         
+        
         # Add Objects to backbuttonsizer
         #leftsizer.Add(backbuttonsizer, 0, wx.LEFT | wx.BOTTOM, 10)
         
-        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT, 0)
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
         backbuttonsizer.AddSpacer(10)
-        backbuttonsizer.Add(clearbutton, 0, wx.EXPAND, 0)
+        backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
-        midsizer.AddSpacer(10)
+        midsizer.AddSpacer(2)
         midsizer.Add(gdsizer1, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
-        midsizer.AddSpacer(10)
+        midsizer.AddSpacer(2)
         midsizer.Add(gdsizer2, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
         midsizer.AddSpacer(0)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
         midsizer.AddSpacer(0)
-        midsizer.Add(gdsizer4, 0, wx.LEFT | wx.ALL, 5)
+        midsizer.Add(gdsizer4, 0, wx.LEFT | wx.ALL, 2)
         
         midsizer.AddSpacer(0)
         midsizer.Add(gdsizer5, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         #midsizer.AddSpacer()
         midsizer.Add(gdsizer6, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
-        midsizer.AddSpacer(10)
-        midsizer.Add(gdsizer7, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
-        midsizer.AddSpacer(10)
-        midsizer.Add(gdsizer8, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
+        midsizer.AddSpacer(2)
+        midsizer.Add(gdsizer7, 0, wx.ALIGN_CENTRE | wx.ALL, 2)
+        midsizer.AddSpacer(2)
+        midsizer.Add(gdsizer8, 0, wx.ALIGN_CENTRE | wx.ALL, 2)
         #midsizer.AddSpacer(5)
         #midsizer.Add(gdsizer8, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
-        midsizer.AddSpacer(10)
-        midsizer.Add(backbuttonsizer,0,wx.LEFT | wx.BOTTOM, 5)
+        midsizer.AddSpacer(5)
+        midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         
         
@@ -1893,47 +1897,47 @@ class Tab_META(wx.Panel):
 
                 
         #add objects into sizers in gdsizer1
-        sysdatasizer.Add(text_sysdata)
+        sysdatasizer.Add(text_sysdata, 1, wx.EXPAND)
         sysdatasizer.Add(self.sysdata)
         
-        counterobjsizer.Add(text_counterobj)
+        counterobjsizer.Add(text_counterobj, 1, wx.EXPAND)
         counterobjsizer.Add(self.counterobj)
         
-        keysizer.Add(text_key)
+        keysizer.Add(text_key, 1, wx.EXPAND)
         keysizer.Add(self.key)
         
-        certsizer.Add(text_cert)
+        certsizer.Add(text_cert, 1, wx.EXPAND)
         certsizer.Add(self.cert)
-        gendataobjsizer.Add(text_gendataobj)
+        gendataobjsizer.Add(text_gendataobj, 1, wx.EXPAND)
         gendataobjsizer.Add(self.gendataobj)
         
-        bindsecretsizer.Add(text_bindsecret)
+        bindsecretsizer.Add(text_bindsecret, 1, wx.EXPAND)
         bindsecretsizer.Add(self.bindsecret)
         
-        lcs0sizer.Add(text_lcs0)
+        lcs0sizer.Add(text_lcs0, 1, wx.EXPAND)
         lcs0sizer.Add(self.lcs0)
-        changesizer.Add(text_change)
+        changesizer.Add(text_change, 1, wx.EXPAND)
         changesizer.Add(self.change)
-        readsizer.Add(text_read)
+        readsizer.Add(text_read, 1, wx.EXPAND)
         readsizer.Add(self.read)
-        exesizer.Add(text_exe)
+        exesizer.Add(text_exe, 1, wx.EXPAND)
         exesizer.Add(self.exe)
         file_sizer.Add(self.custom_metadata_input)
 
         
         # oid datatype sizer
-        datatypesizer.Add(text_oid_datatype)
+        datatypesizer.Add(text_oid_datatype, 1, wx.EXPAND)
         datatypesizer.Add(self.oid_datatype)
         #
         
 
 
         #add objects into sizers in gdsizer2
-        trustoidsizer.Add(text_trust_anchor_oid)
+        trustoidsizer.Add(text_trust_anchor_oid, 1, wx.EXPAND)
         trustoidsizer.Add(self.trust_anchor_oid)
 #         targetoidsizer.Add(text_target_oid)
 #         targetoidsizer.Add(self.target_oid)
-        secretoidsizer.Add(text_secret_oid)
+        secretoidsizer.Add(text_secret_oid, 1, wx.EXPAND)
         secretoidsizer.Add(self.secret_oid)
 
 
