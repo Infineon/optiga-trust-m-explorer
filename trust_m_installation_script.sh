@@ -8,7 +8,7 @@ PATCH="${PWD}/${FILE}"
 
 
 sudo apt update 
-sudo apt -y install awscli git gcc libssl-dev python-wxtools
+sudo apt -y install awscli git gcc libssl-dev python-wxtools python3-pubsub
 pip install PyPubSub
 
 echo $PATCH
