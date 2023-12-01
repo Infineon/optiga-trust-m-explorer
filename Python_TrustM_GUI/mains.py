@@ -113,7 +113,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button3)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button4)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button5)
-        self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button6)
+        #self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button6)
 
         # Set tooltips
         self.button1.SetToolTip(wx.ToolTip("Confidential Integrity Protected Update"))
