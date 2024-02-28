@@ -187,16 +187,16 @@ class Tab5Frame(wx.Frame):
         SHARED_SECRET_META="2011C00101D003E1FC07D10100D30100E80131"
                 
         self.text_display.AppendText("Writing binary read access LcsO<0x07 metadata as metadata of Secret OID... \n")
-        exec_cmd.createProcess("echo " + SHARED_SECRET_META + " | xxd -r -p > secret_autoref_metadata.bin", None)
-        self.text_display.AppendText("'echo $SHARED_SECRET_META | xxd -r -p > secret_autoref_metadata.bin' executed \n")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {SHARED_SECRET_META} > secret_autoref_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {SHARED_SECRET_META} > secret_autoref_metadata.bin' executed \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", SECRET_OID, "-F", "secret_autoref_metadata.bin", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("'trustm_metadata -w " + SECRET_OID + " -F secret_autoref_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing shared secret into Secret OID... \n")
-        exec_cmd.createProcess("echo " + SHARED_SECRET + " | xxd -r -p > shared_secret.dat", None)
-        self.text_display.AppendText("'echo $SHARED_SECRET | xxd -r -p > shared_secret.dat' executed \n")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {SHARED_SECRET} > shared_secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {SHARED_SECRET} > shared_secret.dat' executed \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-e", "-w", SECRET_OID, "-i", "shared_secret.dat", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("'trustm_data -e -w " + SECRET_OID + " -i shared_secret.dat' executed \n")
@@ -204,8 +204,9 @@ class Tab5Frame(wx.Frame):
         
         
         self.text_display.AppendText("Set the metadata of 0x$DATA_OBJECT_OID to Auto Change/Read with 0x$SHARED_SECRET_OID.... \n")
-        exec_cmd.createProcess("echo " + "0323" + SECRET_OID + " | xxd -r -p > data_object_auto_metadata.bin", None)
-        self.text_display.AppendText("'echo 0323$SHARED_SECRET_OID | xxd -r -p > data_object_auto_metadata.bin' executed \n")
+        NEW_SECRET_OID = '0323'+ self.secretoid.GetValue()
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {NEW_SECRET_OID} > data_object_auto_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {NEW_SECRET_OID} > data_object_auto_metadata.bin' executed \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", TARGET_OID, "-Cf:data_object_auto_metadata.bin", "-Rf:data_object_auto_metadata.bin", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("'trustm_metadata -w " + TARGET_OID + " -Cf:data_object_auto_metadata.bin -Rf:data_object_auto_metadata.bin' executed \n")
@@ -225,11 +226,11 @@ class Tab5Frame(wx.Frame):
         #convert data input to binary
         self.text_display.AppendText("\nConverting data input to binary data.dat...\n")
               
-        exec_cmd.createProcess("echo " + DATA_OBJECT + " | xxd -r -p > data.dat", None)
-        self.text_display.AppendText("'echo $DATA_OBJECT | xxd -r -p > data.dat' executed \n")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {DATA_OBJECT} > data.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {DATA_OBJECT} > data.dat' executed \n")
         
-        exec_cmd.createProcess("echo " + secretin + " | xxd -r -p > secret.dat", None)
-        self.text_display.AppendText("'echo $secretin | xxd -r -p > secret.dat' executed \n")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {secretin}  > secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {secretin}  > secret.dat' executed \n")
         
         command_output = exec_cmd.execCLI([
             config.EXEPATH + "/bin/trustm_hmac_verify_Auth",
@@ -252,8 +253,8 @@ class Tab5Frame(wx.Frame):
         SECRET_OID = "0x" + self.secretoid.GetValue()
         secretin = self.secret.GetValue()
         
-        exec_cmd.createProcess("echo " + secretin + " | xxd -r -p > secret.dat", None)
-        self.text_display.AppendText("'echo $secretin | xxd -r -p > secret.dat' executed \n")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {secretin} > secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {secretin} > secret.dat' executed \n")
         
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_hmac_verify_Auth", "-I", SECRET_OID, "-s","secret.dat","-r", "0x"+TARGET_OID,
                                            "-o", "data_" + TARGET_OID + ".bin", ])

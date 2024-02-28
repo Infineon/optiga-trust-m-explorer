@@ -50,7 +50,7 @@ This tool was tested on a Raspberry Pi 3 Model B+/ 4 Model B with Raspbian Linux
 The following software is required for the OPTIGA™ Trust M:
 - python-wxtools
 - OpenSSL development library (libssl-dev)
-- OpenSSL 1.1.1d
+- OpenSSL 3.0.11
 - OPTIGA Trust M1/M3 library (source code)
 - pthread
 - rt

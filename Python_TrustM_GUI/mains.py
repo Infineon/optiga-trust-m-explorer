@@ -1,7 +1,7 @@
 import wx
 import tab1_general as t1
 import tab2_crypto as t2
-import tab3_engine as t3
+import tab3_provider as t3
 import tab4_protected as t4
 import tab5_storage as t5
 import tab6_cloud as t6
@@ -24,7 +24,7 @@ class MainFrame(wx.Frame):
         # Create all the button widgets first
         self.button1 = wx.Button(self, -1, 'General Features')
         self.button2 = wx.Button(self, -1, 'Cryptographic Functions')
-        self.button3 = wx.Button(self, -1, 'OpenSSL-Engine')
+        self.button3 = wx.Button(self, -1, 'OpenSSL-Provider')
         self.button4 = wx.Button(self, -1, 'Protected Update', size = wx.Size(367, -1))
         self.button5 = wx.Button(self, -1, 'Secure Storage', size = wx.Size(367, -1))
         self.button6 = wx.Button(self, -1, 'AWS: IOT Core', size = wx.Size(367, -1))
@@ -51,7 +51,7 @@ class MainFrame(wx.Frame):
         tab2_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab2_image))
 
         # Engine logo
-        tab3_image = wx.Image(config.IMAGEPATH + "/images/engine.png", wx.BITMAP_TYPE_PNG)
+        tab3_image = wx.Image(config.IMAGEPATH + "/images/provider.png", wx.BITMAP_TYPE_PNG)
         tab3_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab3_image))
         
         # Protected logo
@@ -113,7 +113,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button3)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button4)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button5)
-        self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button6)
+        #self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button6)
 
         # Set tooltips
         self.button1.SetToolTip(wx.ToolTip("Confidential Integrity Protected Update"))
@@ -147,8 +147,8 @@ class MainFrame(wx.Frame):
             self.activetab = t1.Tab1Frame(self, "General")
         elif (event_obj == self.FindWindowByLabel(label='Cryptographic Functions')):
             self.activetab = t2.Tab2Frame(self, "Crypto")
-        elif (event_obj == self.FindWindowByLabel(label='OpenSSL-Engine')):
-            self.activetab = t3.Tab3Frame(self, "Engine")
+        elif (event_obj == self.FindWindowByLabel(label='OpenSSL-Provider')):
+            self.activetab = t3.Tab3Frame(self, "Provider")
         elif (event_obj == self.FindWindowByLabel(label='Protected Update')):
             self.activetab = t4.Tab4Frame(self, "Protected Update")
         elif (event_obj == self.FindWindowByLabel(label='Secure Storage')):

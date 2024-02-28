@@ -107,7 +107,8 @@ You should be successfully connected and able to view the RPI through VNC connec
 Download Trust M_Explorer Source Code:  
 
 ```
-git clone --recurse-submodules https://github.com/Infineon/optiga-trust-m-explorer
+git clone -b provider_dev --recurse-submodules https://github.com/ying-css/optiga-trust-m-explorer.git
+
 ```
 
 Go to the following directory
@@ -134,7 +135,7 @@ The installation script installs the following dependencies required and compile
 
 -   python-wxtools
 -   OpenSSL development library (libssl-dev)
--   OpenSSL 1.1.1d
+-   OpenSSL 3.0.11
 -   OPTIGA Trust M1/M3 library (source code)
 -   pthread
 -   rt

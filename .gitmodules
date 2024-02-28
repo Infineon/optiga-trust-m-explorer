@@ -1,4 +1,4 @@
 [submodule "Python_TrustM_GUI/linux-optiga-trust-m"]
 	path = Python_TrustM_GUI/linux-optiga-trust-m
 	url = https://github.com/Infineon/linux-optiga-trust-m
-	branch = development_v3
+	branch = provider_dev

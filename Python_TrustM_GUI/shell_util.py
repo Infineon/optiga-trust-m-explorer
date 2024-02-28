@@ -66,7 +66,19 @@ def execCLI(cmd):
 #     out, err = proc.communicate() 
 #     return(out)
 
-def createProcess(cmd, file):
+# ~ def createProcess(cmd, file):
+    # ~ output = ""
+    # ~ try:
+        # ~ output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    # ~ except subprocess.CalledProcessError as e:
+        # ~ output = e.output
+        # ~ print("ERROR")
+        # ~ print(output)
+        
+    # ~ return(output)
+    
+def createProcess(cmd):
     output = ""
     try:
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -75,8 +87,21 @@ def createProcess(cmd, file):
         output = e.output
         print("ERROR")
         print(output)
-        
-    return(output)
+
+    return output
+    
+    
+def createProcess2(cmd, file):
+    output = ""
+    try:
+        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    except subprocess.CalledProcessError as e:
+        output = e.output
+        print("ERROR")
+        print(output)
+
+    return output
 
 
 def createProcess_PIPE(cmd, file):

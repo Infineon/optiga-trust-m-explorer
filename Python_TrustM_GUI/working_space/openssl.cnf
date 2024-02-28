@@ -5,9 +5,12 @@ extendedKeyUsage=clientAuth,serverAuth
 
 [ cert_ext1 ]
 subjectKeyIdentifier=hash
+basicConstraints = CA:FALSE
 keyUsage=digitalSignature,keyEncipherment
 extendedKeyUsage=clientAuth
 
 [ cert_ext2 ]
 subjectKeyIdentifier=hash
 keyUsage=keyCertSign, cRLSign, digitalSignature
+
+
