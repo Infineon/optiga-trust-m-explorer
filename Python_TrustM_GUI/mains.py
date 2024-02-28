@@ -1,7 +1,7 @@
 import wx
 import tab1_general as t1
 import tab2_crypto as t2
-import tab3_engine as t3
+import tab3_provider as t3
 import tab4_protected as t4
 import tab5_storage as t5
 import tab6_cloud as t6
@@ -51,7 +51,7 @@ class MainFrame(wx.Frame):
         tab2_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab2_image))
 
         # Engine logo
-        tab3_image = wx.Image(config.IMAGEPATH + "/images/engine.png", wx.BITMAP_TYPE_PNG)
+        tab3_image = wx.Image(config.IMAGEPATH + "/images/provider.png", wx.BITMAP_TYPE_PNG)
         tab3_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab3_image))
         
         # Protected logo
@@ -113,7 +113,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button3)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button4)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button5)
-        self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button6)
+        #self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button6)
 
         # Set tooltips
         self.button1.SetToolTip(wx.ToolTip("Confidential Integrity Protected Update"))

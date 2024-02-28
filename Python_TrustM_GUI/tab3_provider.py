@@ -42,6 +42,33 @@ ECC_Server_thread_active_flag=0
 ECC_Client_thread_active_flag=0
 
 
+def run_openssl_command(command, timeout):
+    try:
+        process = subprocess.Popen(
+            command,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        # Run the command in a separate thread
+        thread = threading.Thread(target=lambda: process.communicate())
+        thread.start()
+        thread.join(timeout)
+
+        if thread.is_alive():
+            # If the thread is still running after the timeout, terminate the process
+            process.terminate()
+            thread.join()
+            return None, "Command timed out"
+
+        return process.returncode, process.stdout.read()
+
+    except Exception as e:
+        return None, str(e)
+
+
 def ClientProcess(client_log):
     global client_proc
     if (client_proc is not None):
@@ -49,7 +76,7 @@ def ClientProcess(client_log):
             client_proc.terminate()
         except OSError:
             client_proc = None
-    client_proc = exec_cmd.createProcess("lxterminal --command='openssl s_client -connect localhost:4433 -tls1_2 -CAfile CA_rsa_cert.pem'", client_log)
+    client_proc = exec_cmd.createProcess2("lxterminal --command='openssl s_client -connect localhost:4433 -tls1_2 -CAfile CA_rsa_cert.pem'", client_log)
 
 
 def LogReader(text_server, text_client, server_log, client_log):
@@ -98,7 +125,7 @@ def kill_child_processes(parent_pid, sig=signal.SIGTERM):
         else:
             print("ps command returned %d" % retcode)
 
-'''
+
 class Tab_ECC_CS(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
@@ -310,31 +337,42 @@ class Tab_ECC_CS(wx.Panel):
                              "-key", "0xe0f3:*:NEW:0x03:0x13",
                              "-new", 
                              "-out", "client1_e0f3.csr",
-                             "-subj", "/CN=Client1",
+                             "-subj", "/CN=TrustM/O=Infineon/C=SG"
                          ])
         self.text_client.AppendText(command_output)
-        self.text_client.AppendText("'openssl req -provider trustm_provider -key 0xe0f3:*:NEW:0x03:0x13 -new -out client1_e0f3.csr -subj /CN=Client1' executed \n")
+        self.text_client.AppendText("'openssl req -provider trustm_provider -key 0xe0f3:*:NEW:0x03:0x13 -new -out client1_e0f3.csr -subj /CN=TrustM/O=Infineon/C=SG' executed \n")
         command_output = exec_cmd.execCLI([
                              "openssl", "req",
                              "-in", "client1_e0f3.csr",
-                             "-text",
+                             "-text"
                          ])
         self.text_client.AppendText(command_output)
         self.text_client.AppendText("'openssl req -in client1_e0f3.csr -text' executed \n")
         self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
         
     def OnExtractPublicKey(self, evt):
-        self.text_client.AppendText("Extracting Public Key from CSR...\n")
-        command_output = exec_cmd.execCLI([
-                             "openssl",
-                             "req",
-                             "-in", "client1_e0f3.csr",
-                             "-out", "client1_e0f3.pub",
-                             "-pubkey",
-                         ])
-        self.text_client.AppendText(command_output)
-        self.text_client.AppendText("'openssl req -in client1_e0f3.csr -out client1_e0f3.pub -pubkey' executed \n")
-        self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+            self.text_client.AppendText("Extracting Public Key from CSR...\n")
+            try:
+                # Use subprocess.PIPE to capture the command output
+                command_output = subprocess.check_output([
+                    "openssl", "req", "-in",
+                    "client1_e0f3.csr", "-pubkey", "-noout",
+                    "-out", "client1_e0f3.pub"  # Specify the output file name here
+                ], stderr=subprocess.STDOUT, text=True)
+                
+                self.text_client.AppendText("Public key extracted successfully.\n")
+                self.text_client.AppendText("'openssl req -in client1_e0f3.csr -pubkey -noout -out client1_e0f3.pub' executed \n")
+                self.text_client.AppendText(command_output)
+                
+                command_output = subprocess.check_output([
+                    "openssl", "pkey",
+                    "-in", "client1_e0f3.pub",
+                    "-pubin", "-text"
+                ], stderr=subprocess.STDOUT, text=True)
+                self.text_client.AppendText("'openssl pkey -in client1_e0f3.pub -pubin -text' executed \n")
+                self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
+            except subprocess.CalledProcessError as e:
+                self.text_client.AppendText("An error occurred: " + str(e) + "\n")
     
     def OnGenClientCert(self, evt):
         self.text_client.AppendText("Creating Client Certificate by using CA...\n")
@@ -349,7 +387,7 @@ class Tab_ECC_CS(wx.Panel):
                              "-days", "365",
                              "-sha256",
                              "-extfile", "openssl.cnf",
-                             "-extensions", "cert_ext1",
+                             "-extensions", "cert_ext1"
                          ])
         self.text_client.AppendText(command_output)
         self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
@@ -377,7 +415,7 @@ class Tab_ECC_CS(wx.Panel):
         else: 
             openssl_cmd="openssl s_server -cert server1.crt -key server1_privkey.pem -accept 5000 -verify_return_error -Verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
 #             openssl_cmd="echo Hello World!"
-            self.server_proc = exec_cmd.createProcess(openssl_cmd, None)
+            self.server_proc = exec_cmd.createProcess(openssl_cmd)
             self.Server_thread_active_flag=1
             #start a server daemon thread and run server_thread function
             s_thread = threading.Thread(name='Server-daemon', target=self.server_thread)
@@ -385,7 +423,35 @@ class Tab_ECC_CS(wx.Panel):
             s_thread.start()
             #this message is sent first
             wx.CallAfter(Publisher.sendMessage, "ECC_Server_Text", msg="\n\n" + openssl_cmd +"\n\n")     
-    
+
+
+    def run_openssl_command(command, timeout):
+            try:
+                process = subprocess.Popen(
+                    command,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    shell=True  # Use shell to handle the entire command as a string
+                )
+
+                # Run the command in a separate thread
+                thread = threading.Thread(target=lambda: process.communicate())
+                thread.start()
+                thread.join(timeout)
+
+                if thread.is_alive():
+                    # If the thread is still running after the timeout, terminate the process
+                    process.terminate()
+                    thread.join()
+                    return None, "Command timed out"
+
+                return process.returncode, process.stdout.read()
+
+            except Exception as e:
+                return None, str(e)
+
     def OnStartClient(self, evt):
         if (self.client_proc is not None):
             self.Client_thread_active_flag=0
@@ -395,9 +461,9 @@ class Tab_ECC_CS(wx.Panel):
             self.client_proc.wait()
             self.client_proc = None
         else:
-            openssl_cmd="openssl s_client -connect localhost:5000 -client_sigalgs ECDSA+SHA256 -provider trustm_provider -provider default -cert client1_e0f3.crt -key 0xe0f3:^ -tls1_2 -verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
+            openssl_cmd="openssl s_client -servername Server1 -connect localhost:5000 -client_sigalgs ECDSA+SHA256 -provider trustm_provider -provider default -cert client1_e0f3.crt -key 0xe0f3:^ -verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem"
             if (self.server_proc is not None):
-                self.client_proc = exec_cmd.createProcess(openssl_cmd, None)
+                self.client_proc = exec_cmd.createProcess(openssl_cmd)
 
                 self.Client_thread_active_flag=1
                 c_thread = threading.Thread(name='Client-daemon', target=self.client_thread)
@@ -405,20 +471,27 @@ class Tab_ECC_CS(wx.Panel):
                 c_thread.start()                
                 wx.CallAfter(Publisher.sendMessage, "ECC_Client_Text", msg="\n\n" +openssl_cmd+"\n\n")
             else:
-                wx.CallAfter(Publisher.sendMessage, "ECC_Client_Text",msg="Server is not active..\n")   
+                wx.CallAfter(Publisher.sendMessage, "ECC_Client_Text",msg="Server is not active..\n")    
+            
     
     def OnWriteToServer(self, evt):
-        global server_proc
-        if (self.server_proc is None):
-            self.text_server.AppendText("Server is not running!\n")
-            return
-        write_value = self.input_client.GetValue()
-        if (write_value == ""):
-            self.text_server.AppendText("I need something to write!\n")
-            return
-        self.client_proc.stdin.write((write_value+"\n").encode())
-        self.client_proc.stdin.flush()
+            if self.server_proc is None:
+                self.text_server.AppendText("Server is not running!\n")
+                return
 
+            write_value = self.input_client.GetValue()
+            if not write_value:
+                self.text_server.AppendText("I need something to write!\n")
+                return
+
+            try:
+                # Encode the string to bytes before writing
+                self.client_proc.stdin.write(write_value.encode('utf-8') + b"\n")
+                self.client_proc.stdin.flush()
+            except Exception as e:
+                print(f"Error writing to server: {e}")
+                self.text_server.AppendText(f"Error writing to server: {e}\n")
+     
     def OnWriteToClient(self, evt):
         if (self.client_proc is None):
             self.text_client.AppendText("Client is not running!\n")
@@ -429,7 +502,7 @@ class Tab_ECC_CS(wx.Panel):
             return
         self.server_proc.stdin.write((write_value+"\n").encode())
         self.server_proc.stdin.flush()
-'''
+
 
 class Tab_RSA_CS(wx.Panel):
     def __init__(self, parent):
@@ -509,11 +582,11 @@ class Tab_RSA_CS(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnFlushServer, button_flush_server)
         
         self.Bind(wx.EVT_BUTTON, self.OnGenServerPrivateKey, button_gen_server_privkey)
-        #self.Bind(wx.EVT_BUTTON, self.OnGenServerKeyCSR, button_gen_server_key_csr)
+        # ~ self.Bind(wx.EVT_BUTTON, self.OnGenServerKeyCSR, button_gen_server_key_csr)
         self.Bind(wx.EVT_BUTTON, self.OnGenServerCert, button_gen_server_cert)
         
         self.Bind(wx.EVT_BUTTON, self.OnGenClientKeyCSR1, button_gen_client_key_csr)
-        #self.Bind(wx.EVT_BUTTON, self.OnExtractPublicKey, button_extract_pubkey)
+        # ~ self.Bind(wx.EVT_BUTTON, self.OnExtractPublicKey, button_extract_pubkey)
         self.Bind(wx.EVT_BUTTON, self.OnGenClientCert, button_gen_client_cert)
         
         self.Bind(wx.EVT_BUTTON, self.OnStartServer, button_start_server)
@@ -596,18 +669,18 @@ class Tab_RSA_CS(wx.Panel):
                              "openssl", "req", 
                              "-new", 
                              "-nodes", 
-                             "-subj", "/CN=Server1/O=Infineon/C=SG", 
-                             "-out", "server1.csr",
+                             "-subj", "/CN=Server2/O=Infineon/C=SG", 
+                             "-out", "server2.csr",
         
                          ])
         self.text_server.AppendText(command_output)
-        self.text_server.AppendText("'openssl req -new -nodes -subj /CN=Server1/O=Infineon/C=SG -out server1.csr' executed \n")        
+        self.text_server.AppendText("'openssl req -new -nodes -subj /CN=Server2/O=Infineon/C=SG -out server2.csr' executed \n")        
         command_output = exec_cmd.execCLI([
-                             "openssl", "rsa", "-in", "privkey.pem", "-out", "server1_privkey.pem"
+                             "openssl", "rsa", "-in", "privkey.pem", "-out", "server2_privkey.pem"
         
                          ])                         
         self.text_server.AppendText(command_output)
-        self.text_server.AppendText("'openssl rsa -in privkey.pem -out server1_privkey.pem' executed \n")        
+        self.text_server.AppendText("'openssl rsa -in privkey.pem -out server2_privkey.pem' executed \n")        
         self.text_server.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
         
         
@@ -616,11 +689,11 @@ class Tab_RSA_CS(wx.Panel):
         command_output = exec_cmd.execCLI([
                              "openssl", "x509",
                              "-req",
-                             "-in", "server1.csr",
+                             "-in", "server2.csr",
                              "-CA", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem",
                              "-CAkey", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA_Key.pem",
                              "-CAcreateserial",
-                             "-out", "server1.crt",
+                             "-out", "server2.crt",
                              "-days", "365",
                              "-sha256",
                              "-extfile", "openssl.cnf",
@@ -639,11 +712,11 @@ class Tab_RSA_CS(wx.Panel):
                              "-provider", "trustm_provider",
                              "-key", "0xe0fc:*:NEW:0x42:0x13",
                              "-new", 
-                             "-out", "client1_rsa.csr",
+                             "-out", "client2_rsa.csr",
                              "-subj", "/CN=TrustM/O=Infineon/C=SG",
                          ])
         self.text_client.AppendText(command_output)
-        self.text_client.AppendText("'openssl req -provider trustm_provider -key 0xe0fc:*:NEW:0x42:0x13 -new -out client1_rsa.csr -subj /CN=TrustM/O=Infineon/C=SG' executed \n")
+        self.text_client.AppendText("'openssl req -provider trustm_provider -key 0xe0fc:*:NEW:0x42:0x13 -new -out client2_rsa.csr -subj /CN=TrustM/O=Infineon/C=SG' executed \n")
 
         self.text_client.AppendText("+++++++++++++++++++++++++++++++++++++++++++\n")
         
@@ -653,11 +726,11 @@ class Tab_RSA_CS(wx.Panel):
         command_output = exec_cmd.execCLI([
                              "openssl", "x509",
                              "-req",
-                             "-in", "client1_rsa.csr",
+                             "-in", "client2_rsa.csr",
                              "-CA", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem",
                              "-CAkey", config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA_Key.pem",
                              "-CAcreateserial",
-                             "-out", "client1_rsa.crt",
+                             "-out", "client2_rsa.crt",
                              "-days", "365",
                              "-sha256",
                              "-extfile", "openssl.cnf",
@@ -687,9 +760,9 @@ class Tab_RSA_CS(wx.Panel):
 
         #if server thread is not running
         else: 
-            openssl_cmd="openssl s_server -cert server1.crt -key server1_privkey.pem -accept 5000 -verify_return_error -Verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem -sigalgs RSA+SHA256"
+            openssl_cmd="openssl s_server -tls1_2 -cert server2.crt -key server2_privkey.pem -accept 5001 -verify_return_error -Verify 1 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem -sigalgs RSA+SHA256"
 #             openssl_cmd="echo Hello World!"
-            self.server_proc = exec_cmd.createProcess(openssl_cmd, None)
+            self.server_proc = exec_cmd.createProcess(openssl_cmd)
             self.Server_thread_active_flag=1
             #start a server daemon thread and run server_thread function
             s_thread = threading.Thread(name='Server-daemon', target=self.server_thread)
@@ -707,9 +780,9 @@ class Tab_RSA_CS(wx.Panel):
             self.client_proc.wait()
             self.client_proc = None
         else:
-            openssl_cmd="openssl s_client -connect localhost:5000 -client_sigalgs RSA+SHA256 -provider trustm_provider -provider default -cert client1_rsa.crt -key 0xe0fc:^ -tls1_2 -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem -verify 1"
+            openssl_cmd="openssl s_client -tls1_2 -servername Server2 -connect localhost:5001 -client_sigalgs RSA+SHA256 -provider trustm_provider -provider default -cert client2_rsa.crt -key 0xe0fc:^ -CAfile " + config.CERT_PATH + "/OPTIGA_Trust_M_Infineon_Test_CA.pem -verify 1"
             if (self.server_proc is not None):
-                self.client_proc = exec_cmd.createProcess(openssl_cmd, None)
+                self.client_proc = exec_cmd.createProcess(openssl_cmd)
 
                 self.Client_thread_active_flag=1
                 c_thread = threading.Thread(name='Client-daemon', target=self.client_thread)
@@ -920,13 +993,13 @@ class Tab3Frame(wx.Frame):
 
         # Instantiate all objects
         self.tab_base = wx.Notebook(self, id=wx.ID_ANY, style=wx.NB_TOP)
-        #self.tab2_ecc_cs = Tab_ECC_CS(self.tab_base)
+        self.tab2_ecc_cs = Tab_ECC_CS(self.tab_base)
         self.tab2_rsa_cs = Tab_RSA_CS(self.tab_base)        
         self.tab4_rng = Tab_RNG(self.tab_base)
         
 
         # Add tabs
-        #self.tab_base.AddPage(self.tab2_ecc_cs, 'ECC (Client/Server)')
+        self.tab_base.AddPage(self.tab2_ecc_cs, 'ECC (Client/Server)')
         self.tab_base.AddPage(self.tab2_rsa_cs, 'RSA (Client/Server)')        
         self.tab_base.AddPage(self.tab4_rng, 'RNG')
 
@@ -937,8 +1010,8 @@ class Tab3Frame(wx.Frame):
             self.tab_base.ChangeSelection(0)
 
     def OnCloseWindow(self, evt):
-        #checkProcesses()
-        #self.tab2_ecc_cs.Destroy()
+        checkProcesses()
+        self.tab2_ecc_cs.Destroy()
         self.tab2_rsa_cs.Destroy()        
         self.Parent.Show()
         self.Destroy()

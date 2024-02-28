@@ -776,7 +776,7 @@ class Tab_ECC(wx.Panel):
         
         exec_cmd.execCLI(["rm", "data_input.txt", ])
         input_message = self.input_display.GetValue()
-        exec_cmd.createProcess("echo " + input_message + " > data_input.txt", None)
+        exec_cmd.createProcess("echo " + input_message + " > data_input.txt")
         self.text_display.AppendText("'echo " + input_message + " > data_input.txt' executed \n")
         
         if (self.ecctype.GetSelection() == 0):
@@ -787,36 +787,36 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f0", "-o", "ecc_signature.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f0 -o ecc_signature.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
   
             elif (self.keyslot.GetSelection() == 1):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f1", "-o", "ecc_signature.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f1 -o ecc_signature.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 2):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f2", "-o", "ecc_signature.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f2 -o ecc_signature.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 3):
               command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f3", "-o", "ecc_signature.bin", "-i", "data_input.txt", "-H", "-X", ])
               self.text_display.AppendText(command_output)
               self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f3 -o ecc_signature.bin -i data_input.txt -H -X' executed \n")
-              command_output = exec_cmd.execCLI(["xxd", "ecc_signature.bin", ])
+              command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature.bin", ])
               self.text_display.AppendText(command_output)
-              self.text_display.AppendText("'xxd ecc_signature.bin' executed \n")
+              self.text_display.AppendText("'python3 emulator.py ecc_signature.bin' executed \n")
               self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         # ecc signing for ECC384
@@ -826,27 +826,27 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f1", "-o", "ecc_signature_384.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f1 -o ecc_signature_384.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_384.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_384.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_384.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_384.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 2):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f2", "-o", "ecc_signature_384.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f2 -o ecc_signature_384.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_384.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_384.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_384.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_384.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 3):
               command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f3", "-o", "ecc_signature_384.bin", "-i", "data_input.txt", "-H", "-X", ])
               self.text_display.AppendText(command_output)
               self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f3 -o ecc_signature_384.bin -i data_input.txt -H -X' executed \n")
-              command_output = exec_cmd.execCLI(["xxd", "ecc_signature_384.bin", ])
+              command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_384.bin", ])
               self.text_display.AppendText(command_output)
-              self.text_display.AppendText("'xxd ecc_signature_384.bin' executed \n")
+              self.text_display.AppendText("'python3 emulator.py ecc_signature_384.bin' executed \n")
               self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         elif (self.ecctype.GetSelection() == 2):
@@ -855,9 +855,9 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f1", "-o", "ecc_signature_521.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f1 -o ecc_signature_521.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_521.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_521.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_521.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_521.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 2):
@@ -865,9 +865,9 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f2", "-o", "ecc_signature_521.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f2 -o ecc_signature_521.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_521.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_521.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_521.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_521.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 3):
@@ -875,9 +875,9 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f3", "-o", "ecc_signature_521.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f3 -o ecc_signature_521.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_521.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_521.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_521.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_521.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
             
                 
@@ -890,27 +890,27 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f1", "-o", "ecc_signature_BP256.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f1 -o ecc_signature_BP256.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP256.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP256.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_BP256.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_BP256.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 2):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f2", "-o", "ecc_signature_BP256.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f2 -o ecc_signature_BP256.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP256.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP256.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_BP256.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_BP256.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 3):
               command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f3", "-o", "ecc_signature_BP256.bin", "-i", "data_input.txt", "-H", "-X", ])
               self.text_display.AppendText(command_output)
               self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f3 -o ecc_signature_BP256.bin -i data_input.txt -H -X' executed \n")
-              command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP256.bin", ])
+              command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP256.bin", ])
               self.text_display.AppendText(command_output)
-              self.text_display.AppendText("'xxd ecc_signature_BP256.bin' executed \n")
+              self.text_display.AppendText("'python3 emulator.py ecc_signature_BP256.bin' executed \n")
               self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         elif (self.ecctype.GetSelection() == 4):
@@ -919,27 +919,27 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f1", "-o", "ecc_signature_BP384.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f1 -o ecc_signature_BP384.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP384.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP384.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_BP384.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_BP384.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 2):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f2", "-o", "ecc_signature_BP384.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f2 -o ecc_signature_BP384.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP384.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP384.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_BP384.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_BP384.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 3):
               command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f3", "-o", "ecc_signature_BP384.bin", "-i", "data_input.txt", "-H", "-X", ])
               self.text_display.AppendText(command_output)
               self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f3 -o ecc_signature_BP384.bin -i data_input.txt -H -X' executed \n")
-              command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP384.bin", ])
+              command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP384.bin", ])
               self.text_display.AppendText(command_output)
-              self.text_display.AppendText("'xxd ecc_signature_BP384.bin' executed \n")
+              self.text_display.AppendText("'python3 emulator.py ecc_signature_BP384.bin' executed \n")
               self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         elif (self.ecctype.GetSelection() == 5):
@@ -948,27 +948,27 @@ class Tab_ECC(wx.Panel):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f1", "-o", "ecc_signature_BP512.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f1 -o ecc_signature_BP512.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP512.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP512.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_BP512.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_BP512.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
             elif (self.keyslot.GetSelection() == 2):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f2", "-o", "ecc_signature_BP512.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f2 -o ecc_signature_BP512.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP512.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP512.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_BP512.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_BP512.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
             
             elif (self.keyslot.GetSelection() == 3):
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_sign", "-k", "0xe0f3", "-o", "ecc_signature_BP512.bin", "-i", "data_input.txt", "-H", "-X", ])
                 self.text_display.AppendText(command_output)
                 self.text_display.AppendText("'trustm_ecc_sign -k 0xe0f3 -o ecc_signature_BP512.bin -i data_input.txt -H -X' executed \n")
-                command_output = exec_cmd.execCLI(["xxd", "ecc_signature_BP512.bin", ])
+                command_output = exec_cmd.execCLI(["python3", "emulator.py", "ecc_signature_BP512.bin", ])
                 self.text_display.AppendText(command_output)
-                self.text_display.AppendText("'xxd ecc_signature_BP512.bin' executed \n")
+                self.text_display.AppendText("'python3 emulator.py ecc_signature_BP512.bin' executed \n")
                 self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
                 
         
@@ -977,14 +977,14 @@ class Tab_ECC(wx.Panel):
         
         exec_cmd.execCLI(["rm", "data_input.txt", ])
         input_message = self.input_display.GetValue()
-        exec_cmd.createProcess("echo " + input_message + " > data_input.txt", None)
+        exec_cmd.createProcess("echo " + input_message + " > data_input.txt")
         self.text_display.AppendText("'echo " + input_message + " > data_input.txt' executed \n")
         
         if (self.ecctype.GetSelection() == 0):
             
             exec_cmd.execCLI(["rm", "data_input.txt", ])
             input_message = self.input_display.GetValue()
-            exec_cmd.createProcess("echo " + input_message + " > data_input.txt", None)
+            exec_cmd.createProcess("echo " + input_message + " > data_input.txt")
             
             if (self.keyslot.GetSelection() == 0):
                 
@@ -993,7 +993,7 @@ class Tab_ECC(wx.Panel):
 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert","-r","0xe0e0", "-o", "cert_0xe0e0.pem", ])
                 self.text_display.AppendText("'trustm_cert -r 0xe0e0 -o cert_0xe0e0.pem executed' \n")
-                exec_cmd.createProcess("openssl x509 -pubkey -noout -in cert_0xe0e0.pem > test_e0f0_pub.pem", None)
+                exec_cmd.createProcess("openssl x509 -pubkey -noout -in cert_0xe0e0.pem > test_e0f0_pub.pem")
                 self.text_display.AppendText("'openssl x509 -pubkey -noout -in cert_0xe0e0.pem > test_e0f0_pub.pem' executed \n")
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature.bin","-p","test_e0f0_pub.pem","-H", "-X", ])
@@ -1007,7 +1007,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f1_pub.bin -outform PEM -out test_e0f1_pub.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f1_pub.bin -outform PEM -out test_e0f1_pub.pem' executed \n")
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature.bin","-p","test_e0f1_pub.pem","-H", "-X", ])
@@ -1022,7 +1022,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f2_pub.bin -outform PEM -out test_e0f2_pub.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f2_pub.bin -outform PEM -out test_e0f2_pub.pem' executed \n")				
 				
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature.bin","-p","test_e0f2_pub.pem","-H", "-X", ])
@@ -1036,7 +1036,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f3_pub.bin -outform PEM -out test_e0f3_pub.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f3_pub.bin -outform PEM -out test_e0f3_pub.pem' executed \n")
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature.bin","-p","test_e0f3_pub.pem","-H", "-X", ])
@@ -1053,7 +1053,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f1_pub_384.bin -outform PEM -out test_e0f1_pub_384.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f1_pub_384.bin -outform PEM -out test_e0f1_pub_384.pem' executed \n")				
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s",
@@ -1069,7 +1069,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f2_pub_384.bin -outform PEM -out test_e0f2_pub_384.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f2_pub_384.bin -outform PEM -out test_e0f2_pub_384.pem' executed \n")	
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature_384.bin","-p","test_e0f2_pub_384.pem","-H", "-X", ])
@@ -1083,7 +1083,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f3_pub_384.bin -outform PEM -out test_e0f3_pub_384.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f3_pub_384.bin -outform PEM -out test_e0f3_pub_384.pem' executed \n")	
                 				
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature_384.bin","-p","test_e0f3_pub_384.pem","-H", "-X", ])
@@ -1101,7 +1101,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f1_pub_521.bin -outform PEM -out test_e0f1_pub_521.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f1_pub_521.bin -outform PEM -out test_e0f1_pub_521.pem' executed \n")	
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s",
@@ -1117,7 +1117,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f2_pub_521.bin -outform PEM -out test_e0f2_pub_521.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f2_pub_521.bin -outform PEM -out test_e0f2_pub_521.pem' executed \n")	
                 				
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s",
@@ -1149,7 +1149,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f1_pub_BP256.bin -outform PEM -out test_e0f1_pub_BP256.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f1_pub_BP256.bin -outform PEM -out test_e0f1_pub_BP256.pem' executed \n")					
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s", "ecc_signature_BP256.bin","-p","test_e0f1_pub_BP256.pem",
@@ -1165,7 +1165,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f2_pub_BP256.bin -outform PEM -out test_e0f2_pub_BP256.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f2_pub_BP256.bin -outform PEM -out test_e0f2_pub_BP256.pem' executed \n")	
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature_BP256.bin","-p","test_e0f2_pub_BP256.pem",
@@ -1180,7 +1180,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f3_pub_BP256.bin -outform PEM -out test_e0f3_pub_BP256.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f3_pub_BP256.bin -outform PEM -out test_e0f3_pub_BP256.pem' executed \n")					
 				
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature_BP256.bin","-p","test_e0f3_pub_BP256.pem",
@@ -1197,7 +1197,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f1_pub_BP384.bin -outform PEM -out test_e0f1_pub_BP384.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f1_pub_BP384.bin -outform PEM -out test_e0f1_pub_BP384.pem' executed \n")	
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s", "ecc_signature_BP384.bin","-p","test_e0f1_pub_BP384.pem",
@@ -1213,7 +1213,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f2_pub_BP384.bin -outform PEM -out test_e0f2_pub_BP384.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f2_pub_BP384.bin -outform PEM -out test_e0f2_pub_BP384.pem' executed \n")					
 				
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature_BP384.bin","-p","test_e0f2_pub_BP384.pem",
@@ -1228,7 +1228,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f3_pub_BP384.bin -outform PEM -out test_e0f3_pub_BP384.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f3_pub_BP384.bin -outform PEM -out test_e0f3_pub_BP384.pem' executed \n")					
 				
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature_BP384.bin","-p","test_e0f3_pub_BP384.pem",
@@ -1246,7 +1246,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f1_pub_BP512.bin -outform PEM -out test_e0f1_pub_BP512.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f1_pub_BP512.bin -outform PEM -out test_e0f1_pub_BP512.pem' executed \n")					
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s", "ecc_signature_BP512.bin","-p","test_e0f1_pub_BP512.pem",
@@ -1261,7 +1261,7 @@ class Tab_ECC(wx.Panel):
                 self.text_display.AppendText(command_output)
                 
                 openssl_command = "openssl ec -pubin -inform DER -in test_e0f2_pub_BP512.bin -outform PEM -out test_e0f2_pub_BP512.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl ec -pubin -inform DER -in test_e0f2_pub_BP512.bin -outform PEM -out test_e0f2_pub_BP512.pem' executed \n")		                
                 
                 command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_ecc_verify","-i","data_input.txt", "-s","ecc_signature_BP512.bin","-p","test_e0f2_pub_BP512.pem",
@@ -1572,7 +1572,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in rsa_e0fc_pub_1024.bin -outform PEM -out rsa_e0fc_pub_1024.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in rsa_e0fc_pub_1024.bin -outform PEM -out rsa_e0fc_pub_1024.pem' executed \n")
                             
             if(self.keyslot.GetSelection()==1):
@@ -1580,7 +1580,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in rsa_e0fd_pub_1024.bin -outform PEM -out rsa_e0fd_pub_1024.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in rsa_e0fd_pub_1024.bin -outform PEM -out rsa_e0fd_pub_1024.pem' executed \n")        
                 
                         
@@ -1594,7 +1594,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in rsa_e0fc_pub_2048.bin -outform PEM -out rsa_e0fc_pub_2048.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in rsa_e0fc_pub_2048.bin -outform PEM -out rsa_e0fc_pub_2048.pem' executed \n")
                             
             if(self.keyslot.GetSelection()==1):
@@ -1602,7 +1602,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in rsa_e0fd_pub_2048.bin -outform PEM -out rsa_e0fd_pub_2048.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in rsa_e0fd_pub_2048.bin -outform PEM -out rsa_e0fd_pub_2048.pem' executed \n")  
                 
                 
@@ -1610,7 +1610,7 @@ class Tab_RSA(wx.Panel):
         
         
         datain = self.input_display.GetValue()
-        exec_cmd.createProcess("echo " + datain + " > datain.txt", None)
+        exec_cmd.createProcess("echo " + datain + " > datain.txt")
         self.text_display.AppendText("datain.txt generated\n")
         self.text_display.AppendText("\n++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Encrypting with RSA public key ...\n\n")
@@ -1666,7 +1666,7 @@ class Tab_RSA(wx.Panel):
         exec_cmd.execCLI(["rm", "datain.txt", ])
         
         datain = self.input_display.GetValue()
-        exec_cmd.createProcess("echo " + datain + " > datain.txt", None)
+        exec_cmd.createProcess("echo " + datain + " > datain.txt")
         self.text_display.AppendText("\ndatain.txt generated\n")
         
         output_message = exec_cmd.execCLI([
@@ -1681,10 +1681,10 @@ class Tab_RSA(wx.Panel):
         self.text_display.AppendText("'trustm_rsa_dec -k " + keyslot + " -o " + outfile + " -i datain.txt executed\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
        
-        command_output = exec_cmd.execCLI(["xxd", outfile, ])
+        command_output = exec_cmd.execCLI(["python3", "emulator.py", outfile, ])
         self.text_display.AppendText(command_output)
        
-        self.text_display.AppendText("'xxd " + outfile + " executed \n")
+        self.text_display.AppendText("python3 emulator.py " + outfile + " executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         
@@ -1702,7 +1702,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in test_e0fc_pub_1024.bin -outform PEM -out rsa_e0fc_pub_1024.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in test_e0fc_pub_1024.bin -outform PEM -out rsa_e0fc_pub_1024.pem' executed \n")
                 output_message = exec_cmd.execCLI([
 					config.EXEPATH + "/bin/trustm_rsa_verify",
@@ -1721,7 +1721,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in rsa_e0fd_pub_1024.bin -outform PEM -out rsa_e0fd_pub_1024.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in rsa_e0fd_pub_1024.bin -outform PEM -out rsa_e0fd_pub_1024.pem' executed \n")
                 output_message = exec_cmd.execCLI([
 					config.EXEPATH + "/bin/trustm_rsa_verify",
@@ -1743,7 +1743,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in rsa_e0fc_pub_2048.bin -outform PEM -out rsa_e0fc_pub_2048.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in rsa_e0fc_pub_2048.bin -outform PEM -out rsa_e0fc_pub_2048.pem' executed \n")
                 output_message = exec_cmd.execCLI([
 					config.EXEPATH + "/bin/trustm_rsa_verify",
@@ -1762,7 +1762,7 @@ class Tab_RSA(wx.Panel):
                 self.text_display.AppendText(command_output)
 					
                 openssl_command = "openssl rsa -pubin -inform DER -in rsa_e0fd_pub_2048.bin -outform PEM -out rsa_e0fd_pub_2048.pem"
-                exec_cmd.createProcess(openssl_command, None)
+                exec_cmd.createProcess(openssl_command)
                 self.text_display.AppendText("'openssl rsa -pubin -inform DER -in rsa_e0fd_pub_2048.bin -outform PEM -out rsa_e0fd_pub_2048.pem' executed \n")
                 output_message = exec_cmd.execCLI([
 					config.EXEPATH + "/bin/trustm_rsa_verify",
@@ -2101,7 +2101,7 @@ class Tab_AES(wx.Panel):
         
         if (self.datacheckbox.GetValue() == False):
              datain = self.input_display.GetValue()
-             exec_cmd.createProcess("echo " + datain + " > mydata.txt", None)           
+             exec_cmd.createProcess("echo " + datain + " > mydata.txt")           
         
         else:
              try:

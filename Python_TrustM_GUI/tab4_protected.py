@@ -471,7 +471,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         certfile = self.trust_anchor_certpath
         
         TRUST_ANCHOR_META = "2003E80111"
-        #PROTECTED_UPDATE_SECRET = "49C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F649C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F6"
+        PROTECTED_UPDATE_SECRET = "49C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F649C9F492A992F6D4C54F5B12C57EDB27CED224048F25482AA149C9F492A992F6"
         
         f = open(self.secret2path, 'r')
         file= f.read()
@@ -489,8 +489,10 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
-        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        print(f"TRUST_ANCHOR_META: {TRUST_ANCHOR_META}") #For debugging purpose
+        
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
@@ -502,8 +504,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         
         #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
         self.text_display.AppendText("Provisioning for protected update secret... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret.dat' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")    
         
         self.text_display.AppendText("Writing protected update secret into secret_oid...")
@@ -513,8 +515,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
        
         self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
@@ -546,8 +548,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         
         ##Set metadata for Target OID
         self.text_display.AppendText("Set metadata protected update for Target OID (Provision for Target OID)... \n")
-        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META + " | xxd -r -p > targetOID_metadata.bin", None)
-        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Writing targetOID_metadata.bin as metadata of Target OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata.bin", ])
@@ -580,8 +582,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         
         #Set metadata for Target OID
         self.text_display.AppendText("Set protected update for Target OID (Provision for Target OID)... \n")
-        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META_PER + " | xxd -r -p > targetOID_metadata_permanent.bin", None)
-        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TARGET_OID_META_PER} > targetOID_metadata_permanent.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TARGET_OID_META_PER} > targetOID_metadata_permanent.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Writing targetOID_metadata_permanent.bin as metadata of Target OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata_permanent.bin", ])
@@ -659,8 +661,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + metadata + " " + content_reset + " " + label + " " + enc_algo + " " + secret_oid 
-                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                        )
         else:
             secret = "secret=" + self.secret1path
             #command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
@@ -672,7 +674,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
                                                     
             test = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
-                                                    + " " + metadata + " " + content_reset + " " + label + " " + enc_algo + " " + secret_oid + " " + secret, None)
+                                                    + " " + metadata + " " + content_reset + " " + label + " " + enc_algo + " " + secret_oid + " " + secret)
                                                     
             testDecoded = test.stdout.read().decode()
             
@@ -733,8 +735,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
 
         self.text_display.AppendText("manifest: " + manifestData)
         self.text_display.AppendText("\n\nfragment: " + fragmentData)
-        exec_cmd.createProcess("echo " + manifestData + " | xxd -r -p > manifest.dat", None)
-        exec_cmd.createProcess("echo " + fragmentData + " | xxd -r -p > fragment.dat", None)
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {manifestData} > manifest.dat")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {fragmentData} > fragment.dat")
         self.text_display.AppendText("\n\nmanifest.dat and fragment.dat generated\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
     
@@ -764,8 +766,8 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
     def OnResetMUD(self):
         RESET_MUD_META="2003D801FF"
         target_oid = "0x" + self.target_oid.GetValue()
-        exec_cmd.createProcess("echo " + RESET_MUD_META + " | xxd -r -p > mud_reset.bin", None)
-        command_output = exec_cmd.execCLI(["xxd", "mud_reset.bin", ])
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {RESET_MUD_META} > mud_reset.bin")
+        command_output = exec_cmd.execCLI(["python3", "emulator.py", "mud_reset.bin"])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("mud_reset.bin generated\n")
         self.text_display.AppendText("Writing metadata for Target OID... \n")
@@ -1297,8 +1299,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
-        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
@@ -1310,8 +1312,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         
         #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
         self.text_display.AppendText("Provisioning for protected update secret... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret.dat' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py  {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py  {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")    
         
         self.text_display.AppendText("Writing protected update secret into secret_oid...")
@@ -1321,8 +1323,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
        
         self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
@@ -1351,8 +1353,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         
         #step 1
         self.text_display.AppendText("Set metadata protected update for Target OID (Provision for Target OID)... \n")
-        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META + " | xxd -r -p > targetOID_metadata.bin", None)
-        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Writing targetOID_metadata.bin as metadata of Target OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata.bin", ])
@@ -1424,8 +1426,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + key_algo + " " + key_usage + " " + key_data + " " + label + " " + seed_length + " " + enc_algo + " " + secret_oid 
-                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                    )
                                    
         #if (secret_list_value=="Integrity"):
             
@@ -1435,8 +1437,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + key_algo + " " + key_usage + " " + key_data + " " + label + " " + seed_length + " " + enc_algo + " " + secret_oid + " " + secret 
-                                                    + " | grep -A16 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '17,18d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + " | grep -A16 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '17,18d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                    )
                                                            
     
         manifest_and_frag_string = command_output.stdout.read().decode("utf-8")
@@ -1447,8 +1449,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("manifest: " + manifest)
         self.text_display.AppendText("\n\nfragment: " + fragment)
         
-        exec_cmd.createProcess("echo " + manifest + " | xxd -r -p > manifest.dat", None)
-        exec_cmd.createProcess("echo " + fragment + " | xxd -r -p > fragment.dat", None)
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {manifest} > manifest.dat")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {fragment} > fragment.dat")
         self.text_display.AppendText("\n\nmanifest.dat and fragment.dat generated\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
     
@@ -1481,8 +1483,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
     def OnResetAccess(self):
         RESET_ACCESS_META="2005D003E1FC07"
         target_oid = "0x" + self.target_oid.GetValue()
-        exec_cmd.createProcess("echo " + RESET_ACCESS_META + " | xxd -r -p > access_reset.bin", None)
-        command_output = exec_cmd.execCLI(["xxd", "access_reset.bin", ])
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {RESET_ACCESS_META} > access_reset.bin")
+        command_output = exec_cmd.execCLI(["python3", "emulator.py", "access_reset.bin", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("access_reset.bin generated\n")
         self.text_display.AppendText("Writing metadata for Target OID... \n")
@@ -1958,8 +1960,8 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
-        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
@@ -1971,9 +1973,9 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         
         #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
         self.text_display.AppendText("Provisioning for protected update secret... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret.dat' executed \n")
-        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")    
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat' executed \n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing protected update secret into secret_oid...")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-e", "-w", secret_oid, "-i", "protected_update_secret.dat", ])
@@ -1982,8 +1984,8 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
        
         self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
@@ -2012,8 +2014,8 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         
         #step 1
         self.text_display.AppendText("Set metadata protected update for Target OID (Provision for Target OID)... \n")
-        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META + " | xxd -r -p > targetOID_metadata.bin", None)
-        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Writing targetOID_metadata.bin as metadata of Target OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata.bin", ])
@@ -2079,16 +2081,16 @@ class Tab_AesConfidentialUpdate(wx.Panel):
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + key_algo + " " + key_usage + " " + key_data + " " + label + " " + seed_length + " " + enc_algo + " " + secret_oid 
-                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                    )
         else:
             secret = "secret=" + self.secret2path
             print(secret)
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + key_algo + " " + key_usage + " " + key_data + " " + label + " " + seed_length + " " + enc_algo + " " + secret_oid + " " + secret 
-                                                    + " | grep -A16 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '17,18d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + " | grep -A16 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '17,18d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                    )
     
         manifest_and_frag_string = command_output.stdout.read().decode("utf-8")
         manifest_and_frag_string = manifest_and_frag_string.split('--')
@@ -2098,8 +2100,8 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("manifest: " + manifest)
         self.text_display.AppendText("\n\nfragment: " + fragment)
         
-        exec_cmd.createProcess("echo " + manifest + " | xxd -r -p > manifest.dat", None)
-        exec_cmd.createProcess("echo " + fragment + " | xxd -r -p > fragment.dat", None)
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {manifest} > manifest.dat")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {fragment} > fragment.dat")
         self.text_display.AppendText("\n\nmanifest.dat and fragment.dat generated\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
     
@@ -2120,8 +2122,8 @@ class Tab_AesConfidentialUpdate(wx.Panel):
     def OnResetAccess(self):
         RESET_ACCESS_META="2005D003E1FC07"
         target_oid = "0x" + self.target_oid.GetValue()
-        exec_cmd.createProcess("echo " + RESET_ACCESS_META + " | xxd -r -p > access_reset.bin", None)
-        command_output = exec_cmd.execCLI(["xxd", "access_reset.bin", ])
+        exec_cmd.createProcess(f"python3 hex_to_binary.py  {RESET_ACCESS_META} > access_reset.bin")
+        command_output = exec_cmd.execCLI(["python3", "emulator.py", "access_reset.bin", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("access_reset.bin generated\n")
         self.text_display.AppendText("Writing metadata for Target OID... \n")
@@ -2639,8 +2641,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
-        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py  {TRUST_ANCHOR_META} > trust_anchor_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py  {TRUST_ANCHOR_META} > trust_anchor_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
@@ -2652,8 +2654,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         
         #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
         self.text_display.AppendText("Provisioning for protected update secret... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret.dat' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")    
         
         self.text_display.AppendText("Writing protected update secret into secret_oid...")
@@ -2663,8 +2665,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
        
         self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
@@ -2692,8 +2694,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         
         #step 1
         self.text_display.AppendText("Set metadata protected update for Target OID (Provision for Target OID)... \n")
-        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META + " | xxd -r -p > targetOID_metadata.bin", None)
-        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Writing targetOID_metadata.bin as metadata of Target OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata.bin", ])
@@ -2759,8 +2761,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + key_algo + " " + key_usage + " " + key_data + " " + label + " " + seed_length + " " + enc_algo + " " + secret_oid 
-                                                    + "| grep -A40 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,14d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + "| grep -A40 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,14d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                    )
             
         else:
             secret = "secret=" + self.secret2path
@@ -2768,8 +2770,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + key_algo + " " + key_usage + " " + key_data + " " + label + " " + seed_length + " " + enc_algo + " " + secret_oid + " " + secret 
-                                                    + " | grep -A40 'uint8_t manifest_data\|uint8_t fragment_01' |  sed '1,2d'| sed '17,20d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + " | grep -A40 'uint8_t manifest_data\|uint8_t fragment_01' |  sed '1,2d'| sed '17,20d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                    )
     
         manifest_and_frag_string = command_output.stdout.read().decode("utf-8")
         manifest_and_frag_string = manifest_and_frag_string.split('};')
@@ -2779,8 +2781,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         self.text_display.AppendText("manifest: " + manifest)
         self.text_display.AppendText("\n\nfragment: " + fragment)
         
-        exec_cmd.createProcess("echo " + manifest + " | xxd -r -p > manifest.dat", None)
-        exec_cmd.createProcess("echo " + fragment + " | xxd -r -p > fragment.dat", None)
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {manifest} > manifest.dat")
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {fragment} > fragment.dat")
         self.text_display.AppendText("\n\nmanifest.dat and fragment.dat generated\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
     
@@ -2807,8 +2809,8 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
     def OnResetAccess(self):
         RESET_ACCESS_META="2005D003E1FC07"
         target_oid = "0x" + self.target_oid.GetValue()
-        exec_cmd.createProcess("echo " + RESET_ACCESS_META + " | xxd -r -p > access_reset.bin", None)
-        command_output = exec_cmd.execCLI(["xxd", "access_reset.bin", ])
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {RESET_ACCESS_META} > access_reset.bin")
+        command_output = exec_cmd.execCLI(["python3", "emulator.py", "access_reset.bin", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("access_reset.bin generated\n")
         self.text_display.AppendText("Writing metadata for Target OID... \n")
@@ -3288,8 +3290,8 @@ class Tab_DataUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
-        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
@@ -3301,8 +3303,8 @@ class Tab_DataUpdate(wx.Panel):
         
         #Step2: Provisioning Protected Update Secret OID, metadata for Protected Update Secret OID
         self.text_display.AppendText("Provisioning for protected update secret... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET + " | xxd -r -p > protected_update_secret.dat", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET xxd -r -p > protected_update_secret.dat' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET} > protected_update_secret.dat' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")    
         
         self.text_display.AppendText("Writing protected update secret into secret_oid...")
@@ -3312,8 +3314,8 @@ class Tab_DataUpdate(wx.Panel):
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
        
         self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
@@ -3345,8 +3347,8 @@ class Tab_DataUpdate(wx.Panel):
         
         ##Set metadata for Target OID
         self.text_display.AppendText("Set metadata protected update for Target OID (Provision for Target OID)... \n")
-        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META + " | xxd -r -p > targetOID_metadata.bin", None)
-        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Writing targetOID_metadata.bin as metadata of Target OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata.bin", ])
@@ -3428,15 +3430,15 @@ class Tab_DataUpdate(wx.Panel):
             command_output = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
                                                     + " " + metadata + " " + content_reset + " " + label + " " + enc_algo + " " + secret_oid 
-                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'",
-                                                    None)
+                                                    + "| grep -A10 'uint8_t manifest_data\|uint8_t fragment_01' | sed '1,2d' | sed '11,12d' | sed '$d' | sed 's/0x//g' | tr -d ',[:space:]'"
+                                                    )
         else:
             secret = "secret=" + self.secret1path
                                                     
                                                     
             test = exec_cmd.createProcess(config.EXEPATH + "/ex_protected_update_data_set/Linux/bin/trustm_protected_update_set " + payload_version + " "
                                                     + trust_anchor_oid + " " + target_oid + " " + sign_algo + " " + priv_key + " " + payload_type
-                                                    + " " + data + " " + label + " " + enc_algo + " " + secret_oid + " " + secret + " " + write_type + " " + in_data_format, None)
+                                                    + " " + data + " " + label + " " + enc_algo + " " + secret_oid + " " + secret + " " + write_type + " " + in_data_format)
                                                     
             testDecoded = test.stdout.read().decode()
             
@@ -3528,11 +3530,11 @@ class Tab_DataUpdate(wx.Panel):
         
         ####################################################################################################
         self.text_display.AppendText("manifest: " + manifestData)
-        exec_cmd.createProcess("echo " + manifestData + " | xxd -r -p > manifest.dat", None)
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {manifestData} > manifest.dat")
         
         for x in range  (self.fragmentNumber):
                 self.text_display.AppendText("\nFragment number " + str(x) + ": " + fragmentData[x])
-                exec_cmd.createProcess("echo " + fragmentData[x] + " | xxd -r -p > fragment_" + str(x) + ".dat", None)
+                exec_cmd.createProcess(f"python3 hex_to_binary.py {fragmentData[x]} > fragment_" + str(x) + ".dat")
         self.text_display.AppendText("\n\nmanifest.dat, fragment_x.dat generated\n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
     
@@ -3580,8 +3582,8 @@ class Tab_DataUpdate(wx.Panel):
     def OnResetAccess(self):
         RESET_ACCESS_META="2005D003E1FC07"
         target_oid = "0x" + self.target_oid.GetValue()
-        exec_cmd.createProcess("echo " + RESET_ACCESS_META + " | xxd -r -p > access_reset.bin", None)
-        command_output = exec_cmd.execCLI(["xxd", "access_reset.bin", ])
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {RESET_ACCESS_META} > access_reset.bin")
+        command_output = exec_cmd.execCLI(["python3", "emulator.py", "access_reset.bin", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("access_reset.bin generated\n")
         self.text_display.AppendText("Writing metadata for Target OID... \n")

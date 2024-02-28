@@ -1434,7 +1434,7 @@ class Tab_KEY(wx.Panel):
    
     def OnWriteSecret1 (self):
         
-        command_output = exec_cmd.createProcess("echo '0102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F40' | xxd -r -p > platform_secret.dat", None)
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {'0102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F40'} > platform_secret.dat")
         
         secretoid = "0x" + self.bindsecret.GetValue()
         certfile = self.secretfile.GetValue()
@@ -1618,7 +1618,7 @@ class Tab_APP(wx.Panel):
         datain = self.input_display.GetValue()
         dataobj = "0x" + self.data.GetValue()
         
-        exec_cmd.createProcess("echo " + datain + " >writedata.txt", None)                               
+        exec_cmd.createProcess("echo " + datain + " >writedata.txt")                               
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-w", dataobj, "-e", "-i","writedata.txt" , ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("\n'trustm_data -w " + dataobj + " -e  -i  writedata.txt ' executed \n")
@@ -2220,8 +2220,8 @@ class Tab_META(wx.Panel):
         
         #Step1: Provisioning metadata for Trust Anchor
         self.text_display.AppendText("Provisioning for trust anchor metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + TRUST_ANCHOR_META + " | xxd -r -p > trust_anchor_metadata.bin", None)
-        self.text_display.AppendText("'echo $TRUST_ANCHOR_META | xxd -r -p > trust_anchor_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TRUST_ANCHOR_META} > trust_anchor_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing trust_anchor_metadata.bin as metadata of Trust Anchor OID... \n")
@@ -2233,8 +2233,8 @@ class Tab_META(wx.Panel):
         
         #Step2: Provisioning metadata for Protected Update Secret OID
         self.text_display.AppendText("Provisioning for protected update secret metadata... \n")
-        command_output = exec_cmd.createProcess("echo " + PROTECTED_UPDATE_SECRET_META + " | xxd -r -p > protected_update_secret_metadata.bin", None)
-        self.text_display.AppendText("'$PROTECTED_UPDATE_SECRET_META xxd -r -p > protected_update_secret_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {PROTECTED_UPDATE_SECRET_META} > protected_update_secret_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         
         self.text_display.AppendText("Writing protected update secret metadata into secret_oid... ")
@@ -2245,8 +2245,8 @@ class Tab_META(wx.Panel):
         
         ##Set metadata for Target OID
         self.text_display.AppendText("Set metadata protected update for Target OID (Provision for Target OID)... \n")
-        command_output = exec_cmd.createProcess("echo " + TARGET_OID_META + " | xxd -r -p > targetOID_metadata.bin", None)
-        self.text_display.AppendText("'$TARGET_OID_META | xxd -r -p > targetOID_metadata.bin' executed \n")
+        command_output = exec_cmd.createProcess(f"python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin")
+        self.text_display.AppendText("'python3 hex_to_binary.py {TARGET_OID_META} > targetOID_metadata.bin' executed \n")
         self.text_display.AppendText("++++++++++++++++++++++++++++++++++++++++++++\n")
         self.text_display.AppendText("Writing targetOID_metadata.bin as metadata of Target OID... \n")
         command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", target_oid, "-F", "targetOID_metadata.bin", ])
@@ -2368,8 +2368,8 @@ class Tab_META(wx.Panel):
     def OnResetAccessExec(self):
         RESET_MUD_META="2003D801FF"
         target_oid = "0x" + self.dataobject
-        exec_cmd.createProcess("echo " + RESET_MUD_META + " | xxd -r -p > mud_reset.bin", None)
-        command_output = exec_cmd.execCLI(["xxd", "mud_reset.bin", ])
+        exec_cmd.createProcess(f"python3 hex_to_binary.py {RESET_MUD_META} > mud_reset.bin")
+        command_output = exec_cmd.execCLI(["python3", "emulator.py", "mud_reset.bin", ])
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("mud_reset.bin generated\n")
         self.text_display.AppendText("Writing metadata for Target OID... \n")
@@ -2514,6 +2514,252 @@ class Tab_META(wx.Panel):
     # then the second parent is the frame, from which we call the destruction
     def OnBack(self, evt):
         self.Parent.Parent.OnCloseWindow(None)
+        
+        
+class Tab_PROV(wx.Panel):
+    
+    oidList = ['E0C0', 'E0C1', 'E0C2', 'E0C5', 'E0C6', 'F1C1', 'F1C2', 'E0E0', 'E0E1', 'E0E2', 'E0E3', 'E0C4', 'E0C3', 'F1C0', 'E0C9', 'E0E8', 'E0E9', 'E0EF', 'E120', 'E121', 'E122', 'E123', 'F1D0', 'F1D1', 'F1D2', 'F1D3', 'F1D4', 'F1D5', 'F1D6', 'F1D7', 'F1D8', 'F1D9', 'F1DA', 'F1DB', 'F1E0', 'F1E1', 'E140', 'E0F0', 'E0F1', 'E0F2', 'E0F3', 'E0FC', 'E0FD', 'E200']
+    specialOIDList = ['E0F0', 'E0F1', 'E0F2', 'E0F3', 'E0FC', 'E0FD', 'E200']
+    chipSpecificOIDList = ['E0E0', 'E0C0', 'E0C1', 'E0C2', 'E0C3', 'E0C4', 'E0C5', 'E0C6', 'E0C9', 'F1C0', 'F1C1', 'F1C2'] 
+    noDataOIDList = ['E0C2', 'E0C5', 'F1C2', 'E0F0', 'E0F1', 'E0F2', 'E0F3', 'E0FC', 'E0FD', 'E200']
+        
+    def __init__(self, parent):
+        
+        wx.Panel.__init__(self, parent)
+        
+        textctrlfont = wx.Font()
+        textctrlfont.SetPointSize(10)
+        
+        buttonfont = wx.Font(12, wx.ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        
+        # declare the sizers
+        mainsizer = wx.BoxSizer(wx.VERTICAL)
+        mainhorisizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        midsizer = wx.BoxSizer(wx.VERTICAL)
+        gdsizer3 = wx.GridSizer(rows=7, cols=1, vgap=25, hgap=10)
+        
+        backbuttonsizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        # declare sizers that will be in the grid1
+        ecctypesizer = wx.BoxSizer(wx.VERTICAL)
+        keyslotsizer = wx.BoxSizer(wx.VERTICAL)
+        pubkeysizer = wx.BoxSizer(wx.VERTICAL)
+        
+        
+        # instantiate the objects
+        
+        button_readcert = wx.Button(self, 1, 'Read IFX Pre-Provisioned Cert', size = wx.Size(350, 50))
+        button_readcert.SetFont(buttonfont)
+        button_pubkey = wx.Button(self, 1, 'Extract Public Key From Cert', size = wx.Size(350, 50))
+        button_pubkey.SetFont(buttonfont)
+        button_gencsr = wx.Button(self, 1, 'Generate DAC CSR Using Public Key', size = wx.Size(350, 50))
+        button_gencsr.SetFont(buttonfont)
+        button_gencert = wx.Button(self, 1, 'Generate DAC Cert Using Public Key', size = wx.Size(350, 50))
+        button_gencert.SetFont(buttonfont)
+        button_dac = wx.Button(self, 1, 'Write Test DAC', size = wx.Size(350, 50))
+        button_dac.SetFont(buttonfont)
+        button_pai = wx.Button(self, 1, 'Write Matter Test PAI', size = wx.Size(350, 50))
+        button_pai.SetFont(buttonfont)
+        button_cd = wx.Button(self, 1, 'Write Test CD', size = wx.Size(350, 50))
+        button_cd.SetFont(buttonfont)
+        
+        self.text_display = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.text_display.SetFont(wx.Font(11, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+
+
+        clearimage = wx.Image(config.IMAGEPATH + "/images/clear.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        clearbutton = wx.BitmapButton(self, -1, clearimage)
+
+        
+        backimage = wx.Image(config.IMAGEPATH + "/images/back.png", wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        backbutton = wx.BitmapButton(self, -1, backimage)
+       
+        #Add mainhorisizer to mainsizer
+        mainsizer.AddSpacer(5)
+        
+
+        mainsizer.Add(mainhorisizer, 1, wx.EXPAND)
+       
+        # Add Sub Sizers to the mainhorisizer
+        mainhorisizer.Add(midsizer, 1, wx.EXPAND)
+        mainhorisizer.Add(self.text_display, 2, wx.EXPAND | wx.ALL, 5)
+        
+        backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
+        backbuttonsizer.AddSpacer(10)
+        backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
+
+        # Add sizers to midsizer
+        midsizer.AddSpacer(20)
+        midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
+        
+        midsizer.AddSpacer(33)
+        midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
+        
+        #add buttons into gdsizer3
+        gdsizer3.AddMany([
+           # (self.button_step1),
+           (button_readcert),
+           (button_pubkey),
+           (button_gencsr),
+           (button_gencert),
+           (button_dac),
+           (button_pai),
+           (button_cd),
+       ])
+                       
+        # Set Default inputs for Text Boxes      
+        # attach objects to the sizer
+        # declare and bind events     
+        
+        #bind events     
+        
+        button_readcert.Bind(wx.EVT_BUTTON, self.OnReadCert)
+        button_pubkey.Bind(wx.EVT_BUTTON, self.OnExtPubkey)
+        button_gencsr.Bind(wx.EVT_BUTTON, self.OnGenCsr)
+        button_gencert.Bind(wx.EVT_BUTTON, self.OnGenCert)
+        button_dac.Bind(wx.EVT_BUTTON, self.OnWriteDac)
+        button_pai.Bind(wx.EVT_BUTTON, self.OnWritePai)
+        button_cd.Bind(wx.EVT_BUTTON, self.OnWriteCd)
+        clearbutton.Bind(wx.EVT_BUTTON, self.OnFlush)
+        backbutton.Bind(wx.EVT_BUTTON, self.OnBack)
+        
+        
+
+        button_readcert.SetToolTip(wx.ToolTip("Read ifx pre-provisioned cert from 0xe0e0"))
+        
+        button_pubkey.SetToolTip(wx.ToolTip("Extract public key from cert"))
+        
+        button_gencsr.SetToolTip(wx.ToolTip("Generate DAC csr using public key"))
+        
+        button_gencert.SetToolTip(wx.ToolTip("Generate DAC certificate using public key, Signed by Matter Test PAI "))
+                                          
+        button_dac.SetToolTip(wx.ToolTip("Write Test DAC into 0xe0e3"))
+        
+        button_pai.SetToolTip(wx.ToolTip("Write Matter test PAI into 0xe0e8"))
+        
+        button_cd.SetToolTip(wx.ToolTip("Write Test CD into 0xf1e0"))
+        
+        clearbutton.SetToolTip(wx.ToolTip("Clear all textboxes."))
+        backbutton.SetToolTip(wx.ToolTip("Go back to main page."))
+
+        self.SetSizer(mainsizer)
+        mainsizer.Fit(self)  
+        
+        
+    def OnReadCert(self, evt):
+        
+        self.text_display.AppendText("\nRead ifx pre-provisioned cert from 0xe0e0\n\n")
+        wx.CallLater(10, self.OnReadCert1)
+        
+    def OnReadCert1(self):
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-r", "0xe0e0", "-o", "ifx_cert_e0e0.pem", "-X", ])
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n'/bin/trustm_cert -r 0xe0e0 -o ifx_cert_e0e0.pem -X' executed\n")
+        command_output = exec_cmd.execCLI(["openssl", "x509", "-in", "ifx_cert_e0e0.pem", "-text", "-noout"] )
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n'openssl x509 -in ifx_cert_e0e0.pem -text -noout' executed\n")        
+        
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")
+        
+    def OnExtPubkey(self, evt):
+        
+        self.text_display.AppendText("\nExtracting public key from cert\n")
+        wx.CallLater(10, self.OnExtPubkey1)
+        
+    def OnExtPubkey1(self):
+        
+        command_output = exec_cmd.execCLI(["openssl", "x509", "-pubkey", "-noout", "-in", "ifx_cert_e0e0.pem",  ])
+        #self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n'openssl x509 -pubkey -noout -in ifx_cert_e0e0.pem' executed\n")
+        with open("pubkey_e0e0.pem", "w") as outfile:
+                outfile.write(command_output.decode("utf-8"))        
+        command_output = exec_cmd.execCLI(["cat", "pubkey_e0e0.pem", ])
+        self.text_display.AppendText(command_output)  
+        self.text_display.AppendText("\n'cat pubkey_e0e0.pem' executed\n")           
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")                      
+        
+    def OnGenCsr(self, evt):
+        
+        self.text_display.AppendText("\nGenerating DAC csr using public key\n\n")
+        wx.CallLater(10, self.OnGenCsr1)
+        
+    def OnGenCsr1(self):
+        
+        command_output = exec_cmd.execCLI(["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes", "-keyout", "private.key", "-out", "request.csr", "-config", config.EXEPATH + "/scripts/matter_provisioning/openssl_matter.cnf",  ])
+        
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n'openssl req -new -newkey rsa:2048 -nodes -keyout private.key -out request.csr -config openssl_matter.cnf' executed\n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")
+         
+            
+    def OnGenCert(self, evt):
+        
+        self.text_display.AppendText("\nGenerating DAC certificate using public key, Signed by Matter test PAI\n")
+        wx.CallLater(10, self.OnGenCert1)
+        
+    def OnGenCert1(self):
+        
+        command_output = exec_cmd.execCLI(["openssl", "x509","-req", "-in", "request.csr", "-extfile", config.EXEPATH + "/scripts/matter_provisioning/v3.ext", "-keyout", "-CA", config.EXEPATH + "/scripts/matter_provisioning/credentials/Matter-Development-PAI-noPID-Cert.pem", "-CAkey", config.EXEPATH + "/scripts/matter_provisioning/credentials/Matter-Development-PAI-noPID-Key.pem", "-CAcreateserial", "-out", "DAC_Cert.pem", "-days", "500", "-sha256", "-force_pubkey", "pubkey_e0e0.pem",  ])
+        
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n 'openssl x509 -req -in request.csr -extfile v3.ext -CA credentials/Matter-Development-PAI-noPID-Cert.pem -CAkey credentials/Matter-Development-PAI-noPID-Key.pem -CAcreateserial -out DAC_Cert.pem -days 500 -sha256 -force_pubkey pubkey_e0e0.pem' executed\n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")
+        
+        
+    def OnWriteDac(self, evt):
+        
+        self.text_display.AppendText("\nWrite test DAC into 0xe0e3\n")
+        wx.CallLater(10, self.OnWriteDac1)
+        
+    
+    def OnWriteDac1(self):
+        
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-w", "0xe0e3", "-i", "DAC_Cert.pem", "-X", ])
+        
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n 'trustm_cert -w 0xe0e3 -i DAC_Cert.pem -X' executed\n")
+        self.text_display.AppendText("\nDisplaying DAC\n")        
+        command_output = exec_cmd.execCLI(["openssl", "x509", "-in", "DAC_Cert.pem", "-text", "-noout",  ])
+        self.text_display.AppendText(command_output)                
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")
+    
+    def OnWritePai(self, evt):
+        
+        self.text_display.AppendText("\nWrite Matter test PAI into 0xe0e8\n")
+        wx.CallLater(10, self.OnWritePai1)
+    
+    def OnWritePai1(self):
+        
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-w", "0xe0e8", "-i", config.EXEPATH + "/scripts/matter_provisioning/credentials/Matter-Development-PAI-noPID-Cert.pem", "-X", ])
+        
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n'trustm_cert -w 0xe0e8 -i credentials/Matter-Development-PAI-noPID-Cert.pem -X' executed\n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")
+    
+    def OnWriteCd(self, evt):
+        
+        self.text_display.AppendText("\nWrite test CD into 0xf1e0\n")
+        wx.CallLater(20, self.OnWriteCd1)
+        
+    def OnWriteCd1(self):
+        
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_data", "-e", "-w", "0xf1e0", "-i", config.EXEPATH + "/scripts/matter_provisioning/credentials/Chip-Test-CD-Cert.bin", "-X", ])
+        
+        self.text_display.AppendText(command_output)
+        self.text_display.AppendText("\n'trustm_data -e -w 0xf1e0 -i credentials/Chip-Test-CD-Cert.bin -X' executed\n")
+        self.text_display.AppendText("++++++++++++++++++++++++++++++++\n")
+
+    
+    # to clear the textbox
+    def OnFlush(self, evt):
+        self.text_display.Clear()
+
+    # Calling parent of the parent, as direct parent is the notebook,
+    # then the second parent is the frame, from which we call the destruction
+    def OnBack(self, evt):
+        self.Parent.Parent.OnCloseWindow(None)
+            
 
 class Tab1Frame(wx.Frame):
     
@@ -2530,13 +2776,14 @@ class Tab1Frame(wx.Frame):
         self.tab2_key = Tab_KEY(self.tab_base)
         self.tab3_app = Tab_APP(self.tab_base)
         self.tab4_meta = Tab_META(self.tab_base)
+        self.tab5_prov = Tab_PROV(self.tab_base)        
 
         # Add tabs
         self.tab_base.AddPage(self.tab1_gen, 'General')
         self.tab_base.AddPage(self.tab2_key, 'Private Key and Cert OID')        
         self.tab_base.AddPage(self.tab3_app, 'Application Data OID')
         self.tab_base.AddPage(self.tab4_meta, 'Write Metadata')
-        
+        self.tab_base.AddPage(self.tab5_prov, 'Matter DAC Provisioning')        
 
         self.Show(True)
               
