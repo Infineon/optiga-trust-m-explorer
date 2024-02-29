@@ -107,7 +107,7 @@ You should be successfully connected and able to view the RPI through VNC connec
 Download Trust M_Explorer Source Code:  
 
 ```
-git clone -b provider_dev --recurse-submodules https://github.com/ying-css/optiga-trust-m-explorer.git
+git clone -b provider_dev --recurse-submodules https://github.com/Infineon/optiga-trust-m-explorer.git
 
 ```
 
