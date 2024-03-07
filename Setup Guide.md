@@ -104,17 +104,32 @@ You should be successfully connected and able to view the RPI through VNC connec
 
 ## Trust M Explorer Installation Guide
 
-Download Trust M_Explorer Source Code:  
+Clone Trust M_Explorer Source Code:  
 
 ```
 git clone -b provider_dev --recurse-submodules https://github.com/Infineon/optiga-trust-m-explorer.git
 
 ```
 
-Go to the following directory
+Go to the following directory:
 
 ```
 cd optiga-trust-m-explorer
+```
+
+Note: If you use  the command below to clone
+
+```
+git clone --recurse-submodules https://github.com/Infineon/optiga-trust-m-explorer.git
+
+```
+
+Go to the following directory, use the commands below to checkout from provider_dev branch and update the submodule:
+
+```
+cd optiga-trust-m-explorer
+git checkout provider_dev
+git submodule update --init
 ```
 
 Execute Installation script:
