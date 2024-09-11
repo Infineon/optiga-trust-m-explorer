@@ -87,7 +87,7 @@ class Tab_GEN(wx.Panel):
         midsizer.AddSpacer(20)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(33)
+        midsizer.AddSpacer(20)
         midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         #add buttons into gdsizer3
@@ -1168,11 +1168,11 @@ class Tab_KEY(wx.Panel):
         # Add Objects to leftsizer
         
         backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
-        backbuttonsizer.AddSpacer(10)
+        backbuttonsizer.AddSpacer(5)
         backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
-        midsizer.AddSpacer(15)
+        midsizer.AddSpacer(10)
         midsizer.Add(gdsizer1, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
         midsizer.AddSpacer(5)
@@ -1545,7 +1545,7 @@ class Tab_APP(wx.Panel):
         midsizer.AddSpacer(30)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(100)
+        midsizer.AddSpacer(50)
         midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         
@@ -2593,7 +2593,7 @@ class Tab_PROV(wx.Panel):
         midsizer.AddSpacer(20)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(33)
+        midsizer.AddSpacer(20)
         midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         #add buttons into gdsizer3
