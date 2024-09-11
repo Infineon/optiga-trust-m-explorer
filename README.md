@@ -45,7 +45,7 @@ Tool highlights include the opportunity to explore OPTIGA™ Trust M features an
 
 ## Setup environment
 
-This tool was tested on a Raspberry Pi 3 Model B+/ 4 Model B with Raspbian Linux release version 11 (Bullseye) and kernel version 5.15.32-v7l+ using an Infineon S2GO SECURITY OPTIGA™ Trust M attached to the Raspberry Pi board.
+This tool was tested on a Raspberry Pi  4 Model B with Raspbian Linux release version 12 (Bookworm) and kernel version 6.6.31+rpt-rpi-v8 using an Infineon S2GO SECURITY OPTIGA™ Trust M attached to the Raspberry Pi board.
 
 The following software is required for the OPTIGA™ Trust M:
 - python-wxtools
@@ -58,7 +58,7 @@ The following software is required for the OPTIGA™ Trust M:
 
 For more information on how to setup the tool environment, refer to the [OPTIGA™ Trust M Setup Guide](./Setup%20Guide.md)
 
-![](images/Setup/bullseye.png)
+![](images/Setup/bookworm.png)
 
 ## User guide
 
