@@ -33,9 +33,9 @@ Tool highlights include the opportunity to explore OPTIGA™ Trust M features an
 
 ## Hardware requirements
 
-- Raspberry PI 3/4 on Linux kernel >= 4.19
+- Raspberry PI 4 on Linux kernel >= 5.15
 
-- Micro SD card (≥8GB)
+- Micro SD card (≥16GB)
 
 - [S2GO SECURITY OPTIGA™ Trust M](https://www.infineon.com/cms/en/product/evaluation-boards/s2go-security-optiga-m/)
 

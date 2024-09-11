@@ -37,7 +37,7 @@ This section describes all necessary steps needed to build a Raspberry Pi® boot
 ## Prerequisites 
 
 -   Raspberry Pi®
--   Micro SD card (≥8GB) flashed with Raspberry Pi® OS Debian 12 (bookworm) and Raspbian Linux kernel version 6.6 . Download the official image from [[1]](#references)
+-   Micro SD card (≥16GB) flashed with Raspberry Pi® OS Debian 12 (bookworm) and Raspbian Linux kernel version 6.6 . Download the official image from [[1]](#references)
 -   OPTIGA™ Trust M  (M1/M3)
 
 | ![](images/Setup/HardwareSetup.png) |
@@ -49,9 +49,9 @@ Figure 1 OPTIGA™ Trust M on RPI
 
 | Hardware                   | Version   and Firmware/OS                                    | Comment                                                      |
 | -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Host  PC                   | Running Linux/Windows®, for example Ubuntu® 18.04 above or Windows 10 as long as VNC viewer is present | This  platform is used for interacting with  the Raspberry Pi® in a more convenient and faster way compared to doing all  actions directly on the Raspberry Pi®. |
+| Host  PC                   | Running Linux/Windows®, for example Ubuntu® 22.04 above or Windows 11 as long as VNC viewer is present | This  platform is used for interacting with  the Raspberry Pi® in a more convenient and faster way compared to doing all  actions directly on the Raspberry Pi®. |
 | Trust M Security Shield2GO | The Trust M chip can be one of the following variants  <br />• M1  <br />• M3 | This  board contains the Infineon OPTIGA™ Trust M chip mounted on an  easy-to-use hardware board, which can be attached to the Raspberry Pi®. |
-| Raspberry  Pi® Board       | •  Model 4 , Raspberry pi<br />•  Micro SD Card with at least 16 GB<br />•  USB cable for power supply(Micro-B/Type-C) | A SD  card with the Raspberry pi Debian 12 and a Raspberry pi Linux kernel version 4.19 and above on it is required, which can be downloaded at [[1]](#_References). This SD card will be  plugged in the developer PC |
+| Raspberry  Pi® Board       | •  Model 4 , Raspberry pi<br />•  Micro SD Card with at least 16 GB<br />•  USB cable for power supply(Micro-B/Type-C) | A SD  card with the Raspberry pi Debian 12 and a Raspberry pi Linux kernel version 5.15 and above on it is required, which can be downloaded at [[1]](#_References). This SD card will be  plugged in the developer PC |
 
 
 
