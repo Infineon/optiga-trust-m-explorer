@@ -9,7 +9,7 @@ PATCH="${PWD}/${FILE}"
 
 sudo apt update 
 sudo apt -y install awscli git gcc libssl-dev python-wxtools 
-sudo apt install python3-pubsub
+sudo apt install python3-pubsub xxd
 
 
 echo $PATCH
