@@ -73,7 +73,7 @@ hostname -I
 192.168.###.###
 ```
 
-Paste the IP Address of RPI3 into VNC Viewer on the host PC to connect to the RPI.
+Paste the IP Address of RPI4 into VNC Viewer on the host PC to connect to the RPI.
 
 | ![](images/Setup/VNCViewer.png) |
 | ------------------------------------------------------ |
@@ -148,9 +148,9 @@ Go to directory "optiga-trust-m-explorer/Python_TrustM_GUI"
 
 The installation script installs the following dependencies required and compiles the source code for the OPTIGA™ Trust M Explorer Application.
 
--   python-wxtools
+-   wxpython-tools
 -   OpenSSL development library (libssl-dev)
--   OpenSSL 3.0.11
+-   OpenSSL 3.x
 -   OPTIGA Trust M1/M3 library (source code)
 -   pthread
 -   rt

@@ -19,7 +19,7 @@ Tool highlights include the opportunity to explore OPTIGA™ Trust M features an
     ECC : NIST curves up to P-521, Brainpool r1 curve up to 512,
     RSA® up to 2048
     AES key up to 256 ,
--   Encrypts and decrypts data using ECC/RSA
+-   Encrypts and decrypts data using ECC/RSA/AES
 -   Signs and verifies data with ECC
 
 ## Use cases
@@ -28,7 +28,6 @@ Tool highlights include the opportunity to explore OPTIGA™ Trust M features an
 -   Protected Update
 -   Cryptographic operations using OpenSSL library
 -   Secured communications with OpenSSL library
--   Device certificate provisioning and onboarding to AWS IoT Core
 
 
 ## Hardware requirements
@@ -37,20 +36,26 @@ Tool highlights include the opportunity to explore OPTIGA™ Trust M features an
 
 - Micro SD card (≥16GB)
 
-- [S2GO SECURITY OPTIGA™ Trust M](https://www.infineon.com/cms/en/product/evaluation-boards/s2go-security-optiga-m/)
+- [S2GO SECURITY OPTIGA™ Trust M](https://www.infineon.com/cms/en/product/evaluation-boards/s2go-security-optiga-m/)  or [OPTIGA™ Trust M MTR SHIELD](https://www.infineon.com/cms/en/product/evaluation-boards/trust-m-mtr-shield/)
 
-- [Shield2Go Adapter for Raspberry Pi](https://www.infineon.com/cms/en/product/evaluation-boards/s2go-adapter-rasp-pi-iot/)
+- [Shield2Go Adapter for Raspberry Pi](https://www.infineon.com/cms/en/product/evaluation-boards/s2go-adapter-rasp-pi-iot/) or [Pi Click Shield](https://www.mikroe.com/pi-4-click-shield) 
 
   ![](images/Setup/HardwareSetup.png)
 
+  Figure 1 Hardware  Connection for S2GO SECURITY OPTIGA™ Trust M using  S2GO SECURITY OPTIGA™ Trust M
+
+  ![](images/Setup/rpi_mikro_connection.png)
+
+Figure 2 Hardware  Connection for OPTIGA™ Trust M MTR SHIELD  using  Pi Click Shield
+
 ## Setup environment
 
-This tool was tested on a Raspberry Pi  4 Model B with Raspbian Linux release version 12 (Bookworm) and kernel version 6.6.31+rpt-rpi-v8 using an Infineon S2GO SECURITY OPTIGA™ Trust M attached to the Raspberry Pi board.
+This tool was tested on a Raspberry Pi  4 Model B with Raspbian Linux release version 12 (Bookworm) and kernel version 6.6.31+rpt-rpi-v8.
 
 The following software is required for the OPTIGA™ Trust M:
-- python-wxtools
+- wxpython-tools
 - OpenSSL development library (libssl-dev)
-- OpenSSL 3.0.11
+- OpenSSL 3.x
 - OPTIGA Trust M1/M3 library (source code)
 - pthread
 - rt
