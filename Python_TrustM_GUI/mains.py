@@ -4,7 +4,6 @@ import tab2_crypto as t2
 import tab3_provider as t3
 import tab4_protected as t4
 import tab5_storage as t5
-import tab6_cloud as t6
 import misc_dialogs as misc
 import shell_util as exec_cmd
 import images as img
@@ -27,7 +26,6 @@ class MainFrame(wx.Frame):
         self.button3 = wx.Button(self, -1, 'OpenSSL-Provider')
         self.button4 = wx.Button(self, -1, 'Protected Update', size = wx.Size(367, -1))
         self.button5 = wx.Button(self, -1, 'Secure Storage', size = wx.Size(367, -1))
-        self.button6 = wx.Button(self, -1, 'AWS: IOT Core', size = wx.Size(367, -1))
         # Title screen widget setup
         # "\xe2\x84\xa2" represents the Trademark symbol in UTF-8 for Python 2.x, will not display properly on Windows (or Python 3.x)
         title_screen = wx.StaticText(self, -1, style=wx.ALIGN_CENTER, label="OPTIGA"+ u"\u1d40\u1d39"+ " TRUST M Explorer")
@@ -50,7 +48,7 @@ class MainFrame(wx.Frame):
         tab2_image = wx.Image(config.IMAGEPATH + "/images/crypto.png", wx.BITMAP_TYPE_PNG)
         tab2_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab2_image))
 
-        # Engine logo
+        # Provider logo
         tab3_image = wx.Image(config.IMAGEPATH + "/images/provider.png", wx.BITMAP_TYPE_PNG)
         tab3_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab3_image))
         
@@ -61,17 +59,13 @@ class MainFrame(wx.Frame):
         # Secure Storage logo
         tab5_image = wx.Image(config.IMAGEPATH + "/images/policy.png", wx.BITMAP_TYPE_PNG)
         tab5_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab5_image))
-        
-        # Cloud logo
-        tab6_image = wx.Image(config.IMAGEPATH + "/images/cloud.png", wx.BITMAP_TYPE_PNG)
-        tab6_image = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(tab6_image))
 
         # declare the sizers
         mainsizer = wx.BoxSizer(wx.VERTICAL)
         horisizer = wx.BoxSizer(wx.HORIZONTAL)
         horisizer2 = wx.BoxSizer(wx.HORIZONTAL)
         gdsizer1 = wx.GridSizer(rows=2, cols=3, vgap=0, hgap=0)
-        gdsizer2 = wx.GridSizer(rows=2, cols=3, vgap=0, hgap=0)
+        gdsizer2 = wx.GridSizer(rows=2, cols=2, vgap=0, hgap=0)
         
         # add the widgets to the sizers (add row by row)
         horisizer.Add(trustm_image, 0)
@@ -92,11 +86,9 @@ class MainFrame(wx.Frame):
 
         gdsizer2.Add(tab4_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
         gdsizer2.Add(tab5_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
-        gdsizer2.Add(tab6_image, 0, wx.ALIGN_CENTRE | wx.TOP, 5)
 
         gdsizer2.Add(self.button4, 1, wx.EXPAND | wx.ALL, 30)
         gdsizer2.Add(self.button5, 1, wx.EXPAND | wx.ALL, 30)
-        gdsizer2.Add(self.button6, 1, wx.EXPAND | wx.ALL, 30)
         
         
 
@@ -113,14 +105,13 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button3)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button4)
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button5)
-        #self.Bind(wx.EVT_BUTTON, self.OnButtonClick, self.button6)
 
         # Set tooltips
-        self.button1.SetToolTip(wx.ToolTip("Confidential Integrity Protected Update"))
-        self.button2.SetToolTip(wx.ToolTip("Hashing, Encryption, Decryption, Verification & Signing"))
-        self.button3.SetToolTip(wx.ToolTip("Using Trust M and OpenSSL to establish a client-server connection"))
-        self.button4.SetToolTip(wx.ToolTip("Making use of policies to seal and unseal objects"))
-        self.button5.SetToolTip(wx.ToolTip("Example use-case with AWS"))
+        self.button1.SetToolTip(wx.ToolTip("General Features Provided by Trust M"))
+        self.button2.SetToolTip(wx.ToolTip("Cryptographic Functions(Sign/Verify/Encrypt/Decrypt"))
+        self.button3.SetToolTip(wx.ToolTip("Using Trust M Provider and OpenSSL for secure client-server connection"))
+        self.button4.SetToolTip(wx.ToolTip("Integrity and Confidential Protected Update for Key/Metadata/Data"))
+        self.button5.SetToolTip(wx.ToolTip("Seure storge using HMAC Verify"))
 
         self.SetSizer(mainsizer)
         mainsizer.Fit(self)
@@ -134,7 +125,6 @@ class MainFrame(wx.Frame):
             self.button3.Disable()
             self.button4.Disable()
             self.button5.Disable()
-            self.button6.Disable()
                     
 
     def OnCloseWindow(self, evt):
@@ -153,8 +143,6 @@ class MainFrame(wx.Frame):
             self.activetab = t4.Tab4Frame(self, "Protected Update")
         elif (event_obj == self.FindWindowByLabel(label='Secure Storage')):
             self.activetab = t5.Tab5Frame(self, 'Secure Storage')       
-        elif (event_obj == self.FindWindowByLabel(label='AWS: IOT Core')):
-            self.activetab = t6.tab6Frame(self, "Cloud")
         
         else:
             return

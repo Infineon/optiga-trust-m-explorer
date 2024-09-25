@@ -87,7 +87,7 @@ class Tab_GEN(wx.Panel):
         midsizer.AddSpacer(20)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(33)
+        midsizer.AddSpacer(20)
         midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         #add buttons into gdsizer3
@@ -1168,11 +1168,11 @@ class Tab_KEY(wx.Panel):
         # Add Objects to leftsizer
         
         backbuttonsizer.Add(backbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
-        backbuttonsizer.AddSpacer(10)
+        backbuttonsizer.AddSpacer(5)
         backbuttonsizer.Add(clearbutton, 0, wx.ALIGN_LEFT | wx.ALIGN_BOTTOM, 0)
 
         # Add sizers to midsizer
-        midsizer.AddSpacer(15)
+        midsizer.AddSpacer(10)
         midsizer.Add(gdsizer1, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         
         midsizer.AddSpacer(5)
@@ -1545,7 +1545,7 @@ class Tab_APP(wx.Panel):
         midsizer.AddSpacer(30)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(100)
+        midsizer.AddSpacer(50)
         midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         
@@ -2593,7 +2593,7 @@ class Tab_PROV(wx.Panel):
         midsizer.AddSpacer(20)
         midsizer.Add(gdsizer3, 0, wx.ALIGN_CENTRE | wx.ALL, 10)
         
-        midsizer.AddSpacer(33)
+        midsizer.AddSpacer(20)
         midsizer.Add(backbuttonsizer,1,wx.LEFT | wx.BOTTOM, 5)
         
         #add buttons into gdsizer3
@@ -2634,7 +2634,7 @@ class Tab_PROV(wx.Panel):
         
         button_gencert.SetToolTip(wx.ToolTip("Generate DAC certificate using public key, Signed by Matter Test PAI "))
                                           
-        button_dac.SetToolTip(wx.ToolTip("Write Test DAC into 0xe0e3"))
+        button_dac.SetToolTip(wx.ToolTip("Write Test DAC into 0xe0e0"))
         
         button_pai.SetToolTip(wx.ToolTip("Write Matter test PAI into 0xe0e8"))
         
@@ -2700,7 +2700,7 @@ class Tab_PROV(wx.Panel):
         
     def OnGenCert1(self):
         
-        command_output = exec_cmd.execCLI(["openssl", "x509","-req", "-in", "request.csr", "-extfile", config.EXEPATH + "/scripts/matter_provisioning/v3.ext", "-keyout", "-CA", config.EXEPATH + "/scripts/matter_provisioning/credentials/Matter-Development-PAI-noPID-Cert.pem", "-CAkey", config.EXEPATH + "/scripts/matter_provisioning/credentials/Matter-Development-PAI-noPID-Key.pem", "-CAcreateserial", "-out", "DAC_Cert.pem", "-days", "500", "-sha256", "-force_pubkey", "pubkey_e0e0.pem",  ])
+        command_output = exec_cmd.execCLI(["openssl", "x509","-req", "-in", "request.csr", "-extfile", config.EXEPATH + "/scripts/matter_provisioning/test_files/v3.ext", "-keyout", "-CA", config.EXEPATH + "/scripts/matter_provisioning/credentials/Matter-Development-PAI-noPID-Cert.pem", "-CAkey", config.EXEPATH + "/scripts/matter_provisioning/credentials/Matter-Development-PAI-noPID-Key.pem", "-CAcreateserial", "-out", "DAC_Cert.pem", "-days", "500", "-sha256", "-force_pubkey", "pubkey_e0e0.pem",  ])
         
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("\n 'openssl x509 -req -in request.csr -extfile v3.ext -CA credentials/Matter-Development-PAI-noPID-Cert.pem -CAkey credentials/Matter-Development-PAI-noPID-Key.pem -CAcreateserial -out DAC_Cert.pem -days 500 -sha256 -force_pubkey pubkey_e0e0.pem' executed\n")
@@ -2709,16 +2709,18 @@ class Tab_PROV(wx.Panel):
         
     def OnWriteDac(self, evt):
         
-        self.text_display.AppendText("\nWrite test DAC into 0xe0e3\n")
+        self.text_display.AppendText("\nWrite test DAC into 0xe0e0\n")
         wx.CallLater(10, self.OnWriteDac1)
         
     
     def OnWriteDac1(self):
         
-        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-w", "0xe0e3", "-i", "DAC_Cert.pem", "-X", ])
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_metadata", "-w", "0xe0e0", "-Ca", "-X", ])
+        command_output = exec_cmd.execCLI([config.EXEPATH + "/bin/trustm_cert", "-w", "0xe0e0", "-i", "DAC_Cert.pem", "-X", ])
         
         self.text_display.AppendText(command_output)
-        self.text_display.AppendText("\n 'trustm_cert -w 0xe0e3 -i DAC_Cert.pem -X' executed\n")
+        self.text_display.AppendText("\n 'trustm_metadata -w 0xe0e0 -Ca -X' executed\n")
+        self.text_display.AppendText("\n 'trustm_cert -w 0xe0e0 -i DAC_Cert.pem -X' executed\n")
         self.text_display.AppendText("\nDisplaying DAC\n")        
         command_output = exec_cmd.execCLI(["openssl", "x509", "-in", "DAC_Cert.pem", "-text", "-noout",  ])
         self.text_display.AppendText(command_output)                

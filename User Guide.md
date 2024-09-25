@@ -27,7 +27,7 @@ This document is intended for the users who wish to explore the functionalities 
 
 
 - [2.4 Write Metadata](#write-metadata)
-- [2.5 Matter DAC Provisioning](#matter-dac-provisioning)
+- [2.5 Matter Test DAC Provisioning](#matter-test-dac-provisioning)
 
 
 [3. Cryptographic Functions](#cryptographic-functions)
@@ -116,15 +116,6 @@ This document is intended for the users who wish to explore the functionalities 
 - [6.1.2 HMAC Verify and Write](#hmac-verify-and-write)
 
 - [6.1.3 HMAC Verify and Read](#hmac-verify-and-read)
-
-[7. Secured connection to AWS IoT core](#secured-connection-to-aws-iot-core)
-
-- [7.1 Get started with AWS IoT Core](#get-started-with-aws-iot-core)
-- [7.2 Create device certificate and assign it to Thing with policy](#create-device-certificate-and-assign-it-to-thing-with-policy)
-
-- [7.3 Publish messages to AWS IoT core from the Raspberry Pi](#publish-messages-to-aws-iot-core-from-the-raspberry-pi)
-
-
 
 # Overview
 
@@ -439,8 +430,8 @@ To load custom metadata into target OID
 ![](images/General_Features/write_metadata/custom_meta_success.png)
 [^Figure 29]: custom metadata write success
 
-## Matter DAC Provisioning
-This section shows you the DAC Provisioning for Matter devices using the OPTIGA™ Trust M. It involves reading a pre-provisioned certificate from the chip, extracting the public key, generating a new DAC certificate signed by a trusted Matter CA and writing the DAC certificate, Matter Test PAI and Test CD into the Object IDs.
+## Matter Test DAC Provisioning
+This section shows you the Test DAC Provisioning for Matter devices using the OPTIGA™ Trust M for Device Attestation. It involves reading a pre-provisioned certificate from the chip, extracting the public key, generating a new DAC certificate signed by a trusted Matter CA and writing the Test DAC certificate, Matter Test PAI and Test CD into the Object IDs.
 
 ![](images/General_Features/matter_dac_provisioning/dac_functions.png)
 [^Figure 30]: Matter DAC Provisioning functions described
@@ -474,9 +465,10 @@ To generate the certificate, select "Generate DAC Cert Using Public Key".
 [^Figure 34]: DAC certificate generated from the public key
 
 ### Write DAC Cert
-Writes the new DAC certificate to OID 0xE0E3.
-To write the new DAC certificate into 0xE0E3, select "Write Test DAC".
+Writes the new DAC certificate to OID 0xE0E0.
+To write the new DAC certificate into 0xE0E0, select "Write Test DAC".
 ![](images/General_Features/matter_dac_provisioning/write_dac.png)
+
 [^Figure 35]: Displays information of the new DAC certificate
 
 ### Write Matter Test PAI
@@ -1400,183 +1392,3 @@ To read out metadata , select "Read Object Metadata".
 ![](images/Secure_Storage/metadata.png)
 
 [^Figure 121]: Read Objects metadata displayed
-
-# Secured connection to AWS IoT core
-
-AWS IoT core makes use of X.509 certificates to authenticate client or device connections during a registration and onboading attempt.
-
-The "AWS:IOT Core" demo example showcases how to set up trusted connection to AWS IoT core using X.509 with a OPTIGA™ Trust M private key. The demo software was developed using the AWS IoT Device SDK for Embedded C, integrating OPTIGA™ Trust M into the platform.
-
-This section explains the following steps required to run the demo
-
-1. Get started with AWS IoT core
-
-2. Create device certificate and assign it to Thing with policy
-
-3. Publish messages to AWS IoT core from the Raspberry Pi
-
-Go back to the main screen and select "AWS:IOT Core".
-
-![](images/AWSIOT/MainScreen.png)
-
-[^Figure 122]: OPTIGA Trust M Explorer Application: AWS:IOT Core Selection
-
-![](images/AWSIOT/AWS_Screen.png)
-
-[^Figure 123]: AWS:IOT Core Main Screen
-
-## Get started with AWS IoT Core
-
-To generate "Access Key ID" , "Secret Access Key" and "Session Token"  log in to AWS IOT.
-
-![](images/AWSIOT/AWS_Signin.png)
-
-[^Figure 124]: AWS IOT Login
-
-Next, go to your credentials.
-
-![](images/AWSIOT/security_cred.jpg)
-
-[^Figure 125]: AWS IOT Security Credentials
-
-Download and retrieve your security credentials.
-
-![](images/AWSIOT/download.png)
-
-[^Figure 126]: AWS IOT Download Security Credentials
-
-![](images/AWSIOT/Credentials1.png)
-
-[^Figure 127]: Security_Credentials.CSV
-
-For AWS SSO user, Go to Your own login Page through SSO. For example,
-
-![](images/AWSIOT/AWS_Account.png)
-
-[^Figure 128]: IFXCloudUserAdministratorAccess Page 
-
-Click *Command line or programmatic access* button to copy out the AWS_access_key_id,AWS_secret_access_key and AWS_session_token.
-
-
-
-![](images/AWSIOT/Credentials.png)
-
-[^Figure 129]:AWS Access credentials
-
-To retrieve Endpoint, go to "Services" and select "IOT Core".
-
-![](images/AWSIOT/Services_iotcore.jpg)
-
-[^Figure 130]: AWS IOT Core
-
-Select "Settings" at the left side of the webbrowser.
-
-![](images/AWSIOT/IOT_core_settings.jpg)
-
-[^Figure 131]: AWS IOT Core Settings
-
-At "Custom Endpoint", copy the endpoint.
-
-![](images/AWSIOT/endpoint_aws.png)
-
-[^Figure 132]: AWS IOT Core Settings Endpoint
-
-Input the "Access Key ID" , "Secret Access Key" and "Session Token" and choose the correct server location
-
-![](images/AWSIOT/Credentials_entered.png)
-
-[^Figure  133]: AWS IOT Configuration
-
-Select "Set AWS credentials".
-
-![](images/AWSIOT/Credentials_entered2.png)
-
-[^Figure 134]: AWS IOT Set AWS Credentials Selection
-
-Next, set Endpoint by selecting "Open config file".
-
-![](images/AWSIOT/AWS_Main2.png)
-
-[^Figure 135]: AWS IOT Open Config File Selection
-
-Paste the endpoint  from your AWS account and save.
-
-![](images/AWSIOT/Endpoint_editing.png)
-
-[^Figure 136]: AWS IOT Open Config File
-
-**Skip this step if a policy file has already been created.** First, select "Open policy file", make no changes and save. This is a one time setting only.
-
-![](images/AWSIOT/AWS_Create_Policy.png)
-
-[^Figure 137]: AWS IOT Open Policy File Selection
-
-Select "Create Policy (from policy file)". Once policy has been created, there will be no need to do this step again.
-
-![](images/AWSIOT/policyfille.png)
-
-[^Figure 138]: AWS IOT Policy File
-
-## Create device certificate and assign it to Thing with policy
-
-Once configuration is done, to provision the certificate, select "1-click provision". Step 1 to Step 6 will be run and a certificate will be generated after receiving the CSR based on keys generated in the Trust M, using AWS IoT's certificate authority.
-
-![](images/AWSIOT/AWS_Main3.png)
-
-[^Figure 139]:  AWS IOT 1-click provision Selection
-
-The following code will be run for Step 1 to Step 6.
-
-```
-Step 1 & 2: Creates new ECC 256 key pair and Auth/Enc/Sign usage and generate a certificate request
-
-(/'/>/>/>/', u/'openssl req -new -keyform -engine trustm_engine -key 0xe0f1:^:NEW:0x03:0x13 -keyform engine subj/CN=$commonname/O=$organistation/C=$country/ST=$countryfullname -out leaf.csr/')
-
-Step 3: Create AWS IoT Thing
-
-(/'/>/>/>/', 'aws iot create-thing --thing-name $thingname')
-
-Step 4: Create Certificate
-
-(/'/>/>/>/',/aws iot create-certificate-from-csr --certificate-signing-request file://leaf.csr --set-as-active --certificate-pem-outfile leafAWS.crt')
-
-Step 5: Attach AWS IoT Certificate to AWS IoT Thing
-
-(/'/>/>/>/','aws iot attach-thing-principal --thing-name $thingname --principal $certificateArn'')
-
-Step 6: The policy is attached to the received certificate
-
-(/'/>/>/>/', u/'aws iot attach-principal-policy --policy-name $policyname --principal $certificateArn')
-```
-
-1-click provision is successful if no error message is seen and certificate is successfully attached as shown in the Figure 134 below. Data can now be sent to AWS web-browser.
-
-![](images/AWSIOT/extra.png)
-
-[^Figure 140]: AWS IOT 1-click provision Succeeded
-
-To view the certificate details, go to AWS IoT / Security / Certificates
-
-![](images/AWSIOT/aws_cert.png)
-
-[^Figure 141]: Certificate generated and registered to AWS IOT core
-
-## Publish messages to AWS IoT core from the Raspberry Pi
-
-After performing all the necessary preparation steps from Step 1 to Step 6, we will set up the topic for the AWS web-browser for the Trust M Explorer to publish the data to. Return to the AWS IOT web-browser. Select "Test" on the left tab. Then enter "pulsioximeter" and select "Subscribe".
-
-![](images/AWSIOT/Subscribe.png)
-
-[^Figure 142]: AWS IOT Test
-
-We can proceed with Step 7. On the OPTIGA™ Trust M Explorer AWS IOT, input the correct Topic and the intended Data. Then, select "Start Publishing". The device can continue publishing even after reboot and no further configuration will be required.
-
-![](images/AWSIOT/publish.png)
-
-[^Figure 143]: AWS IOT Start Publishing Selection
-
-On the AWS IoT web-browser, subscription to "pulsioximeter" should be shown and an update of the data will be published as shown in Figure 137. This example can be used in many other real time applications where the data can be continuously published to the AWS IoT web-browser.
-
-![](images/AWSIOT/publiushed.png)
-
-[^Figure 144]: AWS IOT Web-Browser Published

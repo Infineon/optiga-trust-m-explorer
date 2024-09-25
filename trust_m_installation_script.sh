@@ -9,7 +9,7 @@ PATCH="${PWD}/${FILE}"
 
 sudo apt update 
 sudo apt -y install awscli git gcc libssl-dev python-wxtools 
-sudo apt install python3-pubsub
+sudo apt install python3-pubsub xxd
 
 
 echo $PATCH
@@ -19,8 +19,9 @@ echo $LINUX_TOOLS_PATH
 cp $PATCH $LINUX_TOOLS_PATH
 cd $LINUX_TOOLS_PATH
 echo "-----> Entering ${PWD}"
+git reset --hard
 git apply $FILE
-rm $FILE
+#rm $FILE
 set -e
 echo "-----> Build Trust M Linux Tools"
 sudo make uninstall
