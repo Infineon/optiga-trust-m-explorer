@@ -27,7 +27,7 @@ This document is intended for the users who wish to explore the functionalities 
 
 
 - [2.4 Write Metadata](#write-metadata)
-- [2.5 Matter DAC Provisioning](#matter-dac-provisioning)
+- [2.5 Matter Test DAC Provisioning](#matter-test-dac-provisioning)
 
 
 [3. Cryptographic Functions](#cryptographic-functions)
@@ -430,8 +430,8 @@ To load custom metadata into target OID
 ![](images/General_Features/write_metadata/custom_meta_success.png)
 [^Figure 29]: custom metadata write success
 
-## Matter DAC Provisioning
-This section shows you the DAC Provisioning for Matter devices using the OPTIGA™ Trust M. It involves reading a pre-provisioned certificate from the chip, extracting the public key, generating a new DAC certificate signed by a trusted Matter CA and writing the DAC certificate, Matter Test PAI and Test CD into the Object IDs.
+## Matter Test DAC Provisioning
+This section shows you the Test DAC Provisioning for Matter devices using the OPTIGA™ Trust M for Device Attestation. It involves reading a pre-provisioned certificate from the chip, extracting the public key, generating a new DAC certificate signed by a trusted Matter CA and writing the Test DAC certificate, Matter Test PAI and Test CD into the Object IDs.
 
 ![](images/General_Features/matter_dac_provisioning/dac_functions.png)
 [^Figure 30]: Matter DAC Provisioning functions described
@@ -465,9 +465,10 @@ To generate the certificate, select "Generate DAC Cert Using Public Key".
 [^Figure 34]: DAC certificate generated from the public key
 
 ### Write DAC Cert
-Writes the new DAC certificate to OID 0xE0E3.
-To write the new DAC certificate into 0xE0E3, select "Write Test DAC".
+Writes the new DAC certificate to OID 0xE0E0.
+To write the new DAC certificate into 0xE0E0, select "Write Test DAC".
 ![](images/General_Features/matter_dac_provisioning/write_dac.png)
+
 [^Figure 35]: Displays information of the new DAC certificate
 
 ### Write Matter Test PAI
