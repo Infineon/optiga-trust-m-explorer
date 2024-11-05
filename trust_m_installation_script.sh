@@ -6,12 +6,10 @@ CURRENT_DIR="${PWD}"
 
 
 sudo apt update 
-sudo apt -y install awscli git gcc libssl-dev 
-sudo apt install python3-pubsub xxd 
-pip install -r requirement.txt
+sudo apt -y install awscli git gcc libssl-dev gpiod libgpiod-dev
+sudo apt install python3-pubsub xxd wxpython-tools
 
 echo $LINUX_TOOLS_PATH
-
 cd $LINUX_TOOLS_PATH
 set -e
 echo "-----> Build Trust M Linux Tools"
