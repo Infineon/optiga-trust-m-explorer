@@ -420,9 +420,12 @@ class Tab_GEN(wx.Panel):
                 metadataToWrite = ""
                 
                 # get the size of the metadata
-                size = int(lines[4][6:10])
+                size_str = lines[4][6:10].strip()
+                if not size_str.isdigit():
+                        size = 0  
+                else:
+                        size = int(size_str)
                 lineLimit = math.ceil(size / 16.0)
-                
                 
                 # reading line by line
                 for line in lines[5:]:
