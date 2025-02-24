@@ -2689,7 +2689,7 @@ class Tab_PROV(wx.Panel):
         
     def OnGenCsr1(self):
         
-        command_output = exec_cmd.execCLI(["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes", "-keyout", "private.key", "-out", "request.csr", "-config", config.EXEPATH + "/scripts/matter_provisioning/openssl_matter.cnf",  ])
+        command_output = exec_cmd.execCLI(["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes", "-keyout", "private.key", "-out", "request.csr", "-config", config.EXEPATH + "/scripts/matter_provisioning/test_files/openssl_matter.cnf",  ])
         
         self.text_display.AppendText(command_output)
         self.text_display.AppendText("\n'openssl req -new -newkey rsa:2048 -nodes -keyout private.key -out request.csr -config openssl_matter.cnf' executed\n")
