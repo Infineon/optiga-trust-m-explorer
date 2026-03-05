@@ -336,7 +336,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|metadata|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|metadata|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/metadata/"
         
@@ -363,7 +363,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -387,7 +387,7 @@ class Tab_MetaConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -1071,8 +1071,8 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
         
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
         openFileDialog.SetDirectory(some_dir)
@@ -1096,7 +1096,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.der|Certificate|*.crt;*.der", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.der|Certificate|*.crt;*.der", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
@@ -1180,7 +1180,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -1203,7 +1203,7 @@ class Tab_KeyConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -1775,8 +1775,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|key|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
-        
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|key|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
         openFileDialog.SetDirectory(some_dir)
@@ -1841,7 +1840,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -1864,7 +1863,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -1888,7 +1887,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
         
@@ -1913,7 +1912,7 @@ class Tab_AesConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.txt|Certificate|*.crt;*.txt", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_Dir= config.EXEPATH + "/ex_protected_update_data_set/samples/confidentiality/"
         
@@ -2436,8 +2435,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|key|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
-        
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|key|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
         openFileDialog.SetDirectory(some_dir)
@@ -2460,7 +2458,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.der|key|*.txt;*.der", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.der|key|*.txt;*.der", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/ex_protected_update_data_set/samples/payload/key/"
         
@@ -2524,7 +2522,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -2547,7 +2545,7 @@ class Tab_RsaConfidentialUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -3142,7 +3140,7 @@ class Tab_DataUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|data|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.txt;*.pem|data|*.txt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir = config.IMAGEPATH + "/working_space/samples"
         
@@ -3169,7 +3167,7 @@ class Tab_DataUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_dir= config.EXEPATH + "/scripts/certificates/"
         
@@ -3193,7 +3191,7 @@ class Tab_DataUpdate(wx.Panel):
         frame = wx.Frame(None, -1, '*.*')
         frame.SetSize(0,0,200,50)
             
-        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST |wx.FD_CHANGE_DIR)
+        openFileDialog = wx.FileDialog(frame, "Open", "", "","All|*.crt;*.pem|Certificate|*.crt;*.pem", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         
         some_Dir= config.EXEPATH + "/scripts/certificates/"
         
