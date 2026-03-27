@@ -4,11 +4,7 @@
 
 #### Scope and purpose
 
-The purpose of this document is to guide users on how to set up their RPI to enable the OPTIGA™ Trust M in order to use the OPTIGA™ Trust M Explorer Application.
-
-#### Intended audience
-
-This document is intended for the users wish to explore the functionalities of the OPTIGA™ Trust M.
+The purpose of this document is to provide instructions on how to install and configure the Raspberry Pi® to enable the OPTIGA™ Trust M in order to use the OPTIGA™ Trust M Explorer Application.
 
 #### Table of contents
 
@@ -22,9 +18,9 @@ This document is intended for the users wish to explore the functionalities of t
 
 [2 Interface Setup](#interface-setup)
 
-[3 Install Trust M_Explorer](#install-trust-m-explorer)
+[3 Install OPTIGA™ Trust M Explorer](#install-trust-m-explorer)
 
-[3.1 Trust M_Explorer Installation Guide](#trust-m-explorer-installation-guide)
+[3.1 OPTIGA™ Trust M Explorer Installation Guide](#trust-m-explorer-installation-guide)
 
 [References](#references)
 
@@ -36,24 +32,28 @@ This section describes all necessary steps needed to build a Raspberry Pi® boot
 
 ## Prerequisites 
 
--   Raspberry Pi®
--   Micro SD card (≥16GB) flashed with Raspberry Pi® OS Debian 12 (bookworm) and Raspbian Linux kernel version 6.6 . Download the official image from [[1]](#references)
--   OPTIGA™ Trust M  (M1/M3)
+-   Raspberry PI 4 on Linux kernel >= 5.15
+- Micro SD card (≥16GB)
 
-| ![](images/Setup/HardwareSetup.png) |
-| ------------------------------------ |
+- [S2GO SECURITY OPTIGA™ Trust M](https://www.infineon.com/cms/en/product/evaluation-boards/s2go-security-optiga-m/)  or [OPTIGA™ Trust M MTR SHIELD](https://www.infineon.com/cms/en/product/evaluation-boards/trust-m-mtr-shield/)
 
-Figure 1 OPTIGA™ Trust M on RPI 
+- [Shield2Go Adapter for Raspberry Pi](https://www.infineon.com/cms/en/product/evaluation-boards/s2go-adapter-rasp-pi-iot/) or [Pi Click Shield](https://www.mikroe.com/pi-4-click-shield) 
+
+  ![](docs/images/Setup/HardwareSetup.png)
+
+  Figure 1 Hardware  Connection for S2GO SECURITY OPTIGA™ Trust M using  S2GO SECURITY OPTIGA™ Trust M
+
+  ![](/docs/images/Setup/rpi_mikro_connection.png)
+
+Figure 2 Hardware  Connection for OPTIGA™ Trust M MTR SHIELD  using  Pi Click Shield
 
 **Table 1** shows a summary of the hardware and environment used.
 
-| Hardware                   | Version   and Firmware/OS                                    | Comment                                                      |
-| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Host  PC                   | Running Linux/Windows®, for example Ubuntu® 22.04 above or Windows 11 as long as VNC viewer is present | This  platform is used for interacting with  the Raspberry Pi® in a more convenient and faster way compared to doing all  actions directly on the Raspberry Pi®. |
-| Trust M Security Shield2GO | The Trust M chip can be one of the following variants  <br />• M1  <br />• M3 | This  board contains the Infineon OPTIGA™ Trust M chip mounted on an  easy-to-use hardware board, which can be attached to the Raspberry Pi®. |
-| Raspberry  Pi® Board       | •  Model 4 , Raspberry pi<br />•  Micro SD Card with at least 16 GB<br />•  USB cable for power supply(Micro-B/Type-C) | A SD  card with the Raspberry pi Debian 12 and a Raspberry pi Linux kernel version 5.15 and above on it is required, which can be downloaded at [[1]](#_References). This SD card will be  plugged in the developer PC |
-
-
+| Hardware                                                     | Version   and Firmware/OS                                    | Comment                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Host  PC                                                     | Running Linux/Windows®, for example Ubuntu® 22.04 above or Windows 11 as long as VNC viewer is present | This  platform is used for interacting with  the Raspberry Pi® in a more convenient and faster way compared to doing all  actions directly on the Raspberry Pi®. |
+| OPTIGA™ Trust M MTR SHIELD or OPTIGA™ Trust M Security Shield2GO | The OPTIGA™ Trust M chip can be one of the following variants  <br />• V3/MTR/Express | This  board contains the Infineon OPTIGA™ Trust M chip mounted on an  easy-to-use hardware board, which can be attached to the Raspberry Pi®. |
+| Raspberry  Pi® Board                                         | •  Model 4 , Raspberry pi<br />•  Micro SD Card with at least 16 GB<br />•  USB cable for power supply(Micro-B/Type-C) | A SD  card with the Raspberry pi Debian 12 and a Raspberry pi Linux kernel version 5.15 and above on it is required, which can be downloaded at [[1]](#_References). This SD card will be  plugged in the developer PC |
 
 # Interface Setup
 
@@ -61,7 +61,7 @@ This step guide you on how to set up the required interface needed to communicat
 
 Start-up the Raspberry Pi with HDMI cable to monitor and select Preferences->Raspberry Pi Configuration. Select the **Interface** tab. Enable **I2C**,**SSH** and **VNC** as follow.
 
-| ![](images/Setup/raspi-preference.png) |
+| ![](docs/images/Setup/raspi-preference.png) |
 | ------------------------------- |
 
 [^Figure 2]: RPI Home Screen on monitor
@@ -75,7 +75,7 @@ hostname -I
 
 Paste the IP Address of RPI4 into VNC Viewer on the host PC to connect to the RPI.
 
-| ![](images/Setup/VNCViewer.png) |
+| ![](docs/images/Setup/VNCViewer.png) |
 | ------------------------------------------------------ |
 
 [^Figure 3]: VNC Viewer Connection Screen
@@ -86,64 +86,36 @@ Username: pi
 
 The password is the same as the password entered when setting up raspberry pi
 
-| ![](images/Setup/VNCViewerUserPass.png) |
-| ------------------------------------------------------------ |
+| ![](docs/images/Setup/VNCViewerUserPass.png) |
+| -------------------------------------------- |
 
 [^Figure 4]: VNC Viewer Authentication Menu
 
 You should be successfully connected and able to view the RPI through VNC connection on your device.
 
-| ![](images/Setup/RPIHomeScreen_VNC.png) |
-| ------------------------------------------------------------ |
+| ![](docs/images/Setup/RPIHomeScreen_VNC.png) |
+| -------------------------------------------- |
 
 [^Figure 5]: RPI Home Screen on VNC Viewer
 
 
 
-# Install Trust M Explorer 
+# Install OPTIGA™ Trust M Explorer 
 
-## Trust M Explorer Installation Guide
+## OPTIGA™ Trust M Explorer Installation Guide
 
 Clone Trust M_Explorer Source Code:  
-
-```
-git clone -b provider_dev --recurse-submodules https://github.com/Infineon/optiga-trust-m-explorer.git
-
-```
-
-Go to the following directory:
-
-```
-cd optiga-trust-m-explorer
-```
-
-Note: If you use  the command below to clone
 
 ```
 git clone --recurse-submodules https://github.com/Infineon/optiga-trust-m-explorer.git
 
 ```
 
-Go to the following directory, use the commands below to checkout from provider_dev branch and update the submodule:
-
-```
-cd optiga-trust-m-explorer
-git checkout provider_dev
-git submodule update --init
-```
-
 Execute Installation script:
 
 ```
-./trust_m_installation_script.sh
-```
-
-To start the Trust M Explorer Application
-
-Go to directory "optiga-trust-m-explorer/Python_TrustM_GUI"
-
-```
-./start_gui.sh
+cd optiga-trust-m-explorer
+./installation_script.sh
 ```
 
 The installation script installs the following dependencies required and compiles the source code for the OPTIGA™ Trust M Explorer Application.
@@ -151,45 +123,28 @@ The installation script installs the following dependencies required and compile
 -   wxpython-tools
 -   OpenSSL development library (libssl-dev)
 -   OpenSSL 3.x
--   OPTIGA Trust M1/M3 library (source code)
+-   OPTIGA Trust M library (source code)
 -   pthread
 -   rt
 -   PyPubSub
 
 This process should take up to 15 minutes.
 
-Once complete, go to your home directory and access the folder called optiga-trust-m-explorer.
+To start the OPTIGA™ Trust M Explorer Application
 
-| ![](images/Setup/trustm_explorer.png) |
-| -------------------------------------- |
+Go to directory "optiga-trust-m-explorer/src/Python_TrustM_GUI"
 
-[^Figure 6]: Trust M Explorer File Directory
+```
+cd src/Python_TrustM_GUI
+./start_gui.sh
+```
 
-Next, access the file called Python TrustM_GUI.
+A terminal will pop up and the OPTIGA™ Trust M Explorer interface will be open.
 
-| ![](images/Setup/pythongui.png) |
-| :------------------------------- |
+| ![](docs/images/Setup/MainScreen.png) |
+| ------------------------------------- |
 
-[^Figure 7]: Python Trust M GUI File Directory
-
-Execute "start_gui.sh" and select execute in terminal.
-
-| ![](images/Setup/start_gui.png) |
-| -------------------------------- |
-
-[^Figure 8]: Selecting start_gui.sh
-
-| ![](images/Setup/execute.png) |
-| ------------------------------ |
-
-[^Figure 9]: Executing start_gui.sh in terminal
-
-A terminal will pop up and the OPTIGA Trust M Explorer interface will be open.
-
-| ![](images/Setup/MainScreen.png) |
-| ------------------------------------------------------- |
-
-[^Figure 10]: Home Screen of OPTIGA Trust M Explorer
+[^Figure 6]: Home Screen of OPTIGA™ Trust M Explorer
 
 For more information on the OPTIGA™ Trust M Explorer, please refer to the [OPTIGA™ Trust M User Guide](./User%20Guide.md).
 
