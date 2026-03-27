@@ -1,4 +1,4 @@
-[submodule "Python_TrustM_GUI/linux-optiga-trust-m"]
-	path = Python_TrustM_GUI/linux-optiga-trust-m
+[submodule "src/Python_TrustM_GUI/linux-optiga-trust-m"]
+	path = src/Python_TrustM_GUI/linux-optiga-trust-m
 	url = https://github.com/Infineon/linux-optiga-trust-m
-	branch = provider_dev
+	branch = feature/mtr_express
